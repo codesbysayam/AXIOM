@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Activity,
   CheckCircle2,
   Cpu,
   HeartPulse,
   LayoutGrid,
+  Pause,
+  Play,
   Radio,
   RefreshCw,
+  Search,
   Server,
   Shield,
   ShieldCheck,
   Table as TableIcon,
   Terminal,
+  X,
   Zap,
 } from 'lucide-react';
 import { AGENT_WORKFORCE } from '../data/agentsAndSkills';
@@ -26,7 +30,9 @@ export const HealthPage: React.FC = () => {
   const [selectedAgentId, setSelectedAgentId] = useState<string>(AGENT_WORKFORCE[0]?.id || '');
   const [pingState, setPingState] = useState<number>(12);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [viewMode, setViewMode] = useState<'matrix' | 'table'>('table');
+  const [viewMode, setViewMode] = useState<'table' | 'matrix'>('table');
+  const [searchFilter, setSearchFilter] = useState<string>('');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [pausedAgentIds, setPausedAgentIds] = useState<Record<string, boolean>>({});
 
   const selectedAgent =
@@ -50,6 +56,62 @@ export const HealthPage: React.FC = () => {
         isPaused ? 'warning' : 'info',
       );
       return { ...prev, [agentId]: isPaused };
+    });
+  };
+
+  const filtered = useMemo(() => {
+    if (!searchFilter.trim()) return AGENT_WORKFORCE;
+    const query = searchFilter.toLowerCase().trim();
+    return AGENT_WORKFORCE.filter((agent) => {
+      const isPaused = Boolean(pausedAgentIds[agent.id]);
+      const statusString = isPaused ? 'paused' : agent.status.toLowerCase();
+      const nameMatch = agent.name.toLowerCase().includes(query) || agent.id.toLowerCase().includes(query);
+      const domainMatch = agent.domain.toLowerCase().includes(query);
+      const statusMatch = statusString.includes(query);
+      return nameMatch || domainMatch || statusMatch;
+    });
+  }, [searchFilter, pausedAgentIds]);
+
+  const isAllSelected = filtered.length > 0 && filtered.every((a) => selectedIds.includes(a.id));
+  const isPartiallySelected = selectedIds.length > 0 && !isAllSelected;
+
+  const handleToggleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(filtered.map((a) => a.id));
+    }
+  };
+
+  const handleToggleSelectRow = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    );
+  };
+
+  const handleBulkRun = () => {
+    if (selectedIds.length === 0) return;
+    addToast(
+      'Cluster Diagnostic Dispatched',
+      `Sent test heartbeat pulses to ${selectedIds.length} selected agent nodes.`,
+      'info',
+    );
+  };
+
+  const handleBulkPause = () => {
+    if (selectedIds.length === 0) return;
+    setPausedAgentIds((prev) => {
+      const next = { ...prev };
+      const allCurrentlyPaused = selectedIds.every((id) => prev[id]);
+      selectedIds.forEach((id) => {
+        next[id] = !allCurrentlyPaused;
+      });
+      addToast(
+        allCurrentlyPaused ? 'Nodes Re-armed' : 'Nodes Suspended',
+        `${selectedIds.length} nodes are now ${allCurrentlyPaused ? 'operational' : 'paused'}.`,
+        allCurrentlyPaused ? 'info' : 'warning',
+      );
+      return next;
     });
   };
 
@@ -114,9 +176,9 @@ export const HealthPage: React.FC = () => {
             <span>{isRefreshing ? 'Pinging Cluster...' : 'Ping Cluster'}</span>
           </button>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-[#138468] bg-[#F0FAF6] px-3 py-1.5 rounded-[2px] border border-[#C3E6DB]">
-            <span className="w-2 h-2 rounded-full bg-[#138468] animate-pulse" />
-            <span>8 / 8 NODES ARMED · {pingState}ms</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-[#08795F] bg-[#F0FAF6] px-3 py-1.5 rounded-[2px] border border-[#C3E6DB]">
+            <span className="w-2 h-2 rounded-full bg-[#08795F] animate-pulse" />
+            <span>8 / 8 NODES ARMED: {pingState}ms</span>
           </div>
         </div>
       </div>
@@ -127,7 +189,7 @@ export const HealthPage: React.FC = () => {
           <span className="text-[10px] font-mono uppercase text-[#5E6975] block">
             Cluster Integrity
           </span>
-          <div className="text-2xl font-serif font-bold text-[#138468] mt-0.5">
+          <div className="text-2xl font-serif font-bold text-[#08795F] mt-0.5">
             100% Armed
           </div>
           <span className="text-[11px] text-[#5E6975] font-mono mt-0.5 block">
@@ -142,7 +204,7 @@ export const HealthPage: React.FC = () => {
           <div className="text-2xl font-mono font-bold text-[#182536] mt-0.5">
             {pingState}ms <span className="text-xs font-normal text-[#5E6975]">p50</span>
           </div>
-          <span className="text-[11px] text-[#138468] font-mono mt-0.5 block">
+          <span className="text-[11px] text-[#08795F] font-mono mt-0.5 block">
             38ms p95 · 82ms p99
           </span>
         </div>
@@ -163,7 +225,7 @@ export const HealthPage: React.FC = () => {
           <span className="text-[10px] font-mono uppercase text-[#5E6975] block">
             Circuit Breaker Status
           </span>
-          <div className="text-2xl font-mono font-bold text-[#138468] mt-0.5">
+          <div className="text-2xl font-mono font-bold text-[#08795F] mt-0.5">
             ARMED
           </div>
           <span className="text-[11px] text-[#5E6975] font-mono mt-0.5 block">
@@ -175,97 +237,181 @@ export const HealthPage: React.FC = () => {
       {/* CLUSTER TELEMETRY: Table or Matrix View */}
       {viewMode === 'table' ? (
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs font-mono text-[#5E6975]">
-            <span className="uppercase font-semibold tracking-wider">
-              Fleet Telemetry Registry (8 Autonomous Agent Nodes)
-            </span>
-            <span>Real-time health trends and execution controls</span>
-          </div>
+          <div className="axiom-panel overflow-hidden">
+            {/* Top Filter and Bulk Actions Bar */}
+            <div className="axiom-table-toolbar">
+              <div className="axiom-table-filter">
+                <Search size={13} className="absolute left-2.5 text-[#5E6975]" />
+                <input
+                  type="text"
+                  value={searchFilter}
+                  onChange={(e) => setSearchFilter(e.target.value)}
+                  placeholder="Search & filter telemetry nodes by name or domain..."
+                  aria-label="Filter telemetry nodes table"
+                />
+                {searchFilter && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchFilter('')}
+                    className="absolute right-2 text-[#5E6975] hover:text-[#182536]"
+                    title="Clear filter"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
 
-          <div className="axiom-panel overflow-x-auto shadow-2xs">
-            <table className="axiom-table">
-              <thead>
-                <tr>
-                  <th>Agent Node</th>
-                  <th>Semantic Domain</th>
-                  <th>Status</th>
-                  <th>Health</th>
-                  <th>Latency</th>
-                  <th>Success Rate</th>
-                  <th>Tasks Executed</th>
-                  <th>Invariant Boundary</th>
-                  <th className="text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {AGENT_WORKFORCE.map((agent) => {
-                  const isPaused = Boolean(pausedAgentIds[agent.id]);
-                  const isSelected = agent.id === selectedAgentId;
-                  const healthData = getAgentHealthTrend(agent);
+              {selectedIds.length > 0 ? (
+                <div className="axiom-bulk-bar">
+                  <span>
+                    <b>{selectedIds.length}</b> selected
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleBulkRun}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#08795F] hover:bg-[#065b48] text-white text-[10px] font-semibold rounded-[2px] transition-colors"
+                  >
+                    <Play size={10} />
+                    <span>Ping Selected</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleBulkPause}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#9A6900] hover:bg-[#7a5300] text-white text-[10px] font-semibold rounded-[2px] transition-colors"
+                  >
+                    <Pause size={10} />
+                    <span>Suspend Selected</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedIds([])}
+                    className="text-slate-300 hover:text-white underline text-[10px] ml-1"
+                  >
+                    Clear
+                  </button>
+                </div>
+              ) : (
+                <div className="text-xs font-mono text-[#5E6975]">
+                  {filtered.length} active agent nodes
+                </div>
+              )}
+            </div>
 
-                  return (
-                    <tr
-                      key={agent.id}
-                      onClick={() => setSelectedAgentId(agent.id)}
-                      className={`cursor-pointer ${isSelected ? 'bg-[#FFF8E6]/60' : ''}`}
-                    >
-                      <td>
-                        <div className="font-semibold text-[#182536] flex items-center gap-1.5">
-                          <span>{agent.name}</span>
-                          <span className="text-[10px] font-mono text-[#5E6975]">v{agent.version}</span>
-                        </div>
-                        <div className="text-[11px] text-[#5E6975] font-mono">{agent.id}</div>
-                      </td>
-                      <td className="text-[#334256] font-mono text-xs">{agent.domain}</td>
-                      <td>
-                        <StatusBadge status={isPaused ? 'paused' : agent.status} size="sm" />
-                      </td>
-                      {/* Health Column with Recharts mini sparkline */}
-                      <td>
-                        <TableHealthSparkline
-                          data={healthData}
-                          label={`${agent.name} Health Trend`}
-                        />
-                      </td>
-                      <td className="font-mono text-xs text-[#182536]">{agent.latencyMs}ms</td>
-                      <td className="font-mono text-xs text-[#138468] font-semibold">{agent.successRate}%</td>
-                      <td className="font-mono text-xs text-[#5E6975]">
-                        {agent.completedTasks.toLocaleString()}
-                      </td>
-                      <td>
-                        <span className="text-[11px] text-[#334256] truncate max-w-xs block font-mono">
-                          {agent.invariants[0]}
-                        </span>
-                      </td>
-                      <td className="text-right" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            type="button"
-                            onClick={() => setSelectedAgentId(agent.id)}
-                            className="axiom-btn-secondary py-1 px-2.5 text-xs"
-                          >
-                            Inspect
-                          </button>
-
-                          {/* Quick Actions Context Menu */}
-                          <TableQuickActionsMenu
-                            id={agent.id}
-                            name={agent.name}
-                            isPaused={isPaused}
-                            onRerun={() => {
-                              addToast('Heartbeat Ping Dispatched', `Verified active pulse on ${agent.name}.`, 'info');
-                            }}
-                            onPause={() => handleToggleAgentPause(agent.id, agent.name)}
-                            onViewLogs={() => navigateTo('activity')}
-                            onInspect={() => setSelectedAgentId(agent.id)}
-                          />
-                        </div>
+            <div className="overflow-x-auto">
+              <table className="axiom-table">
+                <thead>
+                  <tr>
+                    <th className="w-10 text-center">
+                      <input
+                        type="checkbox"
+                        checked={isAllSelected}
+                        ref={(el) => {
+                          if (el) el.indeterminate = isPartiallySelected;
+                        }}
+                        onChange={handleToggleSelectAll}
+                        aria-label="Select all nodes"
+                        className="rounded-[2px] border-[#D5D5CE] text-[#182536] focus:ring-0 cursor-pointer"
+                      />
+                    </th>
+                    <th>Agent Node</th>
+                    <th>Semantic Domain</th>
+                    <th>Status</th>
+                    <th>Health</th>
+                    <th>Latency</th>
+                    <th>Success Rate</th>
+                    <th>Tasks Executed</th>
+                    <th>Invariant Boundary</th>
+                    <th className="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.length === 0 ? (
+                    <tr>
+                      <td colSpan={10} className="text-center py-8 text-xs text-[#5E6975] font-mono">
+                        No telemetry nodes found matching "{searchFilter}".
                       </td>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  ) : (
+                    filtered.map((agent) => {
+                      const isPaused = Boolean(pausedAgentIds[agent.id]);
+                      const isSelected = selectedIds.includes(agent.id);
+                      const isDrawerActive = agent.id === selectedAgentId;
+                      const healthData = getAgentHealthTrend(agent);
+
+                      return (
+                        <tr
+                          key={agent.id}
+                          onClick={() => setSelectedAgentId(agent.id)}
+                          className={`cursor-pointer ${isSelected ? 'is-selected' : isDrawerActive ? 'bg-[#FFF8E6]/60' : ''}`}
+                        >
+                          <td className="text-center" onClick={(e) => e.stopPropagation()}>
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() => handleToggleSelectRow(agent.id)}
+                              aria-label={`Select node ${agent.name}`}
+                              className="rounded-[2px] border-[#D5D5CE] text-[#182536] focus:ring-0 cursor-pointer"
+                            />
+                          </td>
+                          <td>
+                            <div className="font-semibold text-[#182536] flex items-center gap-1.5">
+                              <span>{agent.name}</span>
+                              <span className="text-[10px] font-mono text-[#5E6975]">v{agent.version}</span>
+                            </div>
+                            <div className="text-[11px] text-[#5E6975] font-mono">{agent.id}</div>
+                          </td>
+                          <td className="text-[#334256] font-mono text-xs">{agent.domain}</td>
+                          <td>
+                            <StatusBadge status={isPaused ? 'paused' : agent.status} size="sm" />
+                          </td>
+                          {/* Health Column with Recharts mini sparkline */}
+                          <td>
+                            <TableHealthSparkline
+                              data={healthData}
+                              label={`${agent.name} Health Trend`}
+                            />
+                          </td>
+                          <td className="font-mono text-xs text-[#182536]">{agent.latencyMs}ms</td>
+                          <td className="font-mono text-xs text-[#08795F] font-semibold">{agent.successRate}%</td>
+                          <td className="font-mono text-xs text-[#5E6975]">
+                            {agent.completedTasks.toLocaleString()}
+                          </td>
+                          <td>
+                            <span className="text-[11px] text-[#334256] truncate max-w-xs block font-mono">
+                              {agent.invariants[0]}
+                            </span>
+                          </td>
+                          <td className="text-right" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-end gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => setSelectedAgentId(agent.id)}
+                                className="axiom-btn-secondary py-1 px-2.5 text-xs"
+                              >
+                                Inspect
+                              </button>
+
+                              {/* Quick Actions Context Menu */}
+                              <TableQuickActionsMenu
+                                id={agent.id}
+                                name={agent.name}
+                                isPaused={isPaused}
+                                onRerun={() => {
+                                  addToast('Heartbeat Ping Dispatched', `Verified active pulse on ${agent.name}.`, 'info');
+                                }}
+                                onPause={() => handleToggleAgentPause(agent.id, agent.name)}
+                                onViewLogs={() => navigateTo('activity')}
+                                onInspect={() => setSelectedAgentId(agent.id)}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       ) : (
@@ -290,17 +436,16 @@ export const HealthPage: React.FC = () => {
                       : 'border-[#D5D5CE] hover:border-[#334256] hover:bg-[#FAF9F5]'
                   }`}
                 >
-                  {/* Status Beacon & Node ID */}
                   <div className="flex items-center justify-between text-[10px] font-mono">
                     <div className="flex items-center gap-1.5">
                       <span
                         className={`w-2 h-2 rounded-full ${
-                          isPaused ? 'bg-[#A87405]' : 'bg-[#138468] animate-pulse'
+                          isPaused ? 'bg-[#9A6900]' : 'bg-[#08795F] animate-pulse'
                         }`}
                       />
                       <span
                         className={`font-semibold uppercase ${
-                          isPaused ? 'text-[#A87405]' : 'text-[#138468]'
+                          isPaused ? 'text-[#9A6900]' : 'text-[#08795F]'
                         }`}
                       >
                         {isPaused ? 'PAUSED' : 'ONLINE'}
@@ -309,21 +454,18 @@ export const HealthPage: React.FC = () => {
                     <span className="text-[#5E6975]">{agent.latencyMs}ms</span>
                   </div>
 
-                  {/* Agent Name */}
                   <div className="font-serif font-bold text-sm text-[#182536] mt-2 truncate">
                     {agent.name}
                   </div>
 
-                  {/* Domain Specialization */}
                   <div className="text-[10px] font-mono text-[#334256] mt-0.5">
                     {agent.domain}
                   </div>
 
-                  {/* Technical Spark Readouts */}
                   <div className="mt-3 pt-2.5 border-t border-[#D5D5CE]/60 space-y-1.5 text-[10px] font-mono">
                     <div className="flex items-center justify-between text-[#5E6975]">
                       <span>Success Rate:</span>
-                      <span className="text-[#138468] font-bold">{agent.successRate}%</span>
+                      <span className="text-[#08795F] font-bold">{agent.successRate}%</span>
                     </div>
                     <div className="flex items-center justify-between text-[#5E6975]">
                       <span>Memory:</span>
@@ -331,7 +473,6 @@ export const HealthPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Invariant badge */}
                   <div className="mt-2.5 pt-1.5 border-t border-[#D5D5CE]/60 text-[9px] font-mono text-[#5E6975] truncate">
                     <span className="text-[#182536] font-semibold">Rule:</span> {agent.invariants[0]}
                   </div>
@@ -361,7 +502,7 @@ export const HealthPage: React.FC = () => {
             <div className="flex items-center gap-2 text-xs font-mono">
               <span className="text-[#5E6975]">Version: {selectedAgent.version}</span>
               <span className="text-[#D5D5CE]">|</span>
-              <span className="text-[#138468] font-semibold">INVARIANTS VERIFIED</span>
+              <span className="text-[#08795F] font-semibold">INVARIANTS VERIFIED</span>
             </div>
           </div>
 
@@ -371,7 +512,7 @@ export const HealthPage: React.FC = () => {
                 Guaranteed Invariant Boundary:
               </span>
               <div className="text-[11px] text-[#182536] leading-relaxed">
-                {selectedAgent.invariants.join(' · ')}
+                {selectedAgent.invariants.join(', ')}
               </div>
             </div>
 
@@ -392,10 +533,10 @@ export const HealthPage: React.FC = () => {
             </div>
 
             <div className="p-3 bg-[#F0FAF6] border border-[#C3E6DB] rounded-[2px] space-y-1">
-              <span className="text-[10px] font-mono uppercase text-[#138468] block font-semibold">
+              <span className="text-[10px] font-mono uppercase text-[#08795F] block font-semibold">
                 Telemetry Percentiles:
               </span>
-              <div className="text-[11px] font-mono text-[#138468] space-y-0.5">
+              <div className="text-[11px] font-mono text-[#08795F] space-y-0.5">
                 <div>p50 Latency: {selectedAgent.latencyMs}ms</div>
                 <div>p95 Latency: {selectedAgent.latencyMs + 18}ms</div>
                 <div>Error Budget: 100% Remaining</div>

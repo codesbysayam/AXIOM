@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
   Clock,
   Layers,
   Lock,
+  Pause,
   Play,
   Plus,
   RefreshCw,
@@ -13,29 +14,43 @@ import {
   ShieldAlert,
   Sparkles,
   Workflow,
+  X,
   Zap,
 } from 'lucide-react';
 import { useOperationsStore } from '../orchestrator/store';
 import { StatusBadge } from '../components/StatusBadge';
 import { TableHealthSparkline } from '../components/TableHealthSparkline';
 import { TableQuickActionsMenu } from '../components/TableQuickActionsMenu';
-import { WorkflowDefinition, WorkflowStep } from '../types';
+import { WorkflowDefinition } from '../types';
 
 export const WorkflowsPage: React.FC = () => {
   const { workflows, navigateTo, runWorkflow, openModal, addToast } = useOperationsStore();
   const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [searchFilter, setSearchFilter] = useState<string>('');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [activeWorkflowId, setActiveWorkflowId] = useState<string>(workflows[0]?.id || '');
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [simActiveStep, setSimActiveStep] = useState<number>(-1);
   const [pausedWorkflowIds, setPausedWorkflowIds] = useState<Record<string, boolean>>({});
 
-  const categories = Array.from(new Set(workflows.map((w) => w.category)));
+  const categories = useMemo(() => Array.from(new Set(workflows.map((w) => w.category))), [workflows]);
 
-  const filtered = workflows.filter((w) => {
-    if (filterCategory !== 'all' && w.category !== filterCategory) return false;
-    return true;
-  });
+  const filtered = useMemo(() => {
+    return workflows.filter((w) => {
+      if (filterCategory !== 'all' && w.category !== filterCategory) return false;
+      if (searchFilter.trim()) {
+        const query = searchFilter.toLowerCase().trim();
+        const isPaused = Boolean(pausedWorkflowIds[w.id]);
+        const statusString = isPaused ? 'paused' : w.status.toLowerCase();
+        const nameMatch = w.title.toLowerCase().includes(query) || w.id.toLowerCase().includes(query);
+        const statusMatch = statusString.includes(query) || w.riskTier.toLowerCase().includes(query);
+        const categoryMatch = w.category.toLowerCase().includes(query);
+        if (!nameMatch && !statusMatch && !categoryMatch) return false;
+      }
+      return true;
+    });
+  }, [workflows, filterCategory, searchFilter, pausedWorkflowIds]);
 
   const selectedWf =
     workflows.find((w) => w.id === activeWorkflowId) || workflows[0];
@@ -71,9 +86,54 @@ export const WorkflowsPage: React.FC = () => {
     });
   };
 
+  // Bulk operations
+  const isAllSelected = filtered.length > 0 && filtered.every((w) => selectedIds.includes(w.id));
+  const isPartiallySelected = selectedIds.length > 0 && !isAllSelected;
+
+  const handleToggleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(filtered.map((w) => w.id));
+    }
+  };
+
+  const handleToggleSelectRow = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    );
+  };
+
+  const handleBulkRun = () => {
+    if (selectedIds.length === 0) return;
+    selectedIds.forEach((id) => runWorkflow(id));
+    addToast(
+      'Bulk Run Dispatched',
+      `Triggered execution for ${selectedIds.length} selected pipelines.`,
+      'info',
+    );
+  };
+
+  const handleBulkPause = () => {
+    if (selectedIds.length === 0) return;
+    setPausedWorkflowIds((prev) => {
+      const next = { ...prev };
+      const allCurrentlyPaused = selectedIds.every((id) => prev[id]);
+      selectedIds.forEach((id) => {
+        next[id] = !allCurrentlyPaused;
+      });
+      addToast(
+        allCurrentlyPaused ? 'Pipelines Resumed' : 'Pipelines Paused',
+        `${selectedIds.length} pipelines are now ${allCurrentlyPaused ? 'active' : 'paused'}.`,
+        allCurrentlyPaused ? 'info' : 'warning',
+      );
+      return next;
+    });
+  };
+
   const selectedStepData = selectedWf?.steps.find((s) => s.id === selectedNodeId);
 
-  // Generate deterministic sparkline data for workflows
+  // Deterministic sparkline data for workflows
   const getWorkflowHealthTrend = (wf: WorkflowDefinition) => {
     if (wf.riskTier === 'critical') return [92, 94, 88, 91, 95, 93];
     if (wf.riskTier === 'high') return [96, 98, 97, 99, 98, 99];
@@ -99,16 +159,6 @@ export const WorkflowsPage: React.FC = () => {
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <button
             type="button"
-            onClick={() => openModal('workflow-canvas')}
-            className="axiom-btn-secondary"
-            title="Open visual canvas builder"
-          >
-            <Workflow size={13} className="text-[#A87405]" />
-            <span>Visual Canvas Builder</span>
-          </button>
-
-          <button
-            type="button"
             onClick={() => handleSimulateExecution(selectedWf.id)}
             disabled={isSimulating}
             className="axiom-btn-secondary"
@@ -123,12 +173,12 @@ export const WorkflowsPage: React.FC = () => {
             className="axiom-btn-primary"
           >
             <Plus size={13} />
-            <span>New Pipeline</span>
+            <span>New Workflow Pipeline</span>
           </button>
         </div>
       </div>
 
-      {/* VISUAL CENTERPIECE: Impressive Multi-Agent DAG Topology Canvas */}
+      {/* DAG Architecture Grid Canvas */}
       <div className="axiom-panel overflow-hidden border border-[#D5D5CE] bg-[#FFFDF8]">
         {/* Topology Canvas Toolbar */}
         <div className="axiom-panel-header bg-[#FAF9F5] border-b border-[#D5D5CE]">
@@ -175,28 +225,28 @@ export const WorkflowsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* DAG Architecture Grid Canvas */}
-        <div className="p-6 bg-[#FAF9F5] relative border-b border-[#D5D5CE]">
+        {/* DAG Canvas View */}
+        <div className="p-6 bg-[#FFFDF8] relative border-b border-[#D5D5CE]">
           <div
             className="absolute inset-0 opacity-40 pointer-events-none"
             style={{
-              backgroundImage: 'radial-gradient(circle, #D5D5CE 1px, transparent 1px)',
+              backgroundImage: 'radial-gradient(circle, #cbd5e1 1px, transparent 1px)',
               backgroundSize: '20px 20px',
             }}
           />
 
           <div className="relative z-10 space-y-6">
             <div className="flex items-center justify-between text-xs font-mono text-[#5E6975]">
-              <span>DAG TOPOLOGY MAP · PARALLEL RESOLUTION WITH DETERMINISTIC CONVERGENCE</span>
-              <span className="text-[10px] bg-[#FFFDF8] px-2 py-0.5 border border-[#D5D5CE] rounded-[2px]">
-                Click any node to inspect payload & agent invariant
+              <span>DAG TOPOLOGY MAP: PARALLEL RESOLUTION WITH DETERMINISTIC CONVERGENCE</span>
+              <span className="text-[10px] bg-white px-2 py-0.5 border border-[#D5D5CE] rounded-[2px]">
+                Click any node to inspect payload and agent invariant
               </span>
             </div>
 
             {/* Visual Node Sequence */}
             <div className="flex items-center gap-3 overflow-x-auto pb-4 pt-1">
               {/* Trigger Node */}
-              <div className="flex-shrink-0 w-36 p-3 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px] shadow-2xs">
+              <div className="flex-shrink-0 w-36 p-3 bg-white border border-[#D5D5CE] rounded-[2px] shadow-2xs">
                 <div className="flex items-center justify-between text-[9px] font-mono text-[#5E6975] uppercase">
                   <span>Input</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#138468]" />
@@ -210,8 +260,7 @@ export const WorkflowsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Connecting Vector */}
-              <div className="text-[#5E6975] flex-shrink-0 font-mono text-sm">→</div>
+              <div className="text-[#8A939C] flex-shrink-0 font-mono text-sm">→</div>
 
               {/* Sequential Agent Nodes */}
               {selectedWf.steps.map((step, idx) => {
@@ -226,19 +275,18 @@ export const WorkflowsPage: React.FC = () => {
                       onClick={() => setSelectedNodeId(step.id)}
                       className={`flex-shrink-0 w-52 p-3.5 rounded-[2px] transition-all cursor-pointer relative shadow-2xs ${
                         isSelected
-                          ? 'border-2 border-[#182536] bg-[#FFFDF8] ring-2 ring-[#182536]/15'
+                          ? 'border-2 border-[#182536] bg-white ring-2 ring-[#182536]/10'
                           : isWaiting
-                          ? 'border-2 border-[#A87405] bg-[#FFF8E6]'
+                          ? 'border-2 border-[#A87405] bg-[#FFF8DF]'
                           : isCurrentlySimulating
-                          ? 'border-2 border-[#138468] bg-[#FFFDF8] animate-pulse'
-                          : 'border border-[#D5D5CE] bg-[#FFFDF8] hover:border-[#B4B4A8]'
+                          ? 'border-2 border-[#138468] bg-white animate-pulse'
+                          : 'border border-[#D5D5CE] bg-white hover:border-[#334256]'
                       }`}
                     >
-                      {/* Node Top Meta */}
                       <div className="flex items-center justify-between text-[9px] font-mono">
                         <span className="text-[#5E6975] uppercase font-semibold">NODE 0{idx + 1}</span>
                         {step.requiresApproval ? (
-                          <span className="inline-flex items-center gap-1 font-bold text-[#A87405] bg-[#FFF8E6] px-1.5 py-0.2 rounded-[2px] border border-[#F7E0B5]">
+                          <span className="inline-flex items-center gap-1 font-bold text-[#A87405] bg-[#FFF8DF] px-1.5 py-0.2 rounded-[2px] border border-[#F3DFAA]">
                             <Lock size={9} />
                             HUMAN GATE
                           </span>
@@ -257,46 +305,41 @@ export const WorkflowsPage: React.FC = () => {
                         )}
                       </div>
 
-                      {/* Node Title */}
                       <div className="text-xs font-serif font-bold text-[#182536] mt-1.5 truncate" title={step.name}>
                         {step.name}
                       </div>
 
-                      {/* Assigned Agent */}
                       <div className="text-[10px] font-mono text-[#334256] mt-0.5 truncate flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#182536]" />
                         <span>{step.assignedAgent}</span>
                       </div>
 
-                      {/* Required Skill */}
                       <div className="mt-2.5 pt-2 border-t border-[#EFEFEB] flex items-center justify-between text-[9px] font-mono">
                         <span className="text-[#5E6975] truncate max-w-[120px]">{step.requiredSkill}</span>
-                        <span className="text-[#5E6975]">140ms</span>
+                        <span className="text-[#8A939C]">140ms</span>
                       </div>
                     </div>
 
-                    {/* Connecting Vector */}
                     {idx < selectedWf.steps.length - 1 && (
-                      <div className="text-[#5E6975] flex-shrink-0 font-mono text-sm">→</div>
+                      <div className="text-[#8A939C] flex-shrink-0 font-mono text-sm">→</div>
                     )}
                   </React.Fragment>
                 );
               })}
 
-              {/* Connecting Vector */}
-              <div className="text-[#5E6975] flex-shrink-0 font-mono text-sm">→</div>
+              <div className="text-[#8A939C] flex-shrink-0 font-mono text-sm">→</div>
 
               {/* Final Commit Node */}
               <div className="flex-shrink-0 w-36 p-3 bg-[#F0FAF6] border border-[#C3E6DB] rounded-[2px] shadow-2xs">
-                <div className="flex items-center justify-between text-[9px] font-mono text-[#0D6B4F] uppercase">
+                <div className="flex items-center justify-between text-[9px] font-mono text-[#0C7058] uppercase">
                   <span>Commit</span>
                   <CheckCircle2 size={11} className="text-[#138468]" />
                 </div>
-                <div className="text-xs font-serif font-bold text-[#0D6B4F] mt-1">Audit Ledger</div>
-                <div className="text-[10px] text-[#0D6B4F] font-mono mt-0.5 truncate">
+                <div className="text-xs font-serif font-bold text-[#0C7058] mt-1">Audit Ledger</div>
+                <div className="text-[10px] text-[#0C7058] font-mono mt-0.5 truncate">
                   SHA-256 Signed
                 </div>
-                <div className="mt-2 pt-1 border-t border-[#C3E6DB] text-[9px] font-mono text-[#0D6B4F]">
+                <div className="mt-2 pt-1 border-t border-[#C3E6DB] text-[9px] font-mono text-[#0C7058]">
                   Immutable
                 </div>
               </div>
@@ -304,9 +347,9 @@ export const WorkflowsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Selected Node Deep Inspector Tray */}
+        {/* Selected Node Inspector Tray */}
         {selectedStepData && (
-          <div className="p-4 bg-[#FFFDF8] border-t border-[#D5D5CE] flex flex-col md:flex-row items-start justify-between gap-4 text-xs animate-in fade-in duration-150">
+          <div className="p-4 bg-white border-t border-[#D5D5CE] flex flex-col md:flex-row items-start justify-between gap-4 text-xs animate-in fade-in duration-150">
             <div className="space-y-1 max-w-xl">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[10px] uppercase font-bold text-[#D72F40] px-1.5 py-0.2 bg-red-50 rounded-[2px] border border-red-100">
@@ -331,7 +374,7 @@ export const WorkflowsPage: React.FC = () => {
 
             <div className="flex items-center gap-3 self-end md:self-center flex-shrink-0">
               {selectedStepData.requiresApproval && (
-                <div className="p-2 bg-[#FFF8E6] border border-[#F7E0B5] rounded-[2px] text-[11px] text-[#A87405] font-mono">
+                <div className="p-2 bg-[#FFF8DF] border border-[#F3DFAA] rounded-[2px] text-[11px] text-[#9A6900] font-mono">
                   Mandatory human authorization gate enforced at this step
                 </div>
               )}
@@ -347,7 +390,7 @@ export const WorkflowsPage: React.FC = () => {
         )}
       </div>
 
-      {/* Filter Category Row */}
+      {/* Category Pills Row */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-1.5 overflow-x-auto">
           <button
@@ -382,113 +425,205 @@ export const WorkflowsPage: React.FC = () => {
         </span>
       </div>
 
-      {/* Registry Table */}
-      <div className="axiom-panel overflow-x-auto">
-        <table className="axiom-table">
-          <thead>
-            <tr>
-              <th>Workflow Pipeline</th>
-              <th>Domain</th>
-              <th>Risk Tier</th>
-              <th>Status</th>
-              <th>Health</th>
-              <th>Agent Chain</th>
-              <th>Nodes</th>
-              <th>Historical Runs</th>
-              <th className="text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((wf) => {
-              const hasWaiting = wf.steps.some((s) => s.status === 'waiting_approval');
-              const isSelected = wf.id === activeWorkflowId;
-              const isPaused = Boolean(pausedWorkflowIds[wf.id]);
-              const healthData = getWorkflowHealthTrend(wf);
+      {/* Registry Table Panel with Top Filter Bar & Multi-Select */}
+      <div className="axiom-panel overflow-hidden">
+        {/* Top Filter and Bulk Actions Bar */}
+        <div className="axiom-table-toolbar">
+          <div className="axiom-table-filter">
+            <Search size={13} className="absolute left-2.5 text-[#5E6975]" />
+            <input
+              type="text"
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
+              placeholder="Search & filter pipelines by name, status, or domain..."
+              aria-label="Filter workflows table"
+            />
+            {searchFilter && (
+              <button
+                type="button"
+                onClick={() => setSearchFilter('')}
+                className="absolute right-2 text-[#5E6975] hover:text-[#182536]"
+                title="Clear filter"
+              >
+                <X size={12} />
+              </button>
+            )}
+          </div>
 
-              return (
-                <tr
-                  key={wf.id}
-                  onClick={() => {
-                    setActiveWorkflowId(wf.id);
-                    setSelectedNodeId(null);
-                  }}
-                  className={`cursor-pointer ${isSelected ? 'bg-[#FFF8E6]/60' : ''}`}
-                >
-                  <td>
-                    <div className="font-serif font-bold text-sm text-[#182536]">{wf.title}</div>
-                    <div className="text-[10px] font-mono text-[#5E6975]">{wf.id}</div>
-                  </td>
-                  <td className="text-[#334256] text-xs font-mono">{wf.category}</td>
-                  <td>
-                    <span
-                      className={`text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded-[2px] border ${
-                        wf.riskTier === 'critical'
-                          ? 'bg-rose-50 text-[#D72F40] border-rose-200'
-                          : wf.riskTier === 'high'
-                          ? 'bg-[#FFF8E6] text-[#A87405] border-[#F7E0B5]'
-                          : 'bg-slate-50 text-[#334256] border-slate-200'
-                      }`}
-                    >
-                      {wf.riskTier}
-                    </span>
-                  </td>
-                  <td>
-                    <StatusBadge
-                      status={isPaused ? 'paused' : hasWaiting ? 'waiting_approval' : wf.status}
-                      size="sm"
-                    />
-                  </td>
-                  {/* Health Column with Recharts mini sparkline */}
-                  <td>
-                    <TableHealthSparkline
-                      data={healthData}
-                      label={`${wf.title} Health Trend`}
-                    />
-                  </td>
-                  <td>
-                    <div className="text-[11px] text-[#334256] truncate max-w-xs font-mono">
-                      {Array.from(new Set(wf.steps.map((s) => s.assignedAgent))).join(', ')}
-                    </div>
-                  </td>
-                  <td className="font-mono text-xs text-[#182536] font-semibold">{wf.steps.length}</td>
-                  <td className="font-mono text-xs text-[#5E6975]">{wf.totalRuns.toLocaleString()}</td>
-                  <td className="text-right" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex items-center justify-end gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => handleSimulateExecution(wf.id)}
-                        className="axiom-btn-secondary py-1 px-2.5 text-xs"
-                        title="Trigger immediate execution"
-                      >
-                        <Play size={11} />
-                        <span>Run</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => navigateTo('workflow-detail', wf.id)}
-                        className="axiom-btn-primary py-1 px-2.5 text-xs"
-                      >
-                        <span>Inspect</span>
-                        <ArrowRight size={11} />
-                      </button>
+          {selectedIds.length > 0 ? (
+            <div className="axiom-bulk-bar">
+              <span>
+                <b>{selectedIds.length}</b> selected
+              </span>
+              <button
+                type="button"
+                onClick={handleBulkRun}
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#138468] hover:bg-[#0c7058] text-white text-[10px] font-semibold rounded-[2px] transition-colors"
+              >
+                <Play size={10} />
+                <span>Run Selected</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleBulkPause}
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#A87405] hover:bg-[#855c04] text-white text-[10px] font-semibold rounded-[2px] transition-colors"
+              >
+                <Pause size={10} />
+                <span>Pause Selected</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedIds([])}
+                className="text-slate-300 hover:text-white underline text-[10px] ml-1"
+              >
+                Clear
+              </button>
+            </div>
+          ) : (
+            <div className="text-xs font-mono text-[#5E6975]">
+              {filtered.length} matching pipelines
+            </div>
+          )}
+        </div>
 
-                      {/* Quick Actions Context Menu */}
-                      <TableQuickActionsMenu
-                        id={wf.id}
-                        name={wf.title}
-                        isPaused={isPaused}
-                        onRerun={() => handleSimulateExecution(wf.id)}
-                        onPause={() => handleTogglePause(wf.id)}
-                        onViewLogs={() => navigateTo('activity')}
-                        onInspect={() => navigateTo('workflow-detail', wf.id)}
-                      />
-                    </div>
+        {/* Table View */}
+        <div className="overflow-x-auto">
+          <table className="axiom-table">
+            <thead>
+              <tr>
+                <th className="w-10 text-center">
+                  <input
+                    type="checkbox"
+                    checked={isAllSelected}
+                    ref={(el) => {
+                      if (el) el.indeterminate = isPartiallySelected;
+                    }}
+                    onChange={handleToggleSelectAll}
+                    aria-label="Select all pipelines"
+                    className="rounded-[2px] border-[#D5D5CE] text-[#182536] focus:ring-0 cursor-pointer"
+                  />
+                </th>
+                <th>Workflow Pipeline</th>
+                <th>Domain</th>
+                <th>Risk Tier</th>
+                <th>Status</th>
+                <th>Health</th>
+                <th>Agent Chain</th>
+                <th>Nodes</th>
+                <th>Historical Runs</th>
+                <th className="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={10} className="text-center py-8 text-xs text-[#5E6975] font-mono">
+                    No matching workflow pipelines found for "{searchFilter}".
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ) : (
+                filtered.map((wf) => {
+                  const hasWaiting = wf.steps.some((s) => s.status === 'waiting_approval');
+                  const isSelected = selectedIds.includes(wf.id);
+                  const isCanvasActive = wf.id === activeWorkflowId;
+                  const isPaused = Boolean(pausedWorkflowIds[wf.id]);
+                  const healthData = getWorkflowHealthTrend(wf);
+
+                  return (
+                    <tr
+                      key={wf.id}
+                      onClick={() => {
+                        setActiveWorkflowId(wf.id);
+                        setSelectedNodeId(null);
+                      }}
+                      className={`cursor-pointer ${isSelected ? 'is-selected' : isCanvasActive ? 'bg-[#FFF8E6]/60' : ''}`}
+                    >
+                      <td className="text-center" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleToggleSelectRow(wf.id)}
+                          aria-label={`Select pipeline ${wf.title}`}
+                          className="rounded-[2px] border-[#D5D5CE] text-[#182536] focus:ring-0 cursor-pointer"
+                        />
+                      </td>
+                      <td>
+                        <div className="font-serif font-bold text-sm text-[#182536]">{wf.title}</div>
+                        <div className="text-[10px] font-mono text-[#5E6975]">{wf.id}</div>
+                      </td>
+                      <td className="text-[#334256] text-xs font-mono">{wf.category}</td>
+                      <td>
+                        <span
+                          className={`text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded-[2px] border ${
+                            wf.riskTier === 'critical'
+                              ? 'bg-rose-50 text-[#D72F40] border-rose-200'
+                              : wf.riskTier === 'high'
+                              ? 'bg-[#FFF8DF] text-[#9A6900] border-[#F3DFAA]'
+                              : 'bg-slate-50 text-[#334256] border-slate-200'
+                          }`}
+                        >
+                          {wf.riskTier}
+                        </span>
+                      </td>
+                      <td>
+                        <StatusBadge
+                          status={isPaused ? 'paused' : hasWaiting ? 'waiting_approval' : wf.status}
+                          size="sm"
+                        />
+                      </td>
+                      {/* Health Column with Recharts mini sparkline */}
+                      <td>
+                        <TableHealthSparkline
+                          data={healthData}
+                          label={`${wf.title} Health Trend`}
+                        />
+                      </td>
+                      <td>
+                        <div className="text-[11px] text-[#334256] truncate max-w-xs font-mono">
+                          {Array.from(new Set(wf.steps.map((s) => s.assignedAgent))).join(', ')}
+                        </div>
+                      </td>
+                      <td className="font-mono text-xs text-[#182536] font-semibold">{wf.steps.length}</td>
+                      <td className="font-mono text-xs text-[#5E6975]">{wf.totalRuns.toLocaleString()}</td>
+                      <td className="text-right" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleSimulateExecution(wf.id)}
+                            className="axiom-btn-secondary py-1 px-2.5 text-xs"
+                            title="Trigger immediate execution"
+                          >
+                            <Play size={11} />
+                            <span>Run</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => navigateTo('workflow-detail', wf.id)}
+                            className="axiom-btn-primary py-1 px-2.5 text-xs"
+                          >
+                            <span>Inspect</span>
+                            <ArrowRight size={11} />
+                          </button>
+
+                          {/* Quick Actions Context Menu */}
+                          <TableQuickActionsMenu
+                            id={wf.id}
+                            name={wf.title}
+                            isPaused={isPaused}
+                            onRerun={() => handleSimulateExecution(wf.id)}
+                            onPause={() => handleTogglePause(wf.id)}
+                            onViewLogs={() => navigateTo('activity')}
+                            onInspect={() => navigateTo('workflow-detail', wf.id)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
