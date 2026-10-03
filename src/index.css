@@ -2,19 +2,20 @@
 
 :root {
   color-scheme: light;
-  --bg-app: #f6f5f0;
-  --surface: #ffffff;
-  --surface-subtle: #f0eee6;
-  --surface-hover: #ece9df;
-  --ink-primary: #17263d;
-  --ink-secondary: #40516a;
-  --ink-muted: #718096;
-  --border-subtle: #dce1e7;
-  --border-strong: #b8c2cc;
-  --accent-red: #e63946;
-  --accent-emerald: #159a72;
-  --accent-amber: #d99000;
-  --accent-rose: #c83e4d;
+  --bg-app: #F5F1E6;          /* WARM IVORY */
+  --surface: #FFFDF8;         /* PAPER WHITE */
+  --surface-attention: #FFF8E6; /* PALE YELLOW (attention / policy states) */
+  --surface-subtle: #EFEFEB;  /* SOFT GREY */
+  --surface-hover: #EAE6DA;
+  --ink-primary: #182536;     /* DARK INK */
+  --ink-secondary: #334256;   /* SECONDARY INK */
+  --ink-muted: #5E6975;       /* MUTED */
+  --border-subtle: #D5D5CE;   /* BORDER */
+  --border-strong: #B4B4A8;
+  --accent-red: #D72F40;      /* ACCENT RED */
+  --accent-emerald: #138468;  /* GREEN */
+  --accent-amber: #A87405;    /* YELLOW */
+  --accent-rose: #D72F40;
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: "IBM Plex Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -59,9 +60,9 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.65;
+  opacity: 0.55;
   background-image:
-    linear-gradient(to right, rgba(23, 38, 61, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(24, 37, 54, 0.05) 1px, transparent 1px);
   background-size: clamp(70px, 8.5vw, 140px) 100%;
 }
 
@@ -89,9 +90,9 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: transparent;
+  background: var(--surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 6px 12px;
   cursor: pointer;
   color: var(--ink-primary);
@@ -99,12 +100,12 @@ body {
   font-size: 11px;
   letter-spacing: -0.01em;
   transition: all 0.15s ease;
-  background-color: var(--surface);
+  box-shadow: 0 1px 2px rgba(24, 37, 54, 0.03);
 }
 
 .axiom-index__console-btn:hover {
   background-color: var(--ink-primary);
-  color: var(--bg-app);
+  color: var(--surface);
   border-color: var(--ink-primary);
 }
 
@@ -120,7 +121,7 @@ body {
 @keyframes axiomHeadlineFadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -129,11 +130,11 @@ body {
 }
 
 .axiom-fade-in {
-  animation: axiomHeadlineFadeIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: axiomHeadlineFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .axiom-fade-in-delayed {
-  animation: axiomHeadlineFadeIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+  animation: axiomHeadlineFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
 .axiom-index__number {
@@ -213,11 +214,11 @@ body {
 }
 
 .axiom-index__row:hover {
-  background-color: rgba(240, 238, 230, 0.5);
+  background-color: rgba(239, 239, 235, 0.6);
 }
 
 .axiom-index__row.is-open {
-  background-color: rgba(240, 238, 230, 0.7);
+  background-color: rgba(255, 248, 230, 0.7);
 }
 
 .axiom-index__row-trigger {
@@ -395,8 +396,8 @@ body {
 .axiom-panel {
   background-color: var(--surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 3px;
-  box-shadow: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(24, 37, 54, 0.02);
 }
 
 .axiom-panel-header {
@@ -405,6 +406,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #FAF9F5;
 }
 
 .axiom-btn-primary {
@@ -412,9 +414,9 @@ body {
   align-items: center;
   gap: 6px;
   background-color: var(--ink-primary);
-  color: #ffffff;
+  color: #FFFDF8;
   border: 1px solid var(--ink-primary);
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 500;
@@ -423,7 +425,7 @@ body {
 }
 
 .axiom-btn-primary:hover {
-  background-color: #0c1624;
+  background-color: #0F1722;
 }
 
 .axiom-btn-secondary {
@@ -433,7 +435,7 @@ body {
   background-color: var(--surface);
   color: var(--ink-primary);
   border: 1px solid var(--border-subtle);
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 500;
@@ -450,10 +452,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background-color: #ffffff;
+  background-color: #FFFDF8;
   color: var(--accent-rose);
-  border: 1px solid #f2b8be;
-  border-radius: 3px;
+  border: 1px solid #F5C6CB;
+  border-radius: 2px;
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 500;
@@ -462,7 +464,7 @@ body {
 }
 
 .axiom-btn-danger:hover {
-  background-color: #fdf2f3;
+  background-color: #FDF2F3;
   border-color: var(--accent-rose);
 }
 
@@ -471,9 +473,9 @@ body {
   align-items: center;
   gap: 6px;
   background-color: var(--accent-emerald);
-  color: #ffffff;
+  color: #FFFDF8;
   border: 1px solid var(--accent-emerald);
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 500;
@@ -482,10 +484,12 @@ body {
 }
 
 .axiom-btn-success:hover {
-  background-color: #0e7d5c;
+  background-color: #0E6B54;
 }
 
-/* Operational Data Tables */
+/* ==================================================
+   OPERATIONAL DATA TABLES (.axiom-table)
+   ================================================== */
 .axiom-table {
   width: 100%;
   border-collapse: collapse;
@@ -501,7 +505,7 @@ body {
   letter-spacing: 0.05em;
   color: var(--ink-muted);
   border-bottom: 1px solid var(--border-subtle);
-  background-color: #faf9f5;
+  background-color: #FAF9F5;
   font-weight: 600;
 }
 
@@ -510,10 +514,11 @@ body {
   border-bottom: 1px solid var(--border-subtle);
   color: var(--ink-primary);
   vertical-align: middle;
+  background-color: var(--surface);
 }
 
 .axiom-table tr:hover td {
-  background-color: rgba(246, 245, 240, 0.45);
+  background-color: rgba(255, 248, 230, 0.45);
 }
 
 /* Status Indicators */
@@ -531,21 +536,21 @@ body {
 }
 
 .axiom-tag-success {
-  border-color: #c7eadf;
-  background-color: #f0faf6;
-  color: #0d6b4f;
+  border-color: #C3E6DB;
+  background-color: #F0FAF6;
+  color: #0D6B4F;
 }
 
 .axiom-tag-warning {
-  border-color: #f7e0b5;
-  background-color: #fdf8ed;
-  color: #945f00;
+  border-color: #F7E0B5;
+  background-color: var(--surface-attention);
+  color: #945F00;
 }
 
 .axiom-tag-danger {
-  border-color: #f7c3c8;
-  background-color: #fdf2f3;
-  color: #a42331;
+  border-color: #F7C3C8;
+  background-color: #FDF2F3;
+  color: #A42331;
 }
 
 .axiom-tag-neutral {
@@ -565,12 +570,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd3dc;
-  border-radius: 3px;
+  background: #D5D5CE;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9aa8b8;
+  background: #B4B4A8;
 }
 
 /* Responsiveness */

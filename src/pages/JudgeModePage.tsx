@@ -126,15 +126,15 @@ export const JudgeModePage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Evaluation Laboratory Header */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
             Verification Laboratory
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
             Formal Evaluation & Benchmark Suite
           </h1>
-          <p className="text-xs text-[#40516a] mt-0.5">
+          <p className="text-xs text-[#334256] mt-0.5">
             Formal evaluation testing the four foundational pillars of autonomous operations under strict programmatic invariants
           </p>
         </div>
@@ -145,7 +145,7 @@ export const JudgeModePage: React.FC = () => {
             onClick={() => openModal('governance-certificate')}
             className="axiom-btn-secondary"
           >
-            <Award size={13} className="text-[#945f00]" />
+            <Award size={13} className="text-[#A87405]" />
             <span>Compliance Certificate</span>
           </button>
 
@@ -162,46 +162,46 @@ export const JudgeModePage: React.FC = () => {
       </div>
 
       {/* Formal Attestation Scorecard */}
-      <div className="axiom-panel border border-[#dce1e7] bg-white p-5 shadow-2xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#dce1e7] pb-4">
+      <div className="axiom-panel border border-[#D5D5CE] bg-[#FFFDF8] p-5 shadow-2xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#D5D5CE] pb-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono uppercase bg-[#17263d] text-white px-2 py-0.5 rounded-[2px] font-bold">
+              <span className="text-[10px] font-mono uppercase bg-[#182536] text-[#FFFDF8] px-2 py-0.5 rounded-[2px] font-bold">
                 EVAL STANDARD: AXIOM-2026.04
               </span>
-              <span className="text-xs font-mono text-[#718096]">Formal Invariant Attestation</span>
+              <span className="text-xs font-mono text-[#5E6975]">Formal Invariant Attestation</span>
             </div>
-            <div className="text-lg font-serif font-bold text-[#17263d] mt-1">
+            <div className="text-lg font-serif font-bold text-[#182536] mt-1">
               Autonomous Intelligence Evaluation Protocol
             </div>
-            <div className="text-xs text-[#40516a] mt-0.5">
+            <div className="text-xs text-[#334256] mt-0.5">
               Empirical verification across Utility, Orchestration, Reliability, and Human Control
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <div className="text-xs font-mono uppercase text-[#718096]">System Grade</div>
-              <div className="text-2xl font-serif font-bold text-[#159a72]">GRADE A+</div>
+              <div className="text-xs font-mono uppercase text-[#5E6975]">System Grade</div>
+              <div className="text-2xl font-serif font-bold text-[#138468]">GRADE A+</div>
             </div>
-            <div className="h-10 w-px bg-[#dce1e7]" aria-hidden="true" />
+            <div className="h-10 w-px bg-[#D5D5CE]" aria-hidden="true" />
             <div className="text-right">
-              <div className="text-xs font-mono uppercase text-[#718096]">Aggregate Pass</div>
-              <div className="text-2xl font-mono font-bold text-[#17263d]">99.1%</div>
+              <div className="text-xs font-mono uppercase text-[#5E6975]">Aggregate Pass</div>
+              <div className="text-2xl font-mono font-bold text-[#182536]">99.1%</div>
             </div>
           </div>
         </div>
 
         {/* Tab Selection */}
-        <div className="pt-3 flex items-center justify-between border-b border-[#dce1e7] pb-2">
+        <div className="pt-3 flex items-center justify-between border-b border-[#D5D5CE] pb-2">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setActiveTab('pillars')}
               className={`px-3 py-1 rounded-[2px] text-xs font-medium transition-colors ${
                 activeTab === 'pillars'
-                  ? 'bg-[#17263d] text-white'
-                  : 'text-[#40516a] hover:bg-[#f6f5f0]'
+                  ? 'bg-[#182536] text-[#FFFDF8]'
+                  : 'text-[#334256] hover:bg-[#EFEFEB]'
               }`}
             >
               Four Verification Pillars
@@ -211,15 +211,15 @@ export const JudgeModePage: React.FC = () => {
               onClick={() => setActiveTab('test-suites')}
               className={`px-3 py-1 rounded-[2px] text-xs font-medium transition-colors ${
                 activeTab === 'test-suites'
-                  ? 'bg-[#17263d] text-white'
-                  : 'text-[#40516a] hover:bg-[#f6f5f0]'
+                  ? 'bg-[#182536] text-[#FFFDF8]'
+                  : 'text-[#334256] hover:bg-[#EFEFEB]'
               }`}
             >
               Formal Test Suites (480 Total)
             </button>
           </div>
 
-          <span className="text-[11px] font-mono text-[#159a72]">
+          <span className="text-[11px] font-mono text-[#138468]">
             ✓ Zero Unreviewed High-Risk Actions
           </span>
         </div>
@@ -230,45 +230,45 @@ export const JudgeModePage: React.FC = () => {
             {CRITERIA.map((crit) => (
               <div
                 key={crit.pillar}
-                className="p-4 rounded-[2px] border border-[#dce1e7] bg-[#fbfaf7] space-y-3"
+                className="p-4 rounded-[2px] border border-[#D5D5CE] bg-[#FAF9F5] space-y-3"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#dce1e7] pb-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#D5D5CE] pb-2">
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-[#e63946] font-bold block">
+                    <span className="text-[10px] font-mono uppercase text-[#D72F40] font-bold block">
                       {crit.pillar}
                     </span>
-                    <h3 className="text-sm font-serif font-bold text-[#17263d] mt-0.5">
+                    <h3 className="text-sm font-serif font-bold text-[#182536] mt-0.5">
                       {crit.name}
                     </h3>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-mono font-bold text-[#17263d]">
+                    <span className="text-sm font-mono font-bold text-[#182536]">
                       {crit.metric}
                     </span>
-                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-[2px] bg-[#f0faf6] text-[#0d6b4f] border border-[#c7eadf]">
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-[2px] bg-[#F0FAF6] text-[#138468] border border-[#C3E6DB]">
                       {crit.testStatus}
                     </span>
                   </div>
                 </div>
 
-                <p className="text-xs text-[#40516a] leading-relaxed">{crit.desc}</p>
+                <p className="text-xs text-[#334256] leading-relaxed">{crit.desc}</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
-                  <div className="p-3 bg-white border border-[#dce1e7] rounded-[2px] space-y-1 shadow-2xs">
-                    <span className="text-[10px] font-mono uppercase text-[#718096] block font-semibold">
+                  <div className="p-3 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px] space-y-1 shadow-2xs">
+                    <span className="text-[10px] font-mono uppercase text-[#5E6975] block font-semibold">
                       Formal Measurement Metric:
                     </span>
-                    <div className="text-[11px] text-[#17263d] leading-relaxed">
+                    <div className="text-[11px] text-[#182536] leading-relaxed">
                       {crit.measurement}
                     </div>
                   </div>
 
-                  <div className="p-3 bg-white border border-[#dce1e7] rounded-[2px] space-y-1 shadow-2xs">
-                    <span className="text-[10px] font-mono uppercase text-[#718096] block font-semibold">
+                  <div className="p-3 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px] space-y-1 shadow-2xs">
+                    <span className="text-[10px] font-mono uppercase text-[#5E6975] block font-semibold">
                       Verifiable Audit Evidence:
                     </span>
-                    <div className="text-[11px] text-[#40516a] font-mono leading-relaxed">
+                    <div className="text-[11px] text-[#334256] font-mono leading-relaxed">
                       {crit.evidence}
                     </div>
                   </div>
@@ -295,13 +295,13 @@ export const JudgeModePage: React.FC = () => {
               <tbody>
                 {TEST_SUITES.map((ts) => (
                   <tr key={ts.id}>
-                    <td className="font-mono text-xs font-bold text-[#17263d]">{ts.id}</td>
-                    <td className="font-mono text-xs text-[#40516a]">{ts.pillar}</td>
-                    <td className="text-xs text-[#17263d]">{ts.assertion}</td>
-                    <td className="font-mono text-xs text-[#718096]">{ts.runtime}</td>
-                    <td className="font-mono text-[10px] text-[#718096]">{ts.hash}</td>
+                    <td className="font-mono text-xs font-bold text-[#182536]">{ts.id}</td>
+                    <td className="font-mono text-xs text-[#334256]">{ts.pillar}</td>
+                    <td className="text-xs text-[#182536]">{ts.assertion}</td>
+                    <td className="font-mono text-xs text-[#5E6975]">{ts.runtime}</td>
+                    <td className="font-mono text-[10px] text-[#5E6975]">{ts.hash}</td>
                     <td className="text-right">
-                      <span className="text-[10px] font-mono font-bold text-[#0d6b4f] bg-[#f0faf6] border border-[#c7eadf] px-2 py-0.5 rounded-[2px]">
+                      <span className="text-[10px] font-mono font-bold text-[#138468] bg-[#F0FAF6] border border-[#C3E6DB] px-2 py-0.5 rounded-[2px]">
                         {ts.status}
                       </span>
                     </td>

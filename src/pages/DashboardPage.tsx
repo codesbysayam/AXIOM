@@ -39,15 +39,15 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Command Center Header */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
             AXIOM Command Center
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
             Operations Command Center
           </h1>
-          <p className="text-xs text-[#40516a] mt-0.5">
+          <p className="text-xs text-[#334256] mt-0.5">
             Autonomous intelligence, under human control. Continuous policy enforcement and operator oversight.
           </p>
         </div>
@@ -58,7 +58,7 @@ export const DashboardPage: React.FC = () => {
             onClick={() => navigateTo('demo-scenarios')}
             className="axiom-btn-secondary"
           >
-            <PlayCircle size={13} className="text-[#17263d]" />
+            <PlayCircle size={13} className="text-[#182536]" />
             <span>Scenario Lab</span>
           </button>
           <button
@@ -73,117 +73,117 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* Operational Summary Strip: Connected hairline docket */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[#dce1e7] bg-white rounded-[2px] divide-y md:divide-y-0 md:divide-x divide-[#dce1e7] shadow-2xs">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[#D5D5CE] bg-[#FFFDF8] rounded-[2px] divide-y md:divide-y-0 md:divide-x divide-[#D5D5CE] shadow-2xs">
         <div className="p-4">
-          <span className="text-[10px] font-mono uppercase text-[#718096] tracking-wider block">
+          <span className="text-[10px] font-mono uppercase text-[#5E6975] tracking-wider block">
             Active Pipelines
           </span>
-          <div className="text-3xl font-serif font-bold text-[#17263d] mt-1">
+          <div className="text-3xl font-serif font-bold text-[#182536] mt-1">
             {workflows.length}
           </div>
-          <span className="text-[11px] text-[#40516a] mt-1 block font-mono">
+          <span className="text-[11px] text-[#334256] mt-1 block font-mono">
             1,926 historical runs
           </span>
         </div>
 
-        <div className="p-4 bg-[#fdfbf6]">
-          <span className="text-[10px] font-mono uppercase text-[#945f00] tracking-wider block">
+        <div className="p-4 bg-[#FFF8E6]/60">
+          <span className="text-[10px] font-mono uppercase text-[#A87405] tracking-wider block">
             Human Gates Pending
           </span>
-          <div className="text-3xl font-serif font-bold text-[#d99000] mt-1">
+          <div className="text-3xl font-serif font-bold text-[#A87405] mt-1">
             {pendingApprovals.length}
           </div>
-          <span className="text-[11px] text-[#945f00] mt-1 block font-mono">
+          <span className="text-[11px] text-[#A87405] mt-1 block font-mono">
             Operator authorization required
           </span>
         </div>
 
         <div className="p-4">
-          <span className="text-[10px] font-mono uppercase text-[#718096] tracking-wider block">
+          <span className="text-[10px] font-mono uppercase text-[#5E6975] tracking-wider block">
             Cluster Telemetry
           </span>
-          <div className="text-3xl font-serif font-bold text-[#159a72] mt-1">
+          <div className="text-3xl font-serif font-bold text-[#138468] mt-1">
             8 / 8
           </div>
-          <span className="text-[11px] text-[#159a72] mt-1 block font-mono">
+          <span className="text-[11px] text-[#138468] mt-1 block font-mono">
             100% heartbeat baseline · 12ms
           </span>
         </div>
 
         <div className="p-4">
-          <span className="text-[10px] font-mono uppercase text-[#718096] tracking-wider block">
+          <span className="text-[10px] font-mono uppercase text-[#5E6975] tracking-wider block">
             Invariant Violations
           </span>
-          <div className="text-3xl font-serif font-bold text-[#17263d] mt-1">
+          <div className="text-3xl font-serif font-bold text-[#182536] mt-1">
             0
           </div>
-          <span className="text-[11px] text-[#718096] mt-1 block font-mono">
+          <span className="text-[11px] text-[#5E6975] mt-1 block font-mono">
             {activeIncidents.length} quarantined incident
           </span>
         </div>
       </div>
 
       {/* VISUAL CENTERPIECE: Live Multi-Agent Decision & Execution Fabric */}
-      <div className="axiom-panel border border-[#dce1e7] bg-white overflow-hidden shadow-2xs">
-        <div className="axiom-panel-header bg-[#faf9f5] border-b border-[#dce1e7] flex items-center justify-between">
+      <div className="axiom-panel border border-[#D5D5CE] bg-[#FFFDF8] overflow-hidden shadow-2xs">
+        <div className="axiom-panel-header bg-[#FAF9F5] border-b border-[#D5D5CE] flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-mono uppercase text-[#718096] tracking-wider block">
+            <span className="text-[10px] font-mono uppercase text-[#5E6975] tracking-wider block">
               Execution Architecture
             </span>
-            <h2 className="text-sm font-serif font-bold text-[#17263d]">
+            <h2 className="text-sm font-serif font-bold text-[#182536]">
               Continuous Multi-Agent Control Loop
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono text-[#0d6b4f] bg-[#f0faf6] border border-[#c7eadf] px-2 py-0.5 rounded-[2px] font-semibold">
+            <span className="text-[10px] font-mono text-[#138468] bg-[#F0FAF6] border border-[#C3E6DB] px-2 py-0.5 rounded-[2px] font-semibold">
               INVARIANTS ACTIVE
             </span>
-            <span className="text-[10px] font-mono text-[#718096] hidden sm:inline">
+            <span className="text-[10px] font-mono text-[#5E6975] hidden sm:inline">
               PROTOCOL: DETERMINISTIC DAG
             </span>
           </div>
         </div>
 
-        <div className="p-5 bg-[#fbfaf7]">
+        <div className="p-5 bg-[#FAF9F5]/40">
           {/* Architectural Stage Flow */}
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-            {STAGES.map((st, idx) => (
+            {STAGES.map((st) => (
               <div
                 key={st.name}
                 className={`p-3.5 rounded-[2px] border transition-all flex flex-col justify-between shadow-2xs ${
                   st.status === 'gated'
-                    ? 'border-[#d99000] bg-[#fefdf8]'
-                    : 'border-[#dce1e7] bg-white'
+                    ? 'border-[#A87405] bg-[#FFF8E6]'
+                    : 'border-[#D5D5CE] bg-[#FFFDF8]'
                 }`}
               >
                 <div>
-                  <div className="flex items-center justify-between text-[10px] font-mono text-[#718096]">
+                  <div className="flex items-center justify-between text-[10px] font-mono text-[#5E6975]">
                     <span>STAGE {st.num}</span>
                     {st.status === 'gated' ? (
-                      <span className="w-2 h-2 rounded-full bg-[#d99000] animate-ping" />
+                      <span className="w-2 h-2 rounded-full bg-[#A87405] animate-ping" />
                     ) : (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#159a72]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#138468]" />
                     )}
                   </div>
-                  <div className="text-sm font-serif font-bold text-[#17263d] mt-1">
+                  <div className="text-sm font-serif font-bold text-[#182536] mt-1">
                     {st.name}
                   </div>
-                  <div className="text-[11px] text-[#40516a] mt-0.5">{st.role}</div>
+                  <div className="text-[11px] text-[#334256] mt-0.5">{st.role}</div>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-[#f0eee6] text-[10px] font-mono text-[#718096]">
-                  Agent: <span className="text-[#17263d] font-semibold">{st.agent}</span>
+                <div className="mt-3 pt-2 border-t border-[#D5D5CE]/50 text-[10px] font-mono text-[#5E6975]">
+                  Agent: <span className="text-[#182536] font-semibold">{st.agent}</span>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-4 pt-3 border-t border-[#dce1e7] flex flex-wrap items-center justify-between text-xs text-[#718096] font-mono">
+          <div className="mt-4 pt-3 border-t border-[#D5D5CE] flex flex-wrap items-center justify-between text-xs text-[#5E6975] font-mono">
             <span>Guaranteed Boundary: Zero external mutations execute without validated invariants</span>
             <button
               type="button"
               onClick={() => navigateTo('workflows')}
-              className="text-[#17263d] hover:text-[#e63946] font-medium inline-flex items-center gap-1 transition-colors"
+              className="text-[#182536] hover:text-[#D72F40] font-medium inline-flex items-center gap-1 transition-colors"
             >
               <span>Explore All Workflow Topologies</span>
               <ArrowRight size={12} />
@@ -196,19 +196,19 @@ export const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left Column (7 cols): Human Approvals Queue */}
         <div className="lg:col-span-7 space-y-3">
-          <div className="flex items-center justify-between border-b border-[#dce1e7] pb-2">
+          <div className="flex items-center justify-between border-b border-[#D5D5CE] pb-2">
             <div>
-              <span className="text-[10px] font-mono uppercase text-[#718096] block">
+              <span className="text-[10px] font-mono uppercase text-[#5E6975] block">
                 Decision Queue
               </span>
-              <h3 className="text-sm font-serif font-bold text-[#17263d]">
+              <h3 className="text-sm font-serif font-bold text-[#182536]">
                 Pending Operator Authorization ({pendingApprovals.length})
               </h3>
             </div>
             <button
               type="button"
               onClick={() => navigateTo('approvals')}
-              className="text-xs text-[#17263d] hover:text-[#e63946] font-mono font-medium inline-flex items-center gap-1 transition-colors"
+              className="text-xs text-[#182536] hover:text-[#D72F40] font-mono font-medium inline-flex items-center gap-1 transition-colors"
             >
               <span>Full Decision Queue</span>
               <ArrowRight size={12} />
@@ -216,7 +216,7 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {pendingApprovals.length === 0 ? (
-            <div className="axiom-panel p-8 text-center text-xs text-[#718096] bg-white">
+            <div className="axiom-panel p-8 text-center text-xs text-[#5E6975] bg-[#FFFDF8]">
               All agent pipelines are operating within autonomous bounds. No human approvals pending.
             </div>
           ) : (
@@ -230,39 +230,39 @@ export const DashboardPage: React.FC = () => {
 
         {/* Right Column (5 cols): Cryptographic Audit Ledger */}
         <div className="lg:col-span-5 space-y-3">
-          <div className="flex items-center justify-between border-b border-[#dce1e7] pb-2">
+          <div className="flex items-center justify-between border-b border-[#D5D5CE] pb-2">
             <div>
-              <span className="text-[10px] font-mono uppercase text-[#718096] block">
+              <span className="text-[10px] font-mono uppercase text-[#5E6975] block">
                 Immutable Ledger
               </span>
-              <h3 className="text-sm font-serif font-bold text-[#17263d]">
+              <h3 className="text-sm font-serif font-bold text-[#182536]">
                 State Transition Ledger
               </h3>
             </div>
             <button
               type="button"
               onClick={() => navigateTo('audit')}
-              className="text-xs text-[#17263d] hover:text-[#e63946] font-mono font-medium inline-flex items-center gap-1 transition-colors"
+              className="text-xs text-[#182536] hover:text-[#D72F40] font-mono font-medium inline-flex items-center gap-1 transition-colors"
             >
               <span>Audit Ledger</span>
               <ArrowRight size={12} />
             </button>
           </div>
 
-          <div className="axiom-panel divide-y divide-[#dce1e7] bg-white shadow-2xs">
+          <div className="axiom-panel divide-y divide-[#D5D5CE] bg-[#FFFDF8] shadow-2xs">
             {auditLogs.slice(0, 5).map((log) => (
               <div key={log.id} className="p-3 text-xs">
-                <div className="flex items-center justify-between font-mono text-[10px] text-[#718096]">
+                <div className="flex items-center justify-between font-mono text-[10px] text-[#5E6975]">
                   <span>{log.timestamp}</span>
-                  <span className="text-[#a0aec0] bg-[#fbfaf7] px-1 rounded-[2px] border border-[#f0eee6]">
+                  <span className="text-[#334256] bg-[#FAF9F5] px-1 rounded-[2px] border border-[#D5D5CE]">
                     {log.hash}
                   </span>
                 </div>
-                <div className="font-semibold text-[#17263d] mt-1 flex items-center gap-1.5">
+                <div className="font-semibold text-[#182536] mt-1 flex items-center gap-1.5">
                   <span>{log.agentName}</span>
-                  <span className="text-[#718096] text-[10px] font-mono">[{log.action}]</span>
+                  <span className="text-[#5E6975] text-[10px] font-mono">[{log.action}]</span>
                 </div>
-                <p className="text-[#40516a] text-[11px] mt-0.5 leading-relaxed font-sans">
+                <p className="text-[#334256] text-[11px] mt-0.5 leading-relaxed font-sans">
                   {log.details}
                 </p>
               </div>
