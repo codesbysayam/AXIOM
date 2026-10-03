@@ -15,48 +15,48 @@ export const OperatorProfileModal: React.FC<OperatorProfileModalProps> = ({ isOp
       onClick={onClose}
     >
       <div
-        className="bg-white border border-slate-200 rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+        className="bg-white border border-[#dce1e7] rounded-[2px] shadow-2xl w-full max-w-md overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b border-slate-100 flex items-start justify-between">
+        <div className="p-4 border-b border-[#dce1e7] flex items-start justify-between bg-[#faf9f5]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#1b2e49] text-white flex items-center justify-center text-xs font-mono font-bold">
+            <div className="w-8 h-8 rounded-[2px] bg-[#17263d] text-white flex items-center justify-center text-xs font-mono font-bold shadow-2xs">
               OP
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Lead Operator Profile</h3>
-              <p className="text-xs text-slate-500 font-mono">Role: Enterprise AI Safety Controller</p>
+              <h3 className="text-sm font-serif font-bold text-[#17263d]">Lead Operator Profile</h3>
+              <p className="text-xs text-[#718096] font-mono">Role: Enterprise Safety Controller</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 p-1 rounded"
+            className="text-[#718096] hover:text-[#17263d] p-1 rounded-[2px]"
             aria-label="Close modal"
           >
             <X size={18} />
           </button>
         </div>
 
-        <div className="p-5 space-y-3.5 text-xs text-slate-600">
-          <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1.5 font-mono text-[11px]">
+        <div className="p-5 space-y-3.5 text-xs text-[#40516a]">
+          <div className="p-3 rounded-[2px] bg-[#fbfaf7] border border-[#dce1e7] space-y-1.5 font-mono text-[11px]">
             <div className="flex justify-between">
-              <span className="text-slate-400">Operator ID:</span>
-              <span className="text-slate-800 font-semibold">usr-lead-controller-01</span>
+              <span className="text-[#718096]">Operator ID:</span>
+              <span className="text-[#17263d] font-semibold">usr-lead-controller-01</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Clearance Tier:</span>
-              <span className="text-emerald-700 font-semibold">Tier 4 (Unrestricted Override)</span>
+              <span className="text-[#718096]">Clearance Tier:</span>
+              <span className="text-[#0d6b4f] font-semibold">Tier 4 (Unrestricted Override)</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Session Protocol:</span>
-              <span className="text-slate-800">mTLS Authenticated</span>
+              <span className="text-[#718096]">Session Protocol:</span>
+              <span className="text-[#17263d]">mTLS Cryptographic Handshake</span>
             </div>
           </div>
 
           <div>
-            <h4 className="font-semibold text-slate-800 mb-1">Human In The Loop Authority:</h4>
-            <ul className="space-y-1 list-disc list-inside text-slate-600 text-[11px] leading-relaxed">
+            <h4 className="font-semibold text-[#17263d] mb-1">Human In The Loop Authority:</h4>
+            <ul className="space-y-1 list-disc list-inside text-[#40516a] text-[11px] leading-relaxed">
               <li>Approve or veto financial disbursements exceeding 10,000 USD</li>
               <li>Authorize production code patches affecting core cryptographic parsers</li>
               <li>Trigger immediate emergency fleet containment for anomalous agents</li>
@@ -64,11 +64,11 @@ export const OperatorProfileModal: React.FC<OperatorProfileModalProps> = ({ isOp
           </div>
         </div>
 
-        <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-end">
+        <div className="p-3 bg-[#faf9f5] border-t border-[#dce1e7] flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-xs text-slate-700 bg-white hover:bg-slate-100 rounded border border-slate-200 font-medium"
+            className="axiom-btn-secondary text-xs py-1 px-3"
           >
             Close
           </button>

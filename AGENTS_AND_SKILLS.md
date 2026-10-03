@@ -1,4 +1,4 @@
-# Agents and Skills Matrix: Agentic AI
+# Agents and Skills Matrix: AXIOM
 
 ## Category to Workforce Mapping
 

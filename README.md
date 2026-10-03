@@ -1,21 +1,20 @@
-# Agentic AI
+# AXIOM
 
-A clean, editorial React and Vite application presenting the **01 / Agentic AI** category index.
+Autonomous Operations. Autonomous intelligence, under human control.
+
+A refined editorial React, TypeScript, and Vite application presenting the **01 / AXIOM** index and institutional Autonomous Operations Console.
 
 ## Overview
 
-Systems where AI agents reason, plan, use tools and finish useful work with proper human oversight. Judged on how useful the agent is, how well it is orchestrated, how reliably it runs, and how clearly a human stays in control.
+Systems where AI agents reason, plan, use tools, and finish useful work with proper human oversight. Judged on how useful the agent is, how well it is orchestrated, how reliably it runs, and how clearly a human stays in control.
 
 ## Key Attributes
 
-- Warm off-white editorial paper surface (`#f2eee4`)
-- Subtle architectural vertical layout guides
-- Prominent red `01` section index marker
-- Editorial serif typography for `Agentic AI`
-- Neutral body typography with optimal reading measure
-- Monospace topic index rows separated by thin rules
-- Keyboard-accessible interactive disclosures (`aria-expanded`, `aria-controls`, `Escape`, arrow navigation)
-- Responsive typography and layout scaling across all screen sizes (320px to 1920px)
+- **Editorial Entry Experience**: Warm off-white paper canvas (`#f6f5f0`), subtle architectural vertical layout guides, crimson `01` section index marker, Cormorant Garamond display serif, and smooth fade-in transitions.
+- **Multi-Agent Orchestration Fabric**: Deterministic directed acyclic graphs (DAGs) with live stage progression, atomic rollback guarantees, and sandboxed test execution.
+- **Inviolable Human Oversight**: Policy boundary enforcement with mandatory operator sign-off gates for high-risk actions.
+- **Cryptographic Audit Ledger**: Immutable SHA-256 state transitions preserving full provenance across agent and human actions.
+- **Formal Evaluation Harness**: Rigorous verification testing against four foundational pillars: Substantive Utility, Orchestration Integrity, Reliability, and Human Control.
 
 ## Technology Stack
 
@@ -23,6 +22,7 @@ Systems where AI agents reason, plan, use tools and finish useful work with prop
 - TypeScript
 - Vite
 - Tailwind CSS
+- Lucide React
 
 ## Development
 

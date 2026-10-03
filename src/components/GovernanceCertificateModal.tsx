@@ -18,27 +18,27 @@ export const GovernanceCertificateModal: React.FC<GovernanceCertificateModalProp
       onClick={onClose}
     >
       <div
-        className="bg-white border border-slate-200 rounded-xl shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+        className="bg-white border border-[#dce1e7] rounded-xs shadow-2xl w-full max-w-xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b border-slate-100 flex items-start justify-between bg-amber-50/40">
+        <div className="p-4 border-b border-[#dce1e7] flex items-start justify-between bg-[#faf9f5]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-amber-100 text-amber-800">
+            <div className="p-2 rounded-xs bg-[#fdfbf6] text-[#945f00] border border-[#f3d99d]">
               <Award size={20} />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-slate-900">
+              <h3 className="text-base font-serif font-bold text-[#17263d]">
                 Governance Compliance Certificate
               </h3>
-              <p className="text-xs text-slate-500 font-mono mt-0.5">
-                Agentic AI Operational Invariant Attestation
+              <p className="text-xs text-[#718096] font-mono mt-0.5">
+                AXIOM Operational Invariant Attestation
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 p-1 rounded"
+            className="text-[#718096] hover:text-[#17263d] p-1 rounded-xs"
             aria-label="Close modal"
           >
             <X size={18} />

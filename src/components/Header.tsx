@@ -3,11 +3,9 @@ import {
   ArrowLeft,
   Bell,
   Command,
-  FileCheck2,
   Layers,
   Search,
   SlidersHorizontal,
-  User,
 } from 'lucide-react';
 import { useOperationsStore } from '../orchestrator/store';
 
@@ -28,109 +26,108 @@ export const Header: React.FC<HeaderProps> = ({ onBackToIndex }) => {
   const activeIncidentsCount = incidents.filter((i) => i.status === 'active').length;
 
   return (
-    <header className="h-14 border-b border-slate-200 bg-white/95 backdrop-blur px-5 flex items-center justify-between sticky top-0 z-30">
+    <header className="h-14 border-b border-[#dce1e7] bg-[#ffffff] px-5 flex items-center justify-between sticky top-0 z-30 select-none">
+      {/* Brand & Context */}
       <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={onBackToIndex}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-md border border-slate-200 transition-colors"
-          title="Return to the 01 Agentic AI editorial index"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs text-[#40516a] hover:text-[#17263d] hover:bg-[#f6f5f0] rounded-[2px] border border-[#dce1e7] transition-colors"
+          title="Return to the 01 AXIOM editorial index"
         >
-          <ArrowLeft size={13} />
-          <span>Editorial Index</span>
+          <ArrowLeft size={12} className="text-[#e63946]" />
+          <span className="font-mono text-[11px]">01 / Editorial Index</span>
         </button>
 
-        <div className="h-4 w-px bg-slate-200" aria-hidden="true" />
+        <div className="h-4 w-px bg-[#dce1e7]" aria-hidden="true" />
 
         <div className="flex items-center gap-2">
-          <span className="font-mono text-xs font-semibold tracking-wider text-[#1b2e49]">
-            AGENTIC AI
+          <span className="font-serif font-bold text-base tracking-tight text-[#17263d]">
+            AXIOM
           </span>
-          <span className="text-slate-400 text-xs">/</span>
-          <span className="text-xs text-slate-600 font-medium">
-            Autonomous Operations Console
+          <span className="text-[#a0aec0] text-xs">/</span>
+          <span className="text-xs text-[#718096] font-mono tracking-tight">
+            Autonomous Operations
           </span>
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="relative w-64 md:w-80">
+      {/* Center Search Input */}
+      <div className="flex-1 max-w-md mx-6 hidden md:block">
+        <div className="relative">
           <Search
-            size={14}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+            size={13}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#a0aec0]"
           />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search workflows, agents, audit..."
-            className="w-full pl-8 pr-16 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-1 focus:ring-slate-400 focus:bg-white text-slate-800 placeholder-slate-400"
+            placeholder="Search workflows, agents, invariants, audit..."
+            className="w-full pl-8 pr-14 py-1 text-xs bg-[#fbfaf7] border border-[#dce1e7] rounded-[2px] focus:outline-none focus:border-[#17263d] focus:bg-white text-[#17263d] placeholder-[#a0aec0]"
           />
           <button
             type="button"
             onClick={() => openModal('command-palette')}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-500 bg-slate-200/60 rounded"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[9px] font-mono text-[#718096] bg-[#eae7df] rounded-[2px] border border-[#dce1e7]"
             title="Open command palette"
           >
-            <Command size={10} />
+            <Command size={9} />
             <span>K</span>
           </button>
         </div>
+      </div>
 
-        <button
-          type="button"
-          onClick={() => openModal('architecture')}
-          className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors"
-          title="System Architecture Diagram"
-          aria-label="View architecture"
-        >
-          <Layers size={16} />
-        </button>
+      {/* Right Controls: Grouped cleanly */}
+      <div className="flex items-center gap-2">
+        <div className="flex items-center border border-[#dce1e7] rounded-[2px] overflow-hidden bg-[#fbfaf7]">
+          <button
+            type="button"
+            onClick={() => openModal('architecture')}
+            className="px-2.5 py-1 text-xs text-[#40516a] hover:text-[#17263d] hover:bg-white border-r border-[#dce1e7] transition-colors inline-flex items-center gap-1.5"
+            title="System Architecture Topology"
+          >
+            <Layers size={13} />
+            <span className="hidden sm:inline">Topology</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={() => openModal('policy-simulator')}
-          className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors"
-          title="Policy Rule Simulator"
-          aria-label="Open policy simulator"
-        >
-          <SlidersHorizontal size={16} />
-        </button>
+          <button
+            type="button"
+            onClick={() => openModal('policy-simulator')}
+            className="px-2.5 py-1 text-xs text-[#40516a] hover:text-[#17263d] hover:bg-white transition-colors inline-flex items-center gap-1.5"
+            title="Policy Invariant Simulator"
+          >
+            <SlidersHorizontal size={13} />
+            <span className="hidden sm:inline">Simulator</span>
+          </button>
+        </div>
 
-        <button
-          type="button"
-          onClick={() => openModal('governance-certificate')}
-          className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors"
-          title="Governance Invariant Certificate"
-          aria-label="View governance certificate"
-        >
-          <FileCheck2 size={16} />
-        </button>
-
+        {/* Notifications badge */}
         {(pendingApprovalsCount > 0 || activeIncidentsCount > 0) && (
           <div className="relative">
             <button
               type="button"
-              className="p-1.5 text-amber-600 hover:bg-amber-50 rounded-md transition-colors relative"
+              onClick={() => openModal('command-palette')}
+              className="p-1.5 text-[#d99000] hover:bg-[#fef8ea] border border-[#f3d99d] rounded-[2px] transition-colors"
               title={`${pendingApprovalsCount} pending approvals, ${activeIncidentsCount} active incidents`}
-              aria-label="Notifications"
+              aria-label="Pending actions"
             >
-              <Bell size={16} />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-500" />
+              <Bell size={14} />
             </button>
           </div>
         )}
 
+        {/* Operator Profile */}
         <button
           type="button"
           onClick={() => openModal('operator-profile')}
-          className="inline-flex items-center gap-2 pl-2 pr-2.5 py-1 text-xs text-slate-700 hover:bg-slate-100 rounded-md border border-slate-200 transition-colors"
+          className="inline-flex items-center gap-2 pl-2 pr-2.5 py-1 text-xs text-[#17263d] hover:bg-[#f6f5f0] rounded-[2px] border border-[#dce1e7] transition-colors ml-1 bg-white"
           aria-label="Operator profile"
         >
-          <div className="w-5 h-5 rounded-full bg-[#1b2e49] text-white flex items-center justify-center text-[10px] font-mono">
+          <div className="w-4 h-4 rounded-[2px] bg-[#17263d] text-white flex items-center justify-center text-[9px] font-mono font-bold">
             OP
           </div>
-          <span className="font-medium hidden sm:inline">Lead Operator</span>
+          <span className="font-medium hidden sm:inline text-xs">Lead Operator</span>
         </button>
       </div>
     </header>

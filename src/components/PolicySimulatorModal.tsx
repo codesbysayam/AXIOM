@@ -11,7 +11,6 @@ export const PolicySimulatorModal: React.FC<PolicySimulatorModalProps> = ({ isOp
   const { policies } = useOperationsStore();
   const [amount, setAmount] = useState('15000');
   const [actionType, setActionType] = useState('wire_transfer');
-  const [scope, setScope] = useState('production_db');
 
   if (!isOpen) return null;
 
@@ -48,17 +47,17 @@ export const PolicySimulatorModal: React.FC<PolicySimulatorModalProps> = ({ isOp
       onClick={onClose}
     >
       <div
-        className="bg-white border border-slate-200 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+        className="bg-white border border-[#dce1e7] rounded-[2px] shadow-2xl w-full max-w-lg overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b border-slate-100 flex items-start justify-between">
+        <div className="p-4 border-b border-[#dce1e7] flex items-start justify-between bg-[#faf9f5]">
           <div className="flex items-center gap-2">
-            <SlidersHorizontal size={18} className="text-slate-600" />
+            <SlidersHorizontal size={18} className="text-[#17263d]" />
             <div>
-              <h3 className="text-base font-semibold text-slate-900">
+              <h3 className="text-base font-serif font-bold text-[#17263d]">
                 Governance Policy Simulator
               </h3>
-              <p className="text-xs text-slate-500 font-mono">
+              <p className="text-xs text-[#718096] font-mono">
                 Simulate invariant evaluations before execution
               </p>
             </div>
@@ -66,7 +65,7 @@ export const PolicySimulatorModal: React.FC<PolicySimulatorModalProps> = ({ isOp
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 p-1 rounded"
+            className="text-[#718096] hover:text-[#17263d] p-1 rounded-[2px]"
             aria-label="Close modal"
           >
             <X size={18} />
@@ -76,13 +75,13 @@ export const PolicySimulatorModal: React.FC<PolicySimulatorModalProps> = ({ isOp
         <div className="p-5 space-y-4">
           <div className="space-y-3">
             <div>
-              <label className="text-xs font-semibold text-slate-700 block mb-1">
+              <label className="text-xs font-semibold text-[#17263d] block mb-1">
                 Action Payload Type
               </label>
               <select
                 value={actionType}
                 onChange={(e) => setActionType(e.target.value)}
-                className="w-full px-3 py-1.5 text-xs border border-slate-200 rounded bg-white text-slate-800"
+                className="w-full px-3 py-1.5 text-xs border border-[#dce1e7] rounded-[2px] bg-white text-[#17263d] focus:outline-none focus:border-[#17263d]"
               >
                 <option value="wire_transfer">Financial Wire Transfer</option>
                 <option value="customer_credit">Customer Credit Refund</option>
@@ -93,16 +92,16 @@ export const PolicySimulatorModal: React.FC<PolicySimulatorModalProps> = ({ isOp
 
             {actionType === 'wire_transfer' || actionType === 'customer_credit' ? (
               <div>
-                <label className="text-xs font-semibold text-slate-700 block mb-1">
+                <label className="text-xs font-semibold text-[#17263d] block mb-1">
                   Transaction Amount (USD)
                 </label>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs border border-slate-200 rounded bg-white font-mono"
+                  className="w-full px-3 py-1.5 text-xs border border-[#dce1e7] rounded-[2px] bg-[#fbfaf7] font-mono text-[#17263d] focus:outline-none focus:border-[#17263d]"
                 />
-                <span className="text-[10px] text-slate-400 font-mono mt-0.5 block">
+                <span className="text-[10px] text-[#718096] font-mono mt-0.5 block">
                   Threshold limit is 10,000.00 USD
                 </span>
               </div>
@@ -110,12 +109,12 @@ export const PolicySimulatorModal: React.FC<PolicySimulatorModalProps> = ({ isOp
           </div>
 
           <div
-            className={`p-4 rounded-lg border text-xs ${
+            className={`p-4 rounded-[2px] border text-xs ${
               evaluationResult.color === 'emerald'
-                ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950'
+                ? 'bg-[#f0faf6] border-[#c7eadf] text-[#0d6b4f]'
                 : evaluationResult.color === 'amber'
-                ? 'bg-amber-50/70 border-amber-200 text-amber-950'
-                : 'bg-rose-50/70 border-rose-200 text-rose-950'
+                ? 'bg-[#fef8ea] border-[#f3d99d] text-[#945f00]'
+                : 'bg-[#fdf2f3] border-[#f7c3c8] text-[#a42331]'
             }`}
           >
             <div className="flex items-center gap-1.5 font-bold font-mono text-[11px] uppercase tracking-wider">
@@ -131,17 +130,17 @@ export const PolicySimulatorModal: React.FC<PolicySimulatorModalProps> = ({ isOp
 
             <p className="mt-2 text-xs leading-relaxed">{evaluationResult.message}</p>
 
-            <div className="mt-2 pt-2 border-t border-slate-200/60 text-[10px] font-mono opacity-80">
+            <div className="mt-2 pt-2 border-t border-current/20 text-[10px] font-mono opacity-80">
               Evaluated Policy: {evaluationResult.policy}
             </div>
           </div>
         </div>
 
-        <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-end">
+        <div className="p-3 bg-[#faf9f5] border-t border-[#dce1e7] flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-xs text-slate-700 bg-white hover:bg-slate-100 rounded border border-slate-200 font-medium"
+            className="axiom-btn-secondary text-xs py-1 px-3"
           >
             Close Simulator
           </button>

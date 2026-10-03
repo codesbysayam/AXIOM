@@ -1,4 +1,4 @@
-# Design Specification: Agentic AI
+# Design Specification: AXIOM
 
 ## Visual Language
 
@@ -6,11 +6,11 @@ The page follows a restrained editorial index aesthetic rather than a convention
 
 ### Surface
 
-- Base: warm paper `#f2eee4`
-- No cards or elevated panels
-- No gradients
+- Base: warm paper `#f6f5f0`
+- No generic cards or elevated panels
+- No gratuitous gradients
 - No glassmorphism
-- No large shadows
+- No large blur shadows
 
 ### Grid
 
@@ -20,8 +20,8 @@ The background uses vertical guide lines across the layout. They are intentional
 
 | Element | Treatment |
 |---|---|
-| `01` | Bold sans-serif, red `#ef2636`, large display scale |
-| `Agentic AI` | Quiet serif, regular weight |
+| `01` | Bold sans-serif, red `#e63946`, large display scale |
+| `AXIOM` | Quiet serif, regular weight |
 | Description | Neutral sans-serif, muted grey, readable measure |
 | Topic rows | Monospace, dark navy ink, compact |
 

@@ -139,392 +139,181 @@ const CATEGORIES: Category[] = [
   },
 ];
 
-function findAgent(
-  name: string,
-): AgentInfo | undefined {
-  return AGENT_WORKFORCE.find(
-    (agent) => agent.name === name,
-  );
+function findAgent(name: string): AgentInfo | undefined {
+  return AGENT_WORKFORCE.find((agent) => agent.name === name);
 }
 
-export const AgenticIndexPage: React.FC<
-  AgenticIndexPageProps
-> = ({
+export const AgenticIndexPage: React.FC<AgenticIndexPageProps> = ({
   workflows,
   onOpenConsole,
 }) => {
-  const [
-    openCategory,
-    setOpenCategory,
-  ] = useState<number | null>(null);
+  const [openCategory, setOpenCategory] = useState<number | null>(null);
 
   const activeAgents = useMemo(
-    () =>
-      AGENT_WORKFORCE.filter(
-        (agent) => agent.status === 'active',
-      ).length,
+    () => AGENT_WORKFORCE.filter((agent) => agent.status === 'active').length,
     [],
   );
 
-  const toggle = (
-    index: number,
-  ) => {
-    setOpenCategory(
-      (current) =>
-        current === index
-          ? null
-          : index,
-    );
+  const toggle = (index: number) => {
+    setOpenCategory((current) => (current === index ? null : index));
   };
 
   return (
-    <div
-      className="
-        agentic-index
-        min-h-screen
-        bg-[#f3f0e8]
-        text-[#1d304b]
-        selection:bg-[#ef233c]
-        selection:text-white
-      "
-    >
-      <div
-        className="agentic-index__grid"
-        aria-hidden="true"
-      />
+    <div className="axiom-index selection:bg-[#e63946] selection:text-white">
+      <div className="axiom-index__grid" aria-hidden="true" />
 
-      <header
-        className="agentic-index__topbar"
-      >
-        <div
-          className="agentic-index__wordmark"
-        >
-          AGENTIC AI
+      <header className="axiom-index__topbar">
+        <div className="axiom-index__wordmark">
+          AXIOM <span className="text-[#a0aec0] font-normal">/ AUTONOMOUS OPERATIONS</span>
         </div>
 
         <button
-          className="
-            agentic-index__console-link
-          "
+          className="axiom-index__console-btn"
           onClick={onOpenConsole}
           type="button"
         >
-          <span>
-            Operations console
-          </span>
-
-          <ArrowUpRight
-            aria-hidden="true"
-            size={15}
-            strokeWidth={1.6}
-          />
+          <span>Operations console</span>
+          <ArrowUpRight aria-hidden="true" size={14} strokeWidth={1.8} />
         </button>
       </header>
 
-      <main
-        className="
-          agentic-index__container
-        "
-      >
-        <section
-          className="
-            agentic-index__intro
-          "
-          aria-labelledby="agentic-title"
-        >
-          <div
-            className="
-              agentic-index__number
-            "
-          >
+      <main className="axiom-index__container">
+        <section className="axiom-index__intro" aria-labelledby="axiom-title">
+          <div className="axiom-index__number" aria-hidden="true">
             01
           </div>
 
-          <h1 id="agentic-title">
-            Agentic AI
+          <h1 id="axiom-title" className="axiom-fade-in">
+            AXIOM
           </h1>
 
-          <p>
-            Systems where AI agents reason,
-            plan, use tools and finish useful
-            work with proper human oversight.
-            Judged on how useful the agent is,
-            how well it is orchestrated, how
-            reliably it runs, and how clearly
-            a human stays in control.
+          <p className="axiom-fade-in-delayed">
+            Autonomous intelligence, under human control. Systems where AI
+            agents reason, plan, use tools and finish useful work with proper
+            human oversight. Judged on how useful the agent is, how well it is
+            orchestrated, how reliably it runs, and how clearly a human stays in
+            control.
           </p>
         </section>
 
         <section
-          className="
-            agentic-index__catalog
-          "
-          aria-label="
-            Agentic AI core categories
-          "
+          className="axiom-index__catalog"
+          aria-label="AXIOM core operational categories"
         >
-          <div
-            className="
-              agentic-index__catalog-head
-            "
-          >
-            <span>
-              Index: 08 Core Categories
-            </span>
+          <div className="axiom-index__catalog-head">
+            <span>Index: 08 Core Categories</span>
 
-            <span
-              className="
-                agentic-index__catalog-meta
-              "
-            >
+            <div className="axiom-index__catalog-meta">
               <span>
-                {activeAgents} agents online
-                {' · '}
-                {workflows.length} workflows
+                {activeAgents} agents online · {workflows.length} workflows
               </span>
 
               <button
                 type="button"
                 onClick={() =>
-                  setOpenCategory(
-                    openCategory === null
-                      ? 0
-                      : null,
-                  )
+                  setOpenCategory(openCategory === null ? 0 : null)
                 }
               >
-                {openCategory === null
-                  ? 'Expand first'
-                  : 'Collapse'}
+                {openCategory === null ? 'Expand first' : 'Collapse'}
               </button>
-            </span>
+            </div>
           </div>
 
-          <div
-            className="
-              agentic-index__rows
-            "
-          >
-            {CATEGORIES.map(
-              (
-                category,
-                index,
-              ) => {
-                const isOpen =
-                  openCategory === index;
+          <div className="axiom-index__rows">
+            {CATEGORIES.map((category, index) => {
+              const isOpen = openCategory === index;
+              const panelId = `axiom-category-${index}`;
 
-                const panelId =
-                  `agentic-category-${index}`;
-
-                return (
-                  <article
-                    className={`
-                      agentic-index__row
-                      ${
-                        isOpen
-                          ? 'is-open'
-                          : ''
-                      }
-                    `}
-                    key={
-                      category.title
-                    }
+              return (
+                <article
+                  className={`axiom-index__row ${isOpen ? 'is-open' : ''}`}
+                  key={category.title}
+                >
+                  <button
+                    type="button"
+                    className="axiom-index__row-trigger"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => toggle(index)}
                   >
-                    <button
-                      type="button"
-                      className="
-                        agentic-index__row-trigger
-                      "
-                      aria-expanded={
-                        isOpen
-                      }
-                      aria-controls={
-                        panelId
-                      }
-                      onClick={() =>
-                        toggle(index)
-                      }
-                    >
-                      <span>
-                        {
-                          category.title
-                        }
-                      </span>
+                    <span>{category.title}</span>
 
-                      <span
-                        className="
-                          agentic-index__plus
-                        "
-                        aria-hidden="true"
-                      >
-                        {isOpen
-                          ? '−'
-                          : '+'}
-                      </span>
-                    </button>
+                    <span className="axiom-index__plus" aria-hidden="true">
+                      {isOpen ? '−' : '+'}
+                    </span>
+                  </button>
 
-                    {isOpen && (
-                      <div
-                        className="
-                          agentic-index__detail
-                        "
-                        id={panelId}
-                      >
-                        <div
-                          className="
-                            agentic-index__detail-copy
-                          "
-                        >
-                          <p>
-                            {
-                              category.description
-                            }
-                          </p>
+                  {isOpen && (
+                    <div className="axiom-index__detail" id={panelId}>
+                      <div className="axiom-index__detail-copy">
+                        <p>{category.description}</p>
 
-                          <div
-                            className="
-                              agentic-index__detail-links
-                            "
-                          >
-                            <button
-                              type="button"
-                              onClick={
-                                onOpenConsole
-                              }
-                            >
-                              Open operations
-                              console
+                        <div className="axiom-index__detail-links">
+                          <button type="button" onClick={onOpenConsole}>
+                            <span>Open operations console</span>
+                            <ArrowUpRight size={13} />
+                          </button>
 
-                              <ArrowUpRight
-                                size={14}
-                              />
-                            </button>
-
-                            <span>
-                              <Command
-                                size={13}
-                              />
-
-                              Human oversight
-                              remains explicit
-                            </span>
-                          </div>
-                        </div>
-
-                        <div
-                          className="
-                            agentic-index__agents
-                          "
-                        >
-                          <div
-                            className="
-                              agentic-index__mini-label
-                            "
-                          >
-                            Underlying
-                            capabilities
-                          </div>
-
-                          {category.agentNames.map(
-                            (name) => {
-                              const agent =
-                                findAgent(
-                                  name,
-                                );
-
-                              return agent ? (
-                                <div
-                                  className="
-                                    agentic-index__agent
-                                  "
-                                  key={name}
-                                >
-                                  <span
-                                    className="
-                                      agentic-index__agent-status
-                                    "
-                                    aria-hidden="true"
-                                  />
-
-                                  <span>
-                                    {
-                                      agent.name
-                                    }
-                                  </span>
-
-                                  <span
-                                    className="
-                                      agentic-index__agent-role
-                                    "
-                                  >
-                                    {
-                                      agent.domain
-                                    }
-                                  </span>
-                                </div>
-                              ) : null;
-                            },
-                          )}
-
-                          <div
-                            className="
-                              agentic-index__skills
-                            "
-                          >
-                            {category.skillNames.map(
-                              (name) => {
-                                const skill =
-                                  CUSTOM_SKILLS.find(
-                                    (item) =>
-                                      item.name ===
-                                      name,
-                                  );
-
-                                return skill ? (
-                                  <span
-                                    key={name}
-                                  >
-                                    {
-                                      skill.name
-                                    }
-                                  </span>
-                                ) : null;
-                              },
-                            )}
-                          </div>
+                          <span>
+                            <Command size={12} />
+                            Human oversight remains explicit
+                          </span>
                         </div>
                       </div>
-                    )}
-                  </article>
-                );
-              },
-            )}
+
+                      <div className="axiom-index__agents">
+                        <div className="axiom-index__mini-label">
+                          Underlying capabilities
+                        </div>
+
+                        {category.agentNames.map((name) => {
+                          const agent = findAgent(name);
+
+                          return agent ? (
+                            <div className="axiom-index__agent" key={name}>
+                              <span
+                                className="axiom-index__agent-status"
+                                aria-hidden="true"
+                              />
+                              <span>{agent.name}</span>
+                              <span className="axiom-index__agent-role">
+                                {agent.domain}
+                              </span>
+                            </div>
+                          ) : null;
+                        })}
+
+                        <div className="axiom-index__skills">
+                          {category.skillNames.map((name) => {
+                            const skill = CUSTOM_SKILLS.find(
+                              (item) => item.name === name,
+                            );
+
+                            return skill ? (
+                              <span key={name}>{skill.name}</span>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        <footer
-          className="
-            agentic-index__footer
-          "
-        >
-          <span>
-            AGENTIC AI /
-            HUMAN-CONTROLLED
-            ORCHESTRATION
-          </span>
+        <footer className="axiom-index__footer">
+          <span>AXIOM / AUTONOMOUS OPERATIONS</span>
 
-          <button
-            type="button"
-            onClick={onOpenConsole}
-          >
-            Enter system
-
-            <ExternalLink
-              size={13}
-            />
+          <button type="button" onClick={onOpenConsole}>
+            <span>Enter system</span>
+            <ExternalLink size={12} />
           </button>
         </footer>
       </main>
     </div>
   );
 };
+
+export { AgenticIndexPage as AxiomIndexPage };

@@ -73,7 +73,7 @@ function ConsoleApp({ onBackToIndex }: { onBackToIndex: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] text-slate-800 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#f6f5f0] text-[#17263d] flex flex-col font-sans">
       <Header onBackToIndex={onBackToIndex} />
       <div className="flex-1 flex overflow-hidden">
         <Sidebar onBackToIndex={onBackToIndex} />
@@ -117,19 +117,19 @@ function ConsoleApp({ onBackToIndex }: { onBackToIndex: () => void }) {
 }
 
 function MainRoot() {
-  const [showAgenticIndex, setShowAgenticIndex] = useState(true);
+  const [showIndex, setShowIndex] = useState(true);
   const { workflows } = useOperationsStore();
 
-  if (showAgenticIndex) {
+  if (showIndex) {
     return (
       <AgenticIndexPage
         workflows={workflows}
-        onOpenConsole={() => setShowAgenticIndex(false)}
+        onOpenConsole={() => setShowIndex(false)}
       />
     );
   }
 
-  return <ConsoleApp onBackToIndex={() => setShowAgenticIndex(true)} />;
+  return <ConsoleApp onBackToIndex={() => setShowIndex(true)} />;
 }
 
 export default function App() {

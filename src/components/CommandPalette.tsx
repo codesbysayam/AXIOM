@@ -58,7 +58,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
   }> = [
     {
       id: 'back-index',
-      label: 'Return to 01 / Agentic AI Editorial Index',
+      label: 'Return to 01 / AXIOM Editorial Index',
       category: 'Navigation',
       icon: LayoutDashboard,
       run: () => {

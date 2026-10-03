@@ -1,4 +1,6 @@
-# Decision Flow: Agentic AI
+# Decision Flow: AXIOM
+
+Autonomous Operations. Autonomous intelligence, under human control.
 
 ## Lifecycle of a Pipeline Request
 

@@ -1,8 +1,10 @@
-# System Architecture: Agentic AI
+# System Architecture: AXIOM
+
+Autonomous Operations. Autonomous intelligence, under human control.
 
 ## Layered Topology
 
-1. Layer 01: Editorial Entry Experience (AgenticIndexPage)
+1. Layer 01: Editorial Entry Experience (AxiomIndexPage)
 2. Layer 02: Operations Console (Dashboard, Workflows, Cases, Approvals, Fleet Monitoring)
 3. Layer 03: Multi-Agent Collaboration Fabric (Planner, Executor, Tester, Reviewer)
 4. Layer 04: Deterministic Policy Engine (POL-01 through POL-04)

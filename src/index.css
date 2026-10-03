@@ -2,13 +2,22 @@
 
 :root {
   color-scheme: light;
-  --paper: #f3f0e8;
-  --paper-subtle: #eae5d9;
-  --ink: #1b2e49;
-  --ink-secondary: #273b56;
-  --muted: #718097;
-  --rule: rgba(46, 61, 81, 0.13);
-  --accent: #ef233c;
+  --bg-app: #f6f5f0;
+  --surface: #ffffff;
+  --surface-subtle: #f0eee6;
+  --surface-hover: #ece9df;
+  --ink-primary: #17263d;
+  --ink-secondary: #40516a;
+  --ink-muted: #718096;
+  --border-subtle: #dce1e7;
+  --border-strong: #b8c2cc;
+  --accent-red: #e63946;
+  --accent-emerald: #159a72;
+  --accent-amber: #d99000;
+  --accent-rose: #c83e4d;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 * {
@@ -18,237 +27,100 @@
 html {
   min-width: 320px;
   min-height: 100%;
-  background-color: var(--paper);
+  background-color: var(--bg-app);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  color: var(--ink);
-  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--ink-primary);
+  font-family: var(--sans);
   line-height: 1.5;
 }
 
 /* ==================================================
-   AGENTIC AI EDITORIAL INDEX STYLES
+   EDITORIAL ENTRY EXPERIENCE (AXIOM INDEX)
    ================================================== */
 
-.agentic-index {
+.axiom-index {
   position: relative;
-  min-height: 100dvh;
-  overflow-x: hidden;
-  background-color: var(--paper);
-  color: var(--ink);
-  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+  color: var(--ink-primary);
+  font-family: var(--sans);
 }
 
-.agentic-index__grid {
+.axiom-index__grid {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.65;
   background-image:
-    linear-gradient(
-      to right,
-      rgba(35, 54, 76, 0.055) 1px,
-      transparent 1px
-    );
-  background-size:
-    clamp(72px, 9.1vw, 156px) 100%;
-  mask-image:
-    linear-gradient(
-      to bottom,
-      black,
-      rgba(0, 0, 0, 0.35)
-    );
+    linear-gradient(to right, rgba(23, 38, 61, 0.04) 1px, transparent 1px);
+  background-size: clamp(70px, 8.5vw, 140px) 100%;
 }
 
-.agentic-index__topbar {
+.axiom-index__topbar {
   position: relative;
   z-index: 2;
-  width: min(100% - 48px, 1310px);
+  width: min(100% - 48px, 1340px);
   margin: 0 auto;
-  padding: 26px 0 0;
+  padding: 28px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.agentic-index__wordmark {
-  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
+.axiom-index__wordmark {
+  font-family: var(--mono);
+  font-size: 11px;
   letter-spacing: 0.18em;
-  color: #65748a;
-  font-weight: 500;
+  color: var(--ink-muted);
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-.agentic-index__console-link {
+.axiom-index__console-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: transparent;
-  border: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  padding: 6px 12px;
   cursor: pointer;
-  color: #273b56;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--ink-primary);
+  font-family: var(--mono);
   font-size: 11px;
   letter-spacing: -0.01em;
-  transition: color 0.15s ease;
+  transition: all 0.15s ease;
+  background-color: var(--surface);
 }
 
-.agentic-index__console-link:hover {
-  color: #ef233c;
+.axiom-index__console-btn:hover {
+  background-color: var(--ink-primary);
+  color: var(--bg-app);
+  border-color: var(--ink-primary);
 }
 
-.agentic-index__container {
+.axiom-index__container {
   position: relative;
   z-index: 1;
-  width: min(100% - 48px, 1310px);
+  width: min(100% - 48px, 1340px);
   margin: 0 auto;
-  padding: 26px 0 42px;
+  padding: 32px 0 54px;
 }
 
-.agentic-index__number {
-  margin-left: -1px;
-  color: #ef233c;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(64px, 6.3vw, 94px);
-  line-height: 0.9;
-  font-weight: 700;
-  letter-spacing: -0.065em;
-  user-select: none;
-}
-
-.agentic-index__intro h1 {
-  margin: 24px 0 22px;
-  color: #1b2e49;
-  font-family: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
-  font-size: clamp(45px, 4.2vw, 67px);
-  font-weight: 400;
-  line-height: 0.98;
-  letter-spacing: -0.045em;
-}
-
-.agentic-index__intro p {
-  max-width: 860px;
-  margin: 0;
-  color: #718097;
-  font-size: clamp(17px, 1.38vw, 22px);
-  line-height: 1.55;
-  letter-spacing: -0.012em;
-}
-
-.agentic-index__catalog {
-  margin-top: 54px;
-  width: 100%;
-}
-
-.agentic-index__catalog-head {
-  min-height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid rgba(46, 61, 81, 0.13);
-  border-bottom: 1px solid rgba(46, 61, 81, 0.13);
-  color: #718097;
-  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
-  letter-spacing: 0.01em;
-}
-
-.agentic-index__catalog-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.agentic-index__catalog-meta button {
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  color: #718097;
-  font-family: inherit;
-  font-size: inherit;
-  transition: color 0.15s ease;
-}
-
-.agentic-index__catalog-meta button:hover {
-  color: #1b2e49;
-}
-
-.agentic-index__rows {
-  width: 100%;
-}
-
-.agentic-index__row {
-  border-bottom: 1px solid rgba(46, 61, 81, 0.13);
-  transition: background-color 0.15s ease;
-}
-
-.agentic-index__row:hover {
-  background-color: rgba(234, 229, 217, 0.35);
-}
-
-.agentic-index__row.is-open {
-  background-color: rgba(234, 229, 217, 0.45);
-}
-
-.agentic-index__row-trigger {
-  width: 100%;
-  min-height: 61px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #273b56;
-  text-align: left;
-  cursor: pointer;
-  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 14px;
-  letter-spacing: -0.018em;
-  transition: color 0.18s ease, padding-left 0.18s ease;
-}
-
-.agentic-index__row-trigger:hover {
-  color: #ef233c;
-  padding-left: 4px;
-}
-
-.agentic-index__plus {
-  width: 20px;
-  flex: 0 0 20px;
-  color: #aab2bc;
-  font-family: Arial, sans-serif;
-  font-size: 19px;
-  font-weight: 300;
-  text-align: center;
-  transition: color 0.15s ease;
-}
-
-.agentic-index__row-trigger:hover .agentic-index__plus,
-.agentic-index__row.is-open .agentic-index__plus {
-  color: #273b56;
-}
-
-.agentic-index__detail {
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(290px, 0.8fr);
-  gap: 54px;
-  padding: 4px 34px 26px 0;
-  color: #6d7c90;
-  animation: agentic-detail-in 0.2s ease both;
-}
-
-@keyframes agentic-detail-in {
+/* Subtle Editorial Fade-In Animation */
+@keyframes axiomHeadlineFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -256,120 +128,255 @@ body {
   }
 }
 
-.agentic-index__detail-copy p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.62;
-  color: #556272;
+.axiom-fade-in {
+  animation: axiomHeadlineFadeIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.agentic-index__detail-links {
+.axiom-fade-in-delayed {
+  animation: axiomHeadlineFadeIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.axiom-index__number {
+  color: var(--accent-red);
+  font-family: var(--sans);
+  font-size: clamp(64px, 7vw, 98px);
+  line-height: 0.9;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  user-select: none;
+}
+
+.axiom-index__intro h1 {
+  margin: 20px 0 18px;
+  color: var(--ink-primary);
+  font-family: var(--serif);
+  font-size: clamp(44px, 4.6vw, 68px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.axiom-index__intro p {
+  max-width: 820px;
+  margin: 0;
+  color: var(--ink-secondary);
+  font-size: clamp(17px, 1.4vw, 21px);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+.axiom-index__catalog {
+  margin-top: 50px;
+  width: 100%;
+}
+
+.axiom-index__catalog-head {
+  min-height: 40px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  margin-top: 16px;
-  font-size: 12px;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--ink-muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
 }
 
-.agentic-index__detail-links button {
-  display: inline-flex;
+.axiom-index__catalog-meta {
+  display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 16px;
+}
+
+.axiom-index__catalog-meta button {
   background: transparent;
   border: 0;
   cursor: pointer;
-  color: #1b2e49;
+  color: var(--ink-muted);
+  font-family: inherit;
+  font-size: inherit;
+  transition: color 0.15s ease;
+}
+
+.axiom-index__catalog-meta button:hover {
+  color: var(--ink-primary);
+}
+
+.axiom-index__rows {
+  width: 100%;
+}
+
+.axiom-index__row {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color 0.15s ease;
+}
+
+.axiom-index__row:hover {
+  background-color: rgba(240, 238, 230, 0.5);
+}
+
+.axiom-index__row.is-open {
+  background-color: rgba(240, 238, 230, 0.7);
+}
+
+.axiom-index__row-trigger {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-primary);
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: -0.015em;
+  transition: color 0.15s ease, padding-left 0.15s ease;
+}
+
+.axiom-index__row-trigger:hover {
+  color: var(--accent-red);
+  padding-left: 4px;
+}
+
+.axiom-index__plus {
+  width: 20px;
+  flex: 0 0 20px;
+  color: var(--ink-muted);
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+}
+
+.axiom-index__detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  gap: 48px;
+  padding: 4px 28px 24px 0;
+  color: var(--ink-secondary);
+}
+
+.axiom-index__detail-copy p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.62;
+  color: var(--ink-secondary);
+}
+
+.axiom-index__detail-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.axiom-index__detail-links button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--ink-primary);
   font-weight: 600;
+  font-size: 12px;
   padding: 0;
   transition: color 0.15s ease;
 }
 
-.agentic-index__detail-links button:hover {
-  color: #ef233c;
+.axiom-index__detail-links button:hover {
+  color: var(--accent-red);
 }
 
-.agentic-index__detail-links span {
+.axiom-index__detail-links span {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: #7b8898;
+  color: var(--ink-muted);
   font-size: 11px;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono);
 }
 
-.agentic-index__agents {
-  border-left: 1px solid rgba(46, 61, 81, 0.12);
-  padding-left: 24px;
+.axiom-index__agents {
+  border-left: 1px solid var(--border-subtle);
+  padding-left: 20px;
 }
 
-.agentic-index__mini-label {
-  font-family: "IBM Plex Mono", monospace;
+.axiom-index__mini-label {
+  font-family: var(--mono);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #8a96a6;
+  color: var(--ink-muted);
   margin-bottom: 8px;
 }
 
-.agentic-index__agent {
+.axiom-index__agent {
   display: grid;
   grid-template-columns: 8px 1fr auto;
   align-items: center;
-  gap: 10px;
-  padding: 4px 0;
+  gap: 8px;
+  padding: 3px 0;
   font-size: 12px;
 }
 
-.agentic-index__agent-status {
+.axiom-index__agent-status {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #4c9a70;
+  background: var(--accent-emerald);
 }
 
-.agentic-index__agent-role {
-  font-family: "IBM Plex Mono", monospace;
+.axiom-index__agent-role {
+  font-family: var(--mono);
   font-size: 10px;
-  color: #8c98a8;
+  color: var(--ink-muted);
 }
 
-.agentic-index__skills {
+.axiom-index__skills {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 10px;
+  gap: 5px;
+  margin-top: 8px;
 }
 
-.agentic-index__skills span {
-  padding: 5px 7px;
-  border: 1px solid rgba(46, 61, 81, 0.12);
-  color: #7a8798;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+.axiom-index__skills span {
+  padding: 4px 6px;
+  border: 1px solid var(--border-subtle);
+  color: var(--ink-secondary);
+  font-family: var(--mono);
   font-size: 9px;
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--surface);
+  border-radius: 2px;
 }
 
-.agentic-index__footer {
-  margin-top: 60px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(46, 61, 81, 0.12);
+.axiom-index__footer {
+  margin-top: 54px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.1em;
-  color: #718097;
+  color: var(--ink-muted);
 }
 
-.agentic-index__footer button {
+.axiom-index__footer button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: transparent;
   border: 0;
   cursor: pointer;
-  color: #1b2e49;
+  color: var(--ink-primary);
   font-family: inherit;
   font-size: inherit;
   letter-spacing: inherit;
@@ -377,112 +384,219 @@ body {
   transition: color 0.15s ease;
 }
 
-.agentic-index__footer button:hover {
-  color: #ef233c;
+.axiom-index__footer button:hover {
+  color: var(--accent-red);
 }
 
 /* ==================================================
-   RESPONSIVENESS
+   AXIOM CONSOLE CORE STYLES (ARCHITECTURAL & CRISP)
    ================================================== */
 
+.axiom-panel {
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+.axiom-panel-header {
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.axiom-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--ink-primary);
+  color: #ffffff;
+  border: 1px solid var(--ink-primary);
+  border-radius: 3px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.axiom-btn-primary:hover {
+  background-color: #0c1624;
+}
+
+.axiom-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--surface);
+  color: var(--ink-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.axiom-btn-secondary:hover {
+  background-color: var(--surface-subtle);
+  border-color: var(--border-strong);
+}
+
+.axiom-btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  color: var(--accent-rose);
+  border: 1px solid #f2b8be;
+  border-radius: 3px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.axiom-btn-danger:hover {
+  background-color: #fdf2f3;
+  border-color: var(--accent-rose);
+}
+
+.axiom-btn-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--accent-emerald);
+  color: #ffffff;
+  border: 1px solid var(--accent-emerald);
+  border-radius: 3px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.axiom-btn-success:hover {
+  background-color: #0e7d5c;
+}
+
+/* Operational Data Tables */
+.axiom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.axiom-table th {
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: #faf9f5;
+  font-weight: 600;
+}
+
+.axiom-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--ink-primary);
+  vertical-align: middle;
+}
+
+.axiom-table tr:hover td {
+  background-color: rgba(246, 245, 240, 0.45);
+}
+
+/* Status Indicators */
+.axiom-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface);
+  color: var(--ink-secondary);
+}
+
+.axiom-tag-success {
+  border-color: #c7eadf;
+  background-color: #f0faf6;
+  color: #0d6b4f;
+}
+
+.axiom-tag-warning {
+  border-color: #f7e0b5;
+  background-color: #fdf8ed;
+  color: #945f00;
+}
+
+.axiom-tag-danger {
+  border-color: #f7c3c8;
+  background-color: #fdf2f3;
+  color: #a42331;
+}
+
+.axiom-tag-neutral {
+  border-color: var(--border-subtle);
+  background-color: var(--surface-subtle);
+  color: var(--ink-secondary);
+}
+
+/* Clean Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd3dc;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9aa8b8;
+}
+
+/* Responsiveness */
 @media (max-width: 760px) {
-  .agentic-index__topbar,
-  .agentic-index__container {
-    width: min(100% - 32px, 1310px);
+  .axiom-index__topbar,
+  .axiom-index__container {
+    width: min(100% - 32px, 1340px);
   }
 
-  .agentic-index__topbar {
-    padding-top: 18px;
-  }
-
-  .agentic-index__container {
-    padding-top: 28px;
-  }
-
-  .agentic-index__catalog {
-    margin-top: 40px;
-  }
-
-  .agentic-index__catalog-head {
-    min-height: 48px;
-  }
-
-  .agentic-index__catalog-meta {
-    gap: 8px;
-  }
-
-  .agentic-index__catalog-meta > :first-child {
-    display: none;
-  }
-
-  .agentic-index__row-trigger {
-    min-height: 56px;
-    font-size: 12px;
-  }
-
-  .agentic-index__detail {
+  .axiom-index__detail {
     grid-template-columns: 1fr;
     gap: 24px;
     padding-right: 0;
   }
 
-  .agentic-index__agents {
+  .axiom-index__agents {
     border-left: 0;
-    border-top: 1px solid rgba(46, 61, 81, 0.12);
-    padding: 18px 0 0;
+    border-top: 1px solid var(--border-subtle);
+    padding-left: 0;
+    padding-top: 16px;
   }
 
-  .agentic-index__footer {
-    gap: 16px;
-    align-items: flex-start;
+  .axiom-index__footer {
     flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .agentic-index__topbar,
-  .agentic-index__container {
-    width: calc(100% - 28px);
-  }
-
-  .agentic-index__wordmark {
-    font-size: 8px;
-  }
-
-  .agentic-index__console-link {
-    font-size: 10px;
-  }
-
-  .agentic-index__intro h1 {
-    margin-top: 18px;
-    margin-bottom: 16px;
-  }
-
-  .agentic-index__intro p {
-    font-size: 15px;
-    line-height: 1.55;
-  }
-
-  .agentic-index__catalog-head {
-    font-size: 9px;
-  }
-
-  .agentic-index__row-trigger {
-    min-height: 54px;
-    font-size: 11px;
-    line-height: 1.35;
-  }
-
-  .agentic-index__detail-copy p {
-    font-size: 12px;
-  }
-
-  .agentic-index__agent {
-    grid-template-columns: 7px 1fr;
-  }
-
-  .agentic-index__agent-role {
-    display: none;
+    align-items: flex-start;
+    gap: 12px;
   }
 }
 

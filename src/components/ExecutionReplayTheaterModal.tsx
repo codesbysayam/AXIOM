@@ -13,7 +13,6 @@ export const ExecutionReplayTheaterModal: React.FC<ExecutionReplayTheaterModalPr
 }) => {
   const { auditLogs } = useOperationsStore();
   const [currentFrame, setCurrentFrame] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   if (!isOpen) return null;
 
@@ -37,22 +36,22 @@ export const ExecutionReplayTheaterModal: React.FC<ExecutionReplayTheaterModalPr
       onClick={onClose}
     >
       <div
-        className="bg-white border border-slate-200 rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+        className="bg-white border border-[#dce1e7] rounded-[2px] shadow-2xl w-full max-w-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b border-slate-100 flex items-start justify-between">
+        <div className="p-4 border-b border-[#dce1e7] flex items-start justify-between bg-[#faf9f5]">
           <div>
-            <h3 className="text-base font-semibold text-slate-900">
+            <h3 className="text-base font-serif font-bold text-[#17263d]">
               Execution Replay Theater
             </h3>
-            <p className="text-xs text-slate-500 font-mono mt-0.5">
+            <p className="text-xs text-[#718096] font-mono mt-0.5">
               Deterministic step-by-step state and decision inspection
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 p-1 rounded"
+            className="text-[#718096] hover:text-[#17263d] p-1 rounded-[2px]"
             aria-label="Close modal"
           >
             <X size={18} />
@@ -60,7 +59,7 @@ export const ExecutionReplayTheaterModal: React.FC<ExecutionReplayTheaterModalPr
         </div>
 
         <div className="p-5 space-y-4">
-          <div className="p-4 rounded-lg bg-slate-900 text-white font-mono text-xs space-y-2">
+          <div className="p-4 rounded-[2px] bg-[#111827] text-white font-mono text-xs space-y-2 border border-slate-800 shadow-inner">
             <div className="flex items-center justify-between text-slate-400 text-[11px] pb-2 border-b border-slate-800">
               <span>FRAME {currentFrame + 1} OF {frames.length}</span>
               <span>STATE HASH: {activeEntry.hash}</span>
@@ -72,52 +71,52 @@ export const ExecutionReplayTheaterModal: React.FC<ExecutionReplayTheaterModalPr
               <span className="text-amber-300">:: {activeEntry.action}</span>
             </div>
 
-            <div className="text-slate-300 bg-slate-800/80 p-3 rounded leading-relaxed">
+            <div className="text-slate-300 bg-slate-800/80 p-3 rounded-[2px] leading-relaxed border border-slate-700/50">
               {activeEntry.details}
             </div>
 
-            <div className="text-[10px] text-slate-500 pt-1">
+            <div className="text-[10px] text-slate-400 pt-1">
               Integrity Verified: SHA-256 state transitions matched cryptographically.
             </div>
           </div>
 
           <div className="flex items-center justify-between gap-3 pt-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => setCurrentFrame((p) => Math.max(0, p - 1))}
-                className="px-2.5 py-1 text-xs border border-slate-200 rounded hover:bg-slate-50 text-slate-700"
+                className="axiom-btn-secondary py-1 px-2.5 text-xs"
               >
                 Previous Frame
               </button>
               <button
                 type="button"
                 onClick={() => setCurrentFrame((p) => (p + 1) % frames.length)}
-                className="px-2.5 py-1 text-xs border border-slate-200 rounded hover:bg-slate-50 text-slate-700"
+                className="axiom-btn-secondary py-1 px-2.5 text-xs"
               >
                 Next Frame
               </button>
               <button
                 type="button"
                 onClick={() => setCurrentFrame(0)}
-                className="p-1 text-slate-400 hover:text-slate-700 rounded"
+                className="p-1.5 text-[#718096] hover:text-[#17263d] rounded-[2px]"
                 title="Reset to frame 1"
               >
-                <RotateCcw size={14} />
+                <RotateCcw size={13} />
               </button>
             </div>
 
-            <div className="text-xs font-mono text-slate-500">
+            <div className="text-xs font-mono text-[#718096]">
               Playback Rate: 1.0x Realtime
             </div>
           </div>
         </div>
 
-        <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-end">
+        <div className="p-3 bg-[#faf9f5] border-t border-[#dce1e7] flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-xs text-slate-700 bg-white hover:bg-slate-100 rounded border border-slate-200 font-medium"
+            className="axiom-btn-secondary text-xs py-1 px-3"
           >
             Close Theater
           </button>

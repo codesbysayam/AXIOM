@@ -53,22 +53,22 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ isOpen, on
       onClick={onClose}
     >
       <div
-        className="bg-white border border-slate-200 rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+        className="bg-white border border-[#dce1e7] rounded-xs shadow-2xl w-full max-w-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b border-slate-100 flex items-start justify-between">
+        <div className="p-4 border-b border-[#dce1e7] flex items-start justify-between bg-[#faf9f5]">
           <div>
-            <h3 className="text-base font-semibold text-slate-900">
-              Agentic AI System Architecture
+            <h3 className="text-base font-serif font-bold text-[#17263d]">
+              AXIOM System Architecture
             </h3>
-            <p className="text-xs text-slate-500 font-mono mt-0.5">
-              Autonomous Operations Under Verifiable Human Control
+            <p className="text-xs text-[#718096] font-mono mt-0.5">
+              Autonomous intelligence, under human control.
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 p-1 rounded"
+            className="text-[#718096] hover:text-[#17263d] p-1 rounded-xs"
             aria-label="Close architecture modal"
           >
             <X size={18} />

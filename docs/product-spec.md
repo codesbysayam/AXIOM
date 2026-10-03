@@ -1,8 +1,10 @@
-# Product Specification: Agentic AI
+# Product Specification: AXIOM
+
+Autonomous Operations. Autonomous intelligence, under human control.
 
 ## Executive Summary
 
-Agentic AI delivers autonomous multi-agent orchestration for enterprise workflows while maintaining strict human-in-the-loop governance.
+AXIOM delivers autonomous multi-agent orchestration for enterprise workflows while maintaining strict human-in-the-loop governance.
 
 ## System Capabilities
 

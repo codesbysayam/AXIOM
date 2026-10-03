@@ -15,70 +15,79 @@ export const AuditPage: React.FC = () => {
   );
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 font-serif">
-            Cryptographic Audit Ledger
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+            Cryptographic Assurance
+          </span>
+          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+            Evidence Timeline & Audit Ledger
           </h1>
-          <p className="text-xs text-slate-500 font-mono mt-0.5">
+          <p className="text-xs text-[#40516a] mt-0.5">
             Immutable SHA-256 state transitions recording every autonomous action and human sign-off
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <button
             type="button"
             onClick={() => openModal('execution-replay')}
-            className="px-3 py-1.5 text-xs text-slate-700 bg-white hover:bg-slate-50 rounded-md border border-slate-200 font-medium inline-flex items-center gap-1.5 shadow-xs"
+            className="axiom-btn-secondary"
           >
             <ScrollText size={13} />
-            <span>Open Replay Theater</span>
+            <span>Replay Theater</span>
           </button>
           <button
             type="button"
             onClick={() => openModal('governance-certificate')}
-            className="px-3 py-1.5 text-xs text-white bg-[#1b2e49] hover:bg-slate-800 rounded-md font-medium inline-flex items-center gap-1.5 shadow-xs"
+            className="axiom-btn-primary"
           >
             <ShieldCheck size={13} />
-            <span>Verify Ledger Certificate</span>
+            <span>Verify Certificate</span>
           </button>
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100 gap-3">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search audit trail by agent, action, or details..."
-            className="w-full sm:w-80 px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:outline-none focus:bg-white text-slate-800"
-          />
+      {/* Audit Search & Ledger Verification */}
+      <div className="axiom-panel">
+        <div className="axiom-panel-header bg-[#faf9f5]">
+          <div className="flex items-center gap-2 w-full max-w-sm">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search ledger by actor, agent, or hash..."
+              className="w-full px-2.5 py-1 text-xs bg-white border border-[#dce1e7] rounded-xs focus:outline-none focus:border-[#17263d] text-[#17263d]"
+            />
+          </div>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-emerald-700">
-            <Lock size={13} />
-            <span>SHA-256 Verified (0 Tamper Detected)</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-[#0d6b4f]">
+            <Lock size={12} />
+            <span>SHA-256 Ledger Verified (0 Tamper Detected)</span>
           </div>
         </div>
 
-        <div className="divide-y divide-slate-100 mt-2">
-          {filtered.map((log) => (
-            <div key={log.id} className="py-3 flex items-start justify-between gap-4 font-mono">
-              <div className="space-y-1 min-w-0">
-                <div className="flex items-center gap-2 text-xs">
-                  <span className="text-slate-400">[{log.timestamp}]</span>
-                  <span className="font-bold text-slate-800">{log.agentName}</span>
-                  <span className="text-slate-500">:: {log.action}</span>
-                  <StatusBadge status={log.outcome} size="sm" />
+        {/* Evidence Timeline */}
+        <div className="divide-y divide-[#dce1e7]">
+          {filtered.map((log, idx) => (
+            <div key={log.id} className="p-4 hover:bg-[#fcfbf9] transition-colors font-mono text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px] text-[#718096]">
+                <div className="flex items-center gap-2">
+                  <span className="text-[#e63946] font-bold">0{idx + 1}</span>
+                  <span className="text-[#17263d] font-bold">[{log.timestamp}]</span>
+                  <span>ACTOR: <strong className="text-[#17263d]">{log.agentName}</strong></span>
+                  <span>ACTION: <span className="text-[#40516a]">{log.action}</span></span>
                 </div>
-                <p className="text-xs text-slate-700 font-sans leading-relaxed">{log.details}</p>
-                <div className="text-[10px] text-slate-400">Block Hash: {log.hash}</div>
+
+                <div className="flex items-center gap-2">
+                  <StatusBadge status={log.outcome} size="sm" />
+                  <span className="text-[10px] text-[#a0aec0]">HASH: {log.hash}</span>
+                </div>
               </div>
 
-              <div className="flex items-center gap-1.5 text-[11px] text-emerald-600 flex-shrink-0">
-                <CheckCircle2 size={13} />
-                <span>Signed</span>
+              <div className="mt-2 font-sans text-xs text-[#17263d] leading-relaxed bg-[#fbfaf7] p-2.5 rounded-xs border border-[#e9ecef]">
+                {log.details}
               </div>
             </div>
           ))}

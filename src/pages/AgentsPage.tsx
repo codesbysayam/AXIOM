@@ -11,90 +11,117 @@ export const AgentsPage: React.FC = () => {
   const [activeDrawerAgent, setActiveDrawerAgent] = useState<AgentInfo | null>(null);
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 font-serif">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+            System Topology
+          </span>
+          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
             Agent Workforce Registry
           </h1>
-          <p className="text-xs text-slate-500 font-mono mt-0.5">
-            Specialized autonomous agents operating with explicit domain invariants
+          <p className="text-xs text-[#40516a] mt-0.5">
+            Specialized autonomous agents operating with deterministic domain invariants
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-600 bg-white px-3 py-1.5 rounded-md border border-slate-200">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span>{AGENT_WORKFORCE.length} Agents Registered · 100% Operational</span>
+        <div className="flex items-center gap-2 text-xs font-mono text-[#159a72] bg-[#f0faf6] px-3 py-1.5 rounded-xs border border-[#c7eadf]">
+          <span className="w-2 h-2 rounded-full bg-[#159a72]" />
+          <span>8 of 8 Agents Active · 100% Operational</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {AGENT_WORKFORCE.map((agent) => (
-          <div
-            key={agent.id}
-            className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-colors"
-          >
-            <div>
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <StatusBadge status={agent.status} size="sm" />
-                  <span className="text-[11px] font-mono text-slate-400">v{agent.version}</span>
-                </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 bg-slate-100 text-slate-600 rounded">
-                  {agent.domain}
-                </span>
-              </div>
+      {/* System Topology Summary Strip */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[#dce1e7] bg-white rounded-xs divide-y md:divide-y-0 md:divide-x divide-[#dce1e7]">
+        <div className="p-3.5">
+          <span className="text-[10px] font-mono uppercase text-[#718096] block">Total Agents</span>
+          <span className="text-xl font-serif font-bold text-[#17263d] mt-0.5 block">8 Specialized</span>
+        </div>
+        <div className="p-3.5">
+          <span className="text-[10px] font-mono uppercase text-[#718096] block">Median Fleet Latency</span>
+          <span className="text-xl font-mono font-bold text-[#17263d] mt-0.5 block">145 ms</span>
+        </div>
+        <div className="p-3.5">
+          <span className="text-[10px] font-mono uppercase text-[#718096] block">Fleet Success Rate</span>
+          <span className="text-xl font-mono font-bold text-[#159a72] mt-0.5 block">99.3%</span>
+        </div>
+        <div className="p-3.5">
+          <span className="text-[10px] font-mono uppercase text-[#718096] block">Total Tasks Completed</span>
+          <span className="text-xl font-mono font-bold text-[#17263d] mt-0.5 block">186,070</span>
+        </div>
+      </div>
 
-              <h3 className="text-sm font-semibold text-slate-900 mt-2">{agent.name}</h3>
-              <p className="text-xs text-slate-600 mt-1 line-clamp-2 leading-relaxed">
-                {agent.description}
-              </p>
-
-              <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-3 gap-1.5 text-center text-xs">
-                <div className="p-1.5 bg-slate-50 rounded">
-                  <span className="text-[10px] font-mono text-slate-400 block uppercase">Success</span>
-                  <span className="font-semibold text-emerald-600 font-mono">{agent.successRate}%</span>
-                </div>
-                <div className="p-1.5 bg-slate-50 rounded">
-                  <span className="text-[10px] font-mono text-slate-400 block uppercase">Latency</span>
-                  <span className="font-semibold text-slate-800 font-mono">{agent.latencyMs}ms</span>
-                </div>
-                <div className="p-1.5 bg-slate-50 rounded">
-                  <span className="text-[10px] font-mono text-slate-400 block uppercase">Tasks</span>
-                  <span className="font-semibold text-slate-800 font-mono">
-                    {agent.completedTasks > 1000 ? `${(agent.completedTasks / 1000).toFixed(1)}k` : agent.completedTasks}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-3">
-                <span className="text-[10px] font-mono uppercase text-slate-400 block mb-1">
-                  Key Invariant:
-                </span>
-                <div className="text-[11px] text-slate-600 bg-emerald-50/50 p-2 rounded border border-emerald-200/60 line-clamp-1">
-                  {agent.invariants[0]}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-              <button
-                type="button"
+      {/* System Registry Table */}
+      <div className="axiom-panel overflow-x-auto">
+        <table className="axiom-table">
+          <thead>
+            <tr>
+              <th>Agent Identity</th>
+              <th>Semantic Domain</th>
+              <th>Status</th>
+              <th>Latency</th>
+              <th>Success Rate</th>
+              <th>Tasks Executed</th>
+              <th>Deterministic Invariant</th>
+              <th className="text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {AGENT_WORKFORCE.map((agent) => (
+              <tr
+                key={agent.id}
                 onClick={() => setActiveDrawerAgent(agent)}
-                className="text-xs text-slate-600 hover:text-slate-900 font-medium"
+                className="cursor-pointer"
               >
-                Quick Diagnostics
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedAgent(agent)}
-                className="px-3 py-1.5 text-xs text-white bg-[#1b2e49] hover:bg-slate-800 rounded font-medium shadow-xs"
-              >
-                Full Profile
-              </button>
-            </div>
-          </div>
-        ))}
+                <td>
+                  <div className="font-semibold text-[#17263d] flex items-center gap-2">
+                    <span>{agent.name}</span>
+                    <span className="text-[10px] font-mono text-[#a0aec0]">v{agent.version}</span>
+                  </div>
+                  <div className="text-[11px] text-[#718096] font-mono">{agent.id}</div>
+                </td>
+                <td className="text-[#40516a] font-mono text-xs">{agent.domain}</td>
+                <td>
+                  <StatusBadge status={agent.status} size="sm" />
+                </td>
+                <td className="font-mono text-xs text-[#17263d]">{agent.latencyMs}ms</td>
+                <td className="font-mono text-xs text-[#159a72] font-semibold">{agent.successRate}%</td>
+                <td className="font-mono text-xs text-[#718096]">
+                  {agent.completedTasks.toLocaleString()}
+                </td>
+                <td>
+                  <span className="text-[11px] text-[#40516a] truncate max-w-xs block font-mono">
+                    {agent.invariants[0]}
+                  </span>
+                </td>
+                <td className="text-right">
+                  <div className="flex items-center justify-end gap-1.5">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveDrawerAgent(agent);
+                      }}
+                      className="axiom-btn-secondary py-1 px-2.5 text-xs"
+                    >
+                      Diagnostics
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedAgent(agent);
+                      }}
+                      className="axiom-btn-primary py-1 px-2.5 text-xs"
+                    >
+                      Profile
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <AgentDetailModal agent={selectedAgent} onClose={() => setSelectedAgent(null)} />

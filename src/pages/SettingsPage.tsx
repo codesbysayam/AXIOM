@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Save, Settings } from 'lucide-react';
+import { Check, Save, Settings, Shield } from 'lucide-react';
 import { useOperationsStore } from '../orchestrator/store';
 
 export const SettingsPage: React.FC = () => {
@@ -14,45 +14,48 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-5 max-w-3xl">
-      <div>
-        <h1 className="text-xl font-bold text-slate-900 font-serif">
+    <div className="space-y-6 max-w-3xl">
+      <div className="border-b border-[#dce1e7] pb-4">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+          Control Plane Configuration
+        </span>
+        <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
           System & Operator Settings
         </h1>
-        <p className="text-xs text-slate-500 font-mono mt-0.5">
+        <p className="text-xs text-[#40516a] mt-0.5">
           Configure autonomous bounds, human gate triggers, and audit ledger policies
         </p>
       </div>
 
-      <form onSubmit={handleSave} className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs space-y-4">
+      <form onSubmit={handleSave} className="axiom-panel p-5 shadow-2xs space-y-4 bg-white">
         <div>
-          <label className="text-xs font-semibold text-slate-800 block mb-1">
+          <label className="text-xs font-semibold text-[#17263d] block mb-1">
             Financial Commitment Approval Threshold (USD)
           </label>
           <input
             type="number"
             value={financialThreshold}
             onChange={(e) => setFinancialThreshold(e.target.value)}
-            className="w-full sm:w-64 px-3 py-1.5 text-xs border border-slate-200 rounded bg-slate-50 font-mono text-slate-900"
+            className="w-full sm:w-64 px-3 py-1.5 text-xs border border-[#dce1e7] rounded-[2px] bg-[#fbfaf7] font-mono text-[#17263d] focus:outline-none focus:border-[#17263d]"
           />
-          <span className="text-[11px] text-slate-500 block mt-1">
+          <span className="text-[11px] text-[#718096] block mt-1 font-mono">
             Inbound invoices or outbound payouts above this amount automatically halt for operator sign-off.
           </span>
         </div>
 
-        <div className="pt-3 border-t border-slate-100 space-y-2">
+        <div className="pt-3 border-t border-[#f0eee6] space-y-2">
           <label className="flex items-center gap-2.5">
             <input
               type="checkbox"
               checked={auditHashing}
               onChange={(e) => setAuditHashing(e.target.checked)}
-              className="rounded border-slate-300 text-[#1b2e49] focus:ring-0"
+              className="rounded-[2px] border-[#dce1e7] text-[#17263d] focus:ring-0"
             />
             <div>
-              <span className="text-xs font-semibold text-slate-800 block">
+              <span className="text-xs font-semibold text-[#17263d] block">
                 Cryptographic SHA-256 State Transition Signing
               </span>
-              <span className="text-[11px] text-slate-500 block">
+              <span className="text-[11px] text-[#718096] block">
                 Generates tamper-evident hash chains across all agent and operator actions.
               </span>
             </div>
@@ -63,23 +66,23 @@ export const SettingsPage: React.FC = () => {
               type="checkbox"
               checked={requireDualSignoff}
               onChange={(e) => setRequireDualSignoff(e.target.checked)}
-              className="rounded border-slate-300 text-[#1b2e49] focus:ring-0"
+              className="rounded-[2px] border-[#dce1e7] text-[#17263d] focus:ring-0"
             />
             <div>
-              <span className="text-xs font-semibold text-slate-800 block">
+              <span className="text-xs font-semibold text-[#17263d] block">
                 Dual Operator Sign-off for Critical Code Merges
               </span>
-              <span className="text-[11px] text-slate-500 block">
+              <span className="text-[11px] text-[#718096] block">
                 Requires two distinct human operators to authorize production infrastructure changes.
               </span>
             </div>
           </label>
         </div>
 
-        <div className="pt-4 border-t border-slate-100 flex justify-end">
+        <div className="pt-4 border-t border-[#f0eee6] flex justify-end">
           <button
             type="submit"
-            className="px-4 py-1.5 text-xs text-white bg-[#1b2e49] hover:bg-slate-800 rounded font-medium inline-flex items-center gap-1.5 shadow-xs"
+            className="axiom-btn-primary"
           >
             <Save size={13} />
             <span>Save Configuration</span>

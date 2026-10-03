@@ -5,70 +5,132 @@ import { useOperationsStore } from '../orchestrator/store';
 export const GovernancePage: React.FC = () => {
   const { policies, openModal } = useOperationsStore();
 
+  const ZONES = [
+    { label: 'Agent Dispatch', desc: 'Task Initiated by Autonomous Actor' },
+    { label: 'Policy Verification', desc: 'Rules & Thresholds Tested' },
+    { label: 'Invariant Validation', desc: 'Sandboxed Invariants Checked' },
+    { label: 'Human Gate', desc: 'Operator Sign-off Enforced' },
+    { label: 'Safe Execution', desc: 'Idempotent Dispatched Output' },
+  ];
+
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 font-serif">
-            Governance & Policy Engine
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+            Responsible Autonomy
+          </span>
+          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+            Governance & Policy Architecture
           </h1>
-          <p className="text-xs text-slate-500 font-mono mt-0.5">
+          <p className="text-xs text-[#40516a] mt-0.5">
             Operational boundary rules, regulatory constraints, and human authorization mandates
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <button
             type="button"
             onClick={() => openModal('policy-simulator')}
-            className="px-3 py-1.5 text-xs text-slate-700 bg-white hover:bg-slate-50 rounded-md border border-slate-200 font-medium inline-flex items-center gap-1.5 shadow-xs"
+            className="axiom-btn-secondary"
           >
             <SlidersHorizontal size={13} />
-            <span>Simulate Policy Rules</span>
+            <span>Simulate Rules</span>
           </button>
           <button
             type="button"
             onClick={() => openModal('governance-certificate')}
-            className="px-3 py-1.5 text-xs text-white bg-[#1b2e49] hover:bg-slate-800 rounded-md font-medium inline-flex items-center gap-1.5 shadow-xs"
+            className="axiom-btn-primary"
           >
             <Award size={13} />
-            <span>View Certificate</span>
+            <span>Attestation Certificate</span>
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {policies.map((pol) => (
-          <div
-            key={pol.id}
-            className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-start justify-between gap-2">
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 bg-slate-100 text-slate-600 rounded">
-                  {pol.scope}
-                </span>
-                <span
-                  className={`text-[10px] font-mono font-medium px-2 py-0.5 rounded ${
-                    pol.enforcement === 'strict_block'
-                      ? 'bg-rose-100 text-rose-800'
-                      : 'bg-amber-100 text-amber-800'
-                  }`}
-                >
-                  {pol.enforcement === 'strict_block' ? 'Strict Hard Block' : 'Mandatory Human Gate'}
-                </span>
-              </div>
+      {/* VISUAL CENTERPIECE: Bounded Autonomy Topology Flow */}
+      <div className="axiom-panel">
+        <div className="axiom-panel-header bg-[#faf9f5]">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#718096]">
+            Bounded Autonomy Topology: Zone Enforcements
+          </span>
+          <span className="text-[11px] font-mono text-[#0d6b4f] bg-[#f0faf6] border border-[#c7eadf] px-2 py-0.5 rounded-xs">
+            100% Invariants Active
+          </span>
+        </div>
 
-              <h3 className="text-sm font-semibold text-slate-900 mt-2">{pol.name}</h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed">{pol.description}</p>
-            </div>
+        <div className="p-5">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+            {ZONES.map((zone, idx) => (
+              <React.Fragment key={zone.label}>
+                <div className="p-3 border border-[#dce1e7] bg-[#fbfaf7] rounded-xs flex-shrink-0 w-44 text-center">
+                  <span className="text-[9px] font-mono uppercase text-[#718096] block">
+                    ZONE 0{idx + 1}
+                  </span>
+                  <div className="text-xs font-bold text-[#17263d] mt-0.5">{zone.label}</div>
+                  <div className="text-[10px] text-[#40516a] mt-1 leading-snug">{zone.desc}</div>
+                </div>
 
-            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
-              <span className="text-emerald-700 font-medium">Policy Active & Enforced</span>
-              <span>Violations Quarantined: {pol.violationCount}</span>
-            </div>
+                {idx < ZONES.length - 1 && (
+                  <span className="text-[#a0aec0] font-mono text-xs flex-shrink-0">→</span>
+                )}
+              </React.Fragment>
+            ))}
           </div>
-        ))}
+        </div>
+      </div>
+
+      {/* Policy Enforcement Matrix */}
+      <div className="axiom-panel overflow-x-auto">
+        <div className="axiom-panel-header bg-[#faf9f5]">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#718096]">
+            Active Governance Policies & Enforcement Gates
+          </span>
+          <span className="text-[11px] font-mono text-[#718096]">
+            Enforcement Mode: Strict Intercept
+          </span>
+        </div>
+
+        <table className="axiom-table">
+          <thead>
+            <tr>
+              <th>Policy Specification</th>
+              <th>Operational Scope</th>
+              <th>Enforcement Mode</th>
+              <th>Invariant Description</th>
+              <th className="text-right">Quarantined Intercepts</th>
+            </tr>
+          </thead>
+          <tbody>
+            {policies.map((pol) => (
+              <tr key={pol.id}>
+                <td>
+                  <div className="font-semibold text-[#17263d]">{pol.name}</div>
+                  <div className="text-[10px] font-mono text-[#718096]">{pol.id}</div>
+                </td>
+                <td className="font-mono text-xs text-[#40516a]">{pol.scope}</td>
+                <td>
+                  <span
+                    className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-xs ${
+                      pol.enforcement === 'strict_block'
+                        ? 'bg-rose-100 text-[#c83e4d]'
+                        : 'bg-amber-100 text-[#945f00]'
+                    }`}
+                  >
+                    {pol.enforcement === 'strict_block' ? 'Strict Hard Block' : 'Mandatory Human Gate'}
+                  </span>
+                </td>
+                <td>
+                  <p className="text-xs text-[#40516a] max-w-md leading-relaxed">{pol.description}</p>
+                </td>
+                <td className="text-right font-mono text-xs font-bold text-[#17263d]">
+                  {pol.violationCount}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

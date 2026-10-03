@@ -13,30 +13,33 @@ export const SkillsPage: React.FC = () => {
   });
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 font-serif">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+            Capabilities Matrix
+          </span>
+          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
             Custom Skills Registry
           </h1>
-          <p className="text-xs text-slate-500 font-mono mt-0.5">
-            Modular agent capabilities with deterministic contracts and policy checks
+          <p className="text-xs text-[#40516a] mt-0.5">
+            Modular agent capabilities with deterministic contracts, sandbox testing, and policy checks
           </p>
         </div>
 
-        <div className="text-xs font-mono text-slate-600 bg-white px-3 py-1.5 rounded-md border border-slate-200">
+        <div className="text-xs font-mono text-[#17263d] bg-white px-3 py-1.5 rounded-[2px] border border-[#dce1e7]">
           {CUSTOM_SKILLS.length} Skills Registered
         </div>
       </div>
 
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
         <button
           type="button"
           onClick={() => setSelectedCategory('all')}
-          className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+          className={`px-3 py-1 rounded-[2px] text-xs font-medium transition-colors ${
             selectedCategory === 'all'
-              ? 'bg-[#1b2e49] text-white'
-              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              ? 'bg-[#17263d] text-white shadow-2xs'
+              : 'bg-white border border-[#dce1e7] text-[#40516a] hover:bg-[#f6f5f0]'
           }`}
         >
           All Categories ({CUSTOM_SKILLS.length})
@@ -46,10 +49,10 @@ export const SkillsPage: React.FC = () => {
             key={cat}
             type="button"
             onClick={() => setSelectedCategory(cat)}
-            className={`px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`px-3 py-1 rounded-[2px] text-xs font-medium whitespace-nowrap transition-colors ${
               selectedCategory === cat
-                ? 'bg-[#1b2e49] text-white'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-[#17263d] text-white shadow-2xs'
+                : 'bg-white border border-[#dce1e7] text-[#40516a] hover:bg-[#f6f5f0]'
             }`}
           >
             {cat}
@@ -61,36 +64,36 @@ export const SkillsPage: React.FC = () => {
         {filtered.map((skill) => (
           <div
             key={skill.id}
-            className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between"
+            className="axiom-panel p-4 flex flex-col justify-between shadow-2xs bg-white"
           >
             <div>
-              <div className="flex items-start justify-between gap-2">
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 bg-slate-100 text-slate-600 rounded">
+              <div className="flex items-start justify-between gap-2 border-b border-[#f0eee6] pb-2.5">
+                <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 bg-[#fbfaf7] text-[#718096] rounded-[2px] border border-[#dce1e7]">
                   {skill.category}
                 </span>
                 <span
-                  className={`text-[10px] font-mono font-medium px-2 py-0.5 rounded ${
+                  className={`text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded-[2px] border ${
                     skill.requiresHumanReview
-                      ? 'bg-amber-100 text-amber-800'
-                      : 'bg-emerald-100 text-emerald-800'
+                      ? 'bg-amber-50 text-[#945f00] border-amber-200'
+                      : 'bg-emerald-50 text-[#0d6b4f] border-emerald-200'
                   }`}
                 >
-                  {skill.requiresHumanReview ? 'Human Review Gate' : 'Deterministic Autonomous'}
+                  {skill.requiresHumanReview ? 'Human Gate Enforced' : 'Deterministic Autonomous'}
                 </span>
               </div>
 
-              <h3 className="text-sm font-semibold text-slate-900 mt-2">{skill.name}</h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed">{skill.description}</p>
+              <h3 className="text-sm font-serif font-bold text-[#17263d] mt-2.5">{skill.name}</h3>
+              <p className="text-xs text-[#40516a] mt-1 leading-relaxed">{skill.description}</p>
 
-              <div className="mt-4 pt-3 border-t border-slate-100">
-                <span className="text-[10px] font-mono uppercase text-slate-400 block mb-1.5">
+              <div className="mt-4 pt-3 border-t border-[#f0eee6]">
+                <span className="text-[10px] font-mono uppercase text-[#718096] block mb-1.5">
                   Assigned Agents:
                 </span>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-1">
                   {skill.assignedAgents.map((ag) => (
                     <span
                       key={ag}
-                      className="px-2 py-0.5 text-xs font-mono text-slate-700 bg-slate-50 rounded border border-slate-200"
+                      className="px-2 py-0.5 text-xs font-mono text-[#17263d] bg-[#fbfaf7] rounded-[2px] border border-[#dce1e7]"
                     >
                       {ag}
                     </span>
@@ -99,9 +102,9 @@ export const SkillsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="mt-4 pt-3 border-t border-[#dce1e7] flex items-center justify-between text-xs font-mono text-[#718096]">
               <span>Skill ID: {skill.id}</span>
-              <span className="text-emerald-700 font-semibold">Test Invariants Passed</span>
+              <span className="text-[#0d6b4f] font-semibold">Invariants Passed</span>
             </div>
           </div>
         ))}

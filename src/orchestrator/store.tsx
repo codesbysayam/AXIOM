@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import {
   GOVERNANCE_POLICIES,
   INITIAL_APPROVALS,
@@ -84,227 +84,287 @@ export const OperationsStoreProvider: React.FC<{ children: React.ReactNode }> = 
   const [modalPayload, setModalPayload] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const addToast = (
-    title: string,
-    message: string,
-    type: 'success' | 'info' | 'warning' | 'error' = 'info',
-  ) => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-    setToasts((prev) => [...prev, { id, title, message, type }]);
-    setTimeout(() => {
-      setToasts((current) => current.filter((t) => t.id !== id));
-    }, 4500);
-  };
+  const addToast = useCallback(
+    (
+      title: string,
+      message: string,
+      type: 'success' | 'info' | 'warning' | 'error' = 'info',
+    ) => {
+      const id = `toast-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+      setToasts((prev) => [...prev, { id, title, message, type }]);
+      setTimeout(() => {
+        setToasts((current) => current.filter((t) => t.id !== id));
+      }, 4500);
+    },
+    [],
+  );
 
-  const removeToast = (id: string) => {
+  const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, []);
 
-  const navigateTo = (view: ConsoleView, workflowId?: string) => {
+  const navigateTo = useCallback((view: ConsoleView, workflowId?: string) => {
     setCurrentView(view);
     if (workflowId) {
       setSelectedWorkflowId(workflowId);
     }
-  };
+  }, []);
 
-  const openModal = (name: string, payload?: any) => {
+  const openModal = useCallback((name: string, payload?: any) => {
     setActiveModal(name);
     setModalPayload(payload);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setActiveModal(null);
     setModalPayload(null);
-  };
+  }, []);
 
-  const approveRequest = (id: string, note?: string) => {
-    const target = approvals.find((a) => a.id === id);
-    if (!target) return;
+  const approveRequest = useCallback(
+    (id: string, note?: string) => {
+      setApprovals((prev) => {
+        const target = prev.find((a) => a.id === id);
+        if (!target) return prev;
 
-    setApprovals((prev) =>
-      prev.map((appr) =>
-        appr.id === id
-          ? {
-              ...appr,
-              status: 'approved',
-              resolvedAt: 'Just now',
-              resolvedBy: 'Lead Operator',
-              resolutionNote: note || 'Approved by operator',
+        const updated = prev.map((appr) =>
+          appr.id === id
+            ? {
+                ...appr,
+                status: 'approved' as const,
+                resolvedAt: 'Just now',
+                resolvedBy: 'Lead Operator',
+                resolutionNote: note || 'Approved by operator',
+              }
+            : appr,
+        );
+
+        // Update related workflow step
+        setWorkflows((wfs) =>
+          wfs.map((wf) => {
+            if (wf.id === target.workflowId) {
+              const updatedSteps = wf.steps.map((st) => {
+                if (st.id === target.stepId) {
+                  return {
+                    ...st,
+                    status: 'completed' as const,
+                    outputDescription: 'Approved by human operator',
+                  };
+                }
+                if (st.status === 'pending') {
+                  return { ...st, status: 'running' as const };
+                }
+                return st;
+              });
+              return { ...wf, steps: updatedSteps };
             }
-          : appr,
-      ),
-    );
+            return wf;
+          }),
+        );
 
-    // Update related workflow step
-    setWorkflows((prev) =>
-      prev.map((wf) => {
-        if (wf.id === target.workflowId) {
-          const updatedSteps = wf.steps.map((st) => {
-            if (st.id === target.stepId) {
-              return { ...st, status: 'completed' as const, outputDescription: 'Approved by human operator' };
+        // Record audit log
+        const newLog: AuditLogEntry = {
+          id: `audit-${Date.now()}`,
+          timestamp: 'Just now',
+          workflowId: target.workflowId,
+          agentName: 'Human Operator',
+          action: 'HUMAN_APPROVAL_GRANT',
+          outcome: 'human_override',
+          details: `Operator authorized request ${id} for workflow: ${target.workflowTitle}. Note: ${note || 'Verified'}`,
+          hash: `${Math.random().toString(16).substring(2, 10)}..${Math.random().toString(16).substring(2, 6)}`,
+        };
+        setAuditLogs((logs) => [newLog, ...logs]);
+
+        return updated;
+      });
+
+      addToast('Approval Granted', `Authorized human gate safely.`, 'success');
+    },
+    [addToast],
+  );
+
+  const rejectRequest = useCallback(
+    (id: string, note?: string) => {
+      setApprovals((prev) => {
+        const target = prev.find((a) => a.id === id);
+        if (!target) return prev;
+
+        const updated = prev.map((appr) =>
+          appr.id === id
+            ? {
+                ...appr,
+                status: 'rejected' as const,
+                resolvedAt: 'Just now',
+                resolvedBy: 'Lead Operator',
+                resolutionNote: note || 'Rejected per policy check',
+              }
+            : appr,
+        );
+
+        setWorkflows((wfs) =>
+          wfs.map((wf) => {
+            if (wf.id === target.workflowId) {
+              const updatedSteps = wf.steps.map((st) => {
+                if (st.id === target.stepId) {
+                  return {
+                    ...st,
+                    status: 'failed' as const,
+                    outputDescription: 'Halted: Operator declined authorization',
+                  };
+                }
+                return st;
+              });
+              return { ...wf, steps: updatedSteps };
             }
-            if (st.status === 'pending') {
-              return { ...st, status: 'running' as const };
-            }
-            return st;
-          });
-          return { ...wf, steps: updatedSteps };
-        }
-        return wf;
-      }),
-    );
+            return wf;
+          }),
+        );
 
-    // Record audit log
-    const newLog: AuditLogEntry = {
-      id: `audit-${Date.now()}`,
-      timestamp: 'Just now',
-      workflowId: target.workflowId,
-      agentName: 'Human Operator',
-      action: 'HUMAN_APPROVAL_GRANT',
-      outcome: 'human_override',
-      details: `Operator authorized request ${id} for workflow: ${target.workflowTitle}. Note: ${note || 'Verified'}`,
-      hash: `${Math.random().toString(16).substring(2, 10)}..${Math.random().toString(16).substring(2, 6)}`,
-    };
-    setAuditLogs((prev) => [newLog, ...prev]);
+        const newLog: AuditLogEntry = {
+          id: `audit-${Date.now()}`,
+          timestamp: 'Just now',
+          workflowId: target.workflowId,
+          agentName: 'Human Operator',
+          action: 'HUMAN_APPROVAL_REJECT',
+          outcome: 'policy_block',
+          details: `Operator rejected request ${id} for workflow: ${target.workflowTitle}. Reason: ${note || 'Safety rejection'}`,
+          hash: `${Math.random().toString(16).substring(2, 10)}..${Math.random().toString(16).substring(2, 6)}`,
+        };
+        setAuditLogs((logs) => [newLog, ...logs]);
 
-    addToast('Approval Granted', `Authorized step "${target.stepName}" safely.`, 'success');
-  };
+        return updated;
+      });
 
-  const rejectRequest = (id: string, note?: string) => {
-    const target = approvals.find((a) => a.id === id);
-    if (!target) return;
+      addToast('Execution Halted', `Request ${id} declined. Policy boundary preserved.`, 'warning');
+    },
+    [addToast],
+  );
 
-    setApprovals((prev) =>
-      prev.map((appr) =>
-        appr.id === id
-          ? {
-              ...appr,
-              status: 'rejected',
-              resolvedAt: 'Just now',
-              resolvedBy: 'Lead Operator',
-              resolutionNote: note || 'Rejected per policy check',
-            }
-          : appr,
-      ),
-    );
-
-    setWorkflows((prev) =>
-      prev.map((wf) => {
-        if (wf.id === target.workflowId) {
-          const updatedSteps = wf.steps.map((st) => {
-            if (st.id === target.stepId) {
-              return { ...st, status: 'failed' as const, outputDescription: 'Halted: Operator declined authorization' };
-            }
-            return st;
-          });
-          return { ...wf, steps: updatedSteps };
-        }
-        return wf;
-      }),
-    );
-
-    const newLog: AuditLogEntry = {
-      id: `audit-${Date.now()}`,
-      timestamp: 'Just now',
-      workflowId: target.workflowId,
-      agentName: 'Human Operator',
-      action: 'HUMAN_APPROVAL_REJECT',
-      outcome: 'policy_block',
-      details: `Operator rejected request ${id} for workflow: ${target.workflowTitle}. Reason: ${note || 'Safety rejection'}`,
-      hash: `${Math.random().toString(16).substring(2, 10)}..${Math.random().toString(16).substring(2, 6)}`,
-    };
-    setAuditLogs((prev) => [newLog, ...prev]);
-
-    addToast('Execution Halted', `Request ${id} declined. Policy boundary preserved.`, 'warning');
-  };
-
-  const runWorkflow = (id: string) => {
-    setWorkflows((prev) =>
-      prev.map((wf) => {
-        if (wf.id === id) {
-          const resetSteps = wf.steps.map((st, idx) => ({
-            ...st,
-            status: idx === 0 ? ('running' as const) : ('pending' as const),
-          }));
-          return {
-            ...wf,
-            totalRuns: wf.totalRuns + 1,
-            lastRunAt: 'Just now',
-            steps: resetSteps,
-          };
-        }
-        return wf;
-      }),
-    );
-
-    addToast('Workflow Triggered', `Pipeline execution started for ${id}.`, 'info');
-
-    // Simulate progressive execution
-    setTimeout(() => {
+  const runWorkflow = useCallback(
+    (id: string) => {
       setWorkflows((prev) =>
         prev.map((wf) => {
           if (wf.id === id) {
-            const advancedSteps = wf.steps.map((st, idx) => {
-              if (idx === 0) return { ...st, status: 'completed' as const, executedAt: 'Just now' };
-              if (idx === 1) return { ...st, status: 'running' as const };
-              return st;
-            });
-            return { ...wf, steps: advancedSteps };
+            const resetSteps = wf.steps.map((st, idx) => ({
+              ...st,
+              status: idx === 0 ? ('running' as const) : ('pending' as const),
+            }));
+            return {
+              ...wf,
+              totalRuns: wf.totalRuns + 1,
+              lastRunAt: 'Just now',
+              steps: resetSteps,
+            };
           }
           return wf;
         }),
       );
-    }, 1200);
-  };
 
-  const createWorkflow = (newWf: WorkflowDefinition) => {
-    setWorkflows((prev) => [newWf, ...prev]);
-    addToast('Workflow Created', `Pipeline "${newWf.title}" registered successfully.`, 'success');
-  };
+      addToast('Workflow Triggered', `Pipeline execution started for ${id}.`, 'info');
 
-  const resolveCase = (id: string) => {
-    setCases((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, status: 'resolved' as const } : c)),
-    );
-    addToast('Case Resolved', `Incident case ${id} marked as resolved.`, 'success');
-  };
+      // Progressive step simulation
+      setTimeout(() => {
+        setWorkflows((prev) =>
+          prev.map((wf) => {
+            if (wf.id === id) {
+              const advancedSteps = wf.steps.map((st, idx) => {
+                if (idx === 0) return { ...st, status: 'completed' as const, executedAt: 'Just now' };
+                if (idx === 1) return { ...st, status: 'running' as const };
+                return st;
+              });
+              return { ...wf, steps: advancedSteps };
+            }
+            return wf;
+          }),
+        );
+      }, 900);
+    },
+    [addToast],
+  );
 
-  const resolveIncident = (id: string) => {
-    setIncidents((prev) =>
-      prev.map((inc) => (inc.id === id ? { ...inc, status: 'resolved' as const } : inc)),
-    );
-    addToast('Incident Contained', `Incident ${id} marked as resolved with mitigation logged.`, 'success');
-  };
+  const createWorkflow = useCallback(
+    (newWf: WorkflowDefinition) => {
+      setWorkflows((prev) => [newWf, ...prev]);
+      addToast('Workflow Created', `Pipeline "${newWf.title}" registered successfully.`, 'success');
+    },
+    [addToast],
+  );
+
+  const resolveCase = useCallback(
+    (id: string) => {
+      setCases((prev) =>
+        prev.map((c) => (c.id === id ? { ...c, status: 'resolved' as const } : c)),
+      );
+      addToast('Case Resolved', `Incident case ${id} marked as resolved.`, 'success');
+    },
+    [addToast],
+  );
+
+  const resolveIncident = useCallback(
+    (id: string) => {
+      setIncidents((prev) =>
+        prev.map((inc) => (inc.id === id ? { ...inc, status: 'resolved' as const } : inc)),
+      );
+      addToast('Incident Contained', `Incident ${id} marked as resolved with mitigation logged.`, 'success');
+    },
+    [addToast],
+  );
+
+  const value = useMemo(
+    () => ({
+      currentView,
+      selectedWorkflowId,
+      workflows,
+      approvals,
+      auditLogs,
+      cases,
+      incidents,
+      policies,
+      toasts,
+      activeModal,
+      modalPayload,
+      searchTerm,
+      setSearchTerm,
+      navigateTo,
+      approveRequest,
+      rejectRequest,
+      runWorkflow,
+      createWorkflow,
+      resolveCase,
+      resolveIncident,
+      openModal,
+      closeModal,
+      addToast,
+      removeToast,
+    }),
+    [
+      currentView,
+      selectedWorkflowId,
+      workflows,
+      approvals,
+      auditLogs,
+      cases,
+      incidents,
+      policies,
+      toasts,
+      activeModal,
+      modalPayload,
+      searchTerm,
+      navigateTo,
+      approveRequest,
+      rejectRequest,
+      runWorkflow,
+      createWorkflow,
+      resolveCase,
+      resolveIncident,
+      openModal,
+      closeModal,
+      addToast,
+      removeToast,
+    ],
+  );
 
   return (
-    <OperationsStoreContext.Provider
-      value={{
-        currentView,
-        selectedWorkflowId,
-        workflows,
-        approvals,
-        auditLogs,
-        cases,
-        incidents,
-        policies,
-        toasts,
-        activeModal,
-        modalPayload,
-        searchTerm,
-        setSearchTerm,
-        navigateTo,
-        approveRequest,
-        rejectRequest,
-        runWorkflow,
-        createWorkflow,
-        resolveCase,
-        resolveIncident,
-        openModal,
-        closeModal,
-        addToast,
-        removeToast,
-      }}
-    >
+    <OperationsStoreContext.Provider value={value}>
       {children}
     </OperationsStoreContext.Provider>
   );

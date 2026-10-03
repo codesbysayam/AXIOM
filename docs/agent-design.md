@@ -1,4 +1,6 @@
-# Agent Design Guidelines: Agentic AI
+# Agent Design Guidelines: AXIOM
+
+Autonomous Operations. Autonomous intelligence, under human control.
 
 ## Core Design Principles
 

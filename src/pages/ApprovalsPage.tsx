@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckSquare, Filter, ShieldCheck } from 'lucide-react';
+import { CheckSquare, ShieldCheck, UserCheck } from 'lucide-react';
 import { useOperationsStore } from '../orchestrator/store';
 import { ApprovalCard } from '../components/ApprovalCard';
 
@@ -16,61 +16,64 @@ export const ApprovalsPage: React.FC = () => {
   const pendingCount = approvals.filter((a) => a.status === 'pending').length;
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 font-serif">
-            Human Approval Gateways
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+            Human Agency & Authority
+          </span>
+          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+            Human Decision Gateways
           </h1>
-          <p className="text-xs text-slate-500 font-mono mt-0.5">
-            Operational review checkpoint: No high-risk action executes without human sign-off
+          <p className="text-xs text-[#40516a] mt-0.5">
+            Operational review checkpoint: No high-risk autonomous action executes without explicit operator sign-off
           </p>
         </div>
 
-        <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg border border-slate-200">
+        <div className="flex items-center gap-1.5 border border-[#dce1e7] bg-white p-1 rounded-xs">
           <button
             type="button"
             onClick={() => setFilter('pending')}
-            className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+            className={`px-3 py-1 text-xs font-medium rounded-xs transition-colors ${
               filter === 'pending'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-[#17263d] text-white'
+                : 'text-[#40516a] hover:bg-[#f6f5f0]'
             }`}
           >
-            Pending Action ({pendingCount})
+            Pending Review ({pendingCount})
           </button>
           <button
             type="button"
             onClick={() => setFilter('resolved')}
-            className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+            className={`px-3 py-1 text-xs font-medium rounded-xs transition-colors ${
               filter === 'resolved'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-[#17263d] text-white'
+                : 'text-[#40516a] hover:bg-[#f6f5f0]'
             }`}
           >
-            Resolved
+            Resolved Decisions
           </button>
           <button
             type="button"
             onClick={() => setFilter('all')}
-            className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+            className={`px-3 py-1 text-xs font-medium rounded-xs transition-colors ${
               filter === 'all'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-[#17263d] text-white'
+                : 'text-[#40516a] hover:bg-[#f6f5f0]'
             }`}
           >
-            All ({approvals.length})
+            All Gates ({approvals.length})
           </button>
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {filtered.length === 0 ? (
-          <div className="p-12 text-center bg-white border border-slate-200 rounded-lg">
-            <ShieldCheck size={28} className="mx-auto text-emerald-600 mb-2" />
-            <h3 className="text-sm font-semibold text-slate-900">No Pending Approvals</h3>
-            <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-              All multi-agent pipelines are operating within autonomous safety thresholds.
+          <div className="axiom-panel p-12 text-center">
+            <ShieldCheck size={28} className="mx-auto text-[#159a72] mb-2" />
+            <h3 className="text-sm font-semibold text-[#17263d]">Decision Queue Clear</h3>
+            <p className="text-xs text-[#718096] mt-1 max-w-sm mx-auto">
+              All multi-agent pipelines are operating strictly within autonomous safety thresholds.
             </p>
           </div>
         ) : (

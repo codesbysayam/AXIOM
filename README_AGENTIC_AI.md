@@ -1,20 +1,22 @@
-# Agentic AI
+# AXIOM
 
-Agentic AI is the editorial entry experience built on top of the autonomous operations application.
+Autonomous Operations. Autonomous intelligence, under human control.
 
-## What changed
+AXIOM is the editorial entry experience built on top of the autonomous operations application.
+
+## System Guarantees
 
 - Full operations application preserved
-- Existing orchestration store preserved
+- Existing orchestration store preserved with performance memoization
 - Existing workflow engine preserved
-- Existing agent data preserved
+- Existing agent workforce preserved
 - Existing governance tools preserved
 - Existing approvals preserved
 - Existing audit views preserved
 - Existing analytics preserved
 - Existing demo flows preserved
 
-A refined editorial Agentic AI index is now the default entry experience.
+A refined editorial AXIOM index is now the default entry experience.
 
 The operations console remains directly available through:
 
@@ -24,5 +26,3 @@ The operations console remains directly available through:
 - Quick return to the editorial index at any time
 
 Category rows map directly to the underlying agent workforce and skills registry rather than fabricated data.
-
-No additional API key is required for the editorial index.

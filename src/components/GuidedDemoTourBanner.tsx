@@ -16,7 +16,7 @@ export const GuidedDemoTourBanner: React.FC = () => {
         </div>
         <div>
           <h4 className="text-xs font-semibold tracking-wide">
-            Interactive Agentic AI Demonstration Available
+            Interactive AXIOM Operational Simulation Available
           </h4>
           <p className="text-xs text-slate-300 mt-0.5 leading-relaxed">
             Experience simulated high-risk invoice gating, autonomous patch remediation, and invariant breach containment in real time.
