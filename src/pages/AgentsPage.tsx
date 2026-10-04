@@ -4,6 +4,7 @@ import { AGENT_WORKFORCE } from '../data/agentsAndSkills';
 import { AgentInfo } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
 import { TableHealthSparkline } from '../components/TableHealthSparkline';
+import { TableSuccessTrendSparkline } from '../components/TableSuccessTrendSparkline';
 import { TableQuickActionsMenu } from '../components/TableQuickActionsMenu';
 import { AgentDetailModal } from '../components/AgentDetailModal';
 import { AgentDiagnosticsDrawer } from '../components/AgentDiagnosticsDrawer';
@@ -91,6 +92,38 @@ export const AgentsPage: React.FC = () => {
     if (agent.latencyMs > 200) return [94, 96, 95, 93, 94, 95];
     if (agent.latencyMs > 100) return [98, 97, 98, 99, 98, 99];
     return [99, 100, 100, 100, 99, 100];
+  };
+
+  const getAgentSuccessTrend = (agent: AgentInfo): number[] => {
+    const base = agent.successRate;
+    switch (agent.id) {
+      case 'agent-context-memory':
+        return [99.0, 99.1, 99.3, 99.2, 99.5, 99.4, 99.4];
+      case 'agent-intent-analyst':
+        return [98.1, 98.4, 98.2, 98.6, 98.5, 98.8, 98.7];
+      case 'agent-workflow-planner':
+        return [98.8, 98.9, 99.0, 99.2, 99.1, 99.0, 99.1];
+      case 'agent-task-executor':
+        return [97.5, 97.9, 98.0, 98.1, 98.4, 98.0, 98.2];
+      case 'agent-quality-reviewer':
+        return [99.6, 99.7, 99.8, 99.7, 99.9, 99.8, 99.8];
+      case 'agent-validation-tester':
+        return [98.9, 99.1, 99.0, 99.4, 99.2, 99.5, 99.3];
+      case 'agent-release-guardian':
+        return [99.7, 99.8, 99.9, 99.9, 100.0, 99.9, 99.9];
+      case 'agent-fraud-sentinel':
+        return [99.1, 99.2, 99.4, 99.6, 99.3, 99.5, 99.5];
+      default:
+        return [
+          Number((base - 0.4).toFixed(1)),
+          Number((base - 0.2).toFixed(1)),
+          Number((base - 0.1).toFixed(1)),
+          Number((base + 0.1).toFixed(1)),
+          Number((base - 0.2).toFixed(1)),
+          Number(base.toFixed(1)),
+          Number(base.toFixed(1)),
+        ];
+    }
   };
 
   return (
@@ -246,6 +279,7 @@ export const AgentsPage: React.FC = () => {
                   const isPaused = Boolean(pausedAgentIds[agent.id]);
                   const isSelected = selectedIds.includes(agent.id);
                   const healthData = getAgentHealthTrend(agent);
+                  const successTrend = getAgentSuccessTrend(agent);
 
                   return (
                     <tr
@@ -281,7 +315,14 @@ export const AgentsPage: React.FC = () => {
                         />
                       </td>
                       <td className="font-mono text-xs text-[#182536]">{agent.latencyMs}ms</td>
-                      <td className="font-mono text-xs text-[#08795F] font-semibold">{agent.successRate}%</td>
+                      {/* Success Rate with 7-Day Past Week Sparkline Trend */}
+                      <td>
+                        <TableSuccessTrendSparkline
+                          currentRate={agent.successRate}
+                          trendData={successTrend}
+                          label={`${agent.name} 7-Day Success Trend`}
+                        />
+                      </td>
                       <td className="font-mono text-xs text-[#5E6975]">
                         {agent.completedTasks.toLocaleString()}
                       </td>
