@@ -77,7 +77,7 @@ export const AgentFleetInspector: React.FC<AgentFleetInspectorProps> = ({
                   8/8 NODES ACTIVE
                 </span>
               </div>
-              <h2 className="text-base font-serif font-bold text-[#182536]">
+              <h2 className="text-base font-sans font-semibold text-[#182536]">
                 Autonomous Agent Fleet
               </h2>
             </div>
@@ -113,14 +113,14 @@ export const AgentFleetInspector: React.FC<AgentFleetInspectorProps> = ({
                       : 'hover:bg-[#EFEFEB] text-[#334256]'
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[10px] font-mono">
-                    <span className="text-[#5E6975]">{agent.id.replace('agent-', '')}</span>
+                  <div className="flex items-center justify-between text-[11px] font-sans">
+                    <span className="text-[#5E6975] font-medium">{agent.id.replace('agent-', '')}</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-[#08795F]" />
                   </div>
-                  <div className="text-xs font-semibold text-[#182536] mt-0.5 leading-snug">
+                  <div className="text-xs font-semibold text-[#182536] mt-0.5 leading-snug font-sans">
                     {agent.name}
                   </div>
-                  <div className="text-[10px] text-[#5E6975] font-mono mt-0.5 truncate">
+                  <div className="text-[10px] text-[#5E6975] font-sans mt-0.5 truncate">
                     {agent.domain}
                   </div>
                 </button>
@@ -137,15 +137,15 @@ export const AgentFleetInspector: React.FC<AgentFleetInspectorProps> = ({
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#5E6975]">
                     Agent Identifier: {currentAgent.id}
                   </span>
-                  <h3 className="text-lg font-serif font-bold text-[#182536]">
+                  <h3 className="text-base font-sans font-semibold text-[#182536]">
                     {currentAgent.name}
                   </h3>
-                  <p className="text-xs text-[#334256] mt-1 leading-relaxed">
+                  <p className="text-xs font-sans text-[#334256] mt-1 leading-relaxed">
                     {currentAgent.description}
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                  <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-[2px] bg-[#F0FAF6] text-[#08795F] border border-[#C3E6DB]">
+                  <span className="text-[10px] font-sans font-semibold uppercase px-2 py-0.5 rounded-[2px] bg-[#F0FAF6] text-[#08795F] border border-[#C3E6DB]">
                     {currentAgent.status}
                   </span>
                   <span className="text-[10px] font-mono text-[#5E6975]">
@@ -156,15 +156,15 @@ export const AgentFleetInspector: React.FC<AgentFleetInspectorProps> = ({
 
               <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#D5D5CE]/60 text-center">
                 <div className="p-2 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px]">
-                  <span className="text-[9px] font-mono uppercase text-[#5E6975] block">Latency</span>
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Latency</span>
                   <strong className="text-sm font-mono text-[#182536]">{currentAgent.latencyMs}ms</strong>
                 </div>
                 <div className="p-2 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px]">
-                  <span className="text-[9px] font-mono uppercase text-[#5E6975] block">Success</span>
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Success</span>
                   <strong className="text-sm font-mono text-[#08795F]">{currentAgent.successRate}%</strong>
                 </div>
                 <div className="p-2 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px]">
-                  <span className="text-[9px] font-mono uppercase text-[#5E6975] block">Tasks Executed</span>
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Tasks Executed</span>
                   <strong className="text-sm font-mono text-[#182536]">{(currentAgent.completedTasks || 12400).toLocaleString()}</strong>
                 </div>
               </div>
@@ -172,25 +172,25 @@ export const AgentFleetInspector: React.FC<AgentFleetInspectorProps> = ({
 
             {/* Current Operational Context */}
             <div className="space-y-2">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-[#5E6975] font-semibold block">
+              <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-semibold block">
                 Current Execution Binding
               </span>
               <div className="p-3.5 border border-[#D5D5CE] bg-[#FAF9F5] rounded-[2px] space-y-2 text-xs">
-                <div className="flex justify-between items-center text-xs">
+                <div className="flex justify-between items-center text-xs font-sans">
                   <span className="text-[#5E6975]">Active Pipeline:</span>
-                  <span className="font-mono font-bold text-[#182536]">
+                  <span className="font-semibold text-[#182536]">
                     wf-vendor-procurement (High-Value PO Match)
                   </span>
                 </div>
-                <div className="flex justify-between items-center text-xs">
+                <div className="flex justify-between items-center text-xs font-sans">
                   <span className="text-[#5E6975]">Active Stage:</span>
-                  <span className="font-mono text-[#08795F] font-semibold">
+                  <span className="text-[#08795F] font-semibold">
                     Step 03 / Invariant Evaluation & Threshold Intercept
                   </span>
                 </div>
-                <div className="flex justify-between items-center text-xs">
+                <div className="flex justify-between items-center text-xs font-sans">
                   <span className="text-[#5E6975]">Current Subtask:</span>
-                  <span className="font-mono text-[#334256] truncate max-w-[280px]">
+                  <span className="text-[#334256] truncate max-w-[280px]">
                     Validating vendor invoice #INV-2026-881 against PO #PO-9912
                   </span>
                 </div>
@@ -199,17 +199,17 @@ export const AgentFleetInspector: React.FC<AgentFleetInspectorProps> = ({
 
             {/* Programmatic Domain Invariants */}
             <div className="space-y-2">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-[#5E6975] font-semibold block">
+              <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-semibold block">
                 Formal Domain Invariants & Hard Boundaries
               </span>
               <div className="space-y-1.5">
                 {(currentAgent.invariants || []).map((inv: string, idx: number) => (
                   <div
                     key={idx}
-                    className="p-2.5 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px] flex items-start gap-2 text-xs"
+                    className="p-2.5 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px] flex items-start gap-2 text-xs font-sans"
                   >
                     <ShieldCheck size={14} className="text-[#08795F] flex-shrink-0 mt-0.5" />
-                    <span className="font-mono text-[11px] text-[#182536] leading-relaxed">
+                    <span className="text-xs text-[#182536] leading-relaxed">
                       {inv}
                     </span>
                   </div>

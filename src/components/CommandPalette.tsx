@@ -232,8 +232,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
                       <Icon size={14} />
                     </div>
                     <div>
-                      <div className="text-xs font-medium text-slate-900">{item.label}</div>
-                      <div className="text-[10px] font-mono text-slate-400">{item.category}</div>
+                      <div className="text-xs font-medium text-slate-900 font-sans">{item.label}</div>
+                      <div className="text-[10px] font-sans text-slate-400 font-medium">{item.category}</div>
                     </div>
                   </div>
                   <ArrowRight size={13} className="text-slate-300 group-hover:text-slate-600" />
@@ -243,7 +243,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
           )}
         </div>
 
-        <div className="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+        <div className="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-sans">
           <span>Navigate with mouse or arrow keys</span>
           <span>Esc to exit</span>
         </div>

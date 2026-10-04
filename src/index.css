@@ -317,22 +317,22 @@ a,
 
 .axiom-brand strong {
   display: block;
-  font-family: var(--font-display);
-  font-size: 25px;
+  font-family: var(--font-ui) !important;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   color: #17263a;
 }
 
 .axiom-brand span {
   display: block;
-  margin-top: 3px;
-  font-family: var(--font-ui);
-  font-size: 9px;
+  margin-top: 2px;
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.16em;
-  color: #64748b;
+  letter-spacing: 0.08em;
+  color: #68758a;
   text-transform: uppercase;
 }
 
@@ -843,18 +843,21 @@ a,
 
 .evidence-drawer header span,
 .evidence-drawer label {
-  font-family: var(--font-tech);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: #69716f;
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #5e6975;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .evidence-drawer h2 {
   margin: 5px 0 0;
-  font-family: var(--font-display);
-  font-size: 22px;
-  line-height: 1.1;
+  font-family: var(--font-ui) !important;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #17263a;
 }
 
 .evidence-drawer header button {
@@ -978,18 +981,21 @@ a,
 }
 
 .execution-receipt header small {
-  font-family: var(--font-tech);
-  font-size: 9px;
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
   letter-spacing: 0.08em;
   color: #08795f;
   display: block;
-  font-weight: 700;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .execution-receipt header h3 {
   margin: 3px 0 0;
-  font-size: 18px;
-  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-ui) !important;
+  color: #17263a;
 }
 
 .execution-receipt dl {
@@ -1182,17 +1188,18 @@ a,
 }
 
 .sidebar-execution {
-  padding: 11px 13px;
-  border-top: 1px solid #a7a9a6;
+  padding: 12px 14px;
+  border-top: 1px solid #d5d5ce;
   border-bottom: 1px solid #d5d5ce;
   background: #fffdf8;
 }
 
 .sidebar-execution > span {
-  font-family: var(--font-tech);
-  font-size: 8px;
-  letter-spacing: 0.09em;
-  color: #69716f;
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #5e6975;
   text-transform: uppercase;
   display: block;
 }
@@ -1200,17 +1207,19 @@ a,
 .sidebar-execution > strong {
   display: block;
   margin-top: 4px;
-  font-size: 11px;
-  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-ui) !important;
+  color: #17263a;
 }
 
 .sidebar-execution-meta {
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
-  font-family: var(--font-tech);
-  font-size: 8px;
-  color: #69716f;
+  font-family: var(--font-mono) !important;
+  font-size: 11px;
+  color: #5e6975;
 }
 
 .sidebar-progress {
@@ -1231,9 +1240,10 @@ a,
 .sidebar-execution small {
   display: block;
   margin-top: 6px;
-  font-family: var(--font-tech);
-  font-size: 8px;
-  color: #936300;
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  color: #b97800;
+  font-weight: 500;
 }
 
 /* ==================================================
@@ -1721,16 +1731,17 @@ a,
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 12px;
+  font-size: 13px;
+  font-family: var(--font-ui);
 }
 
 .axiom-table th {
   padding: 10px 14px;
-  font-family: var(--font-tech);
-  font-size: 10px;
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--ink-muted);
+  color: #5e6975;
   border-bottom: 1px solid var(--border-subtle);
   background-color: #faf9f5;
   font-weight: 600;
@@ -1739,7 +1750,9 @@ a,
 .axiom-table td {
   padding: 11px 14px;
   border-bottom: 1px solid var(--border-subtle);
-  color: var(--ink-primary);
+  color: #17263a;
+  font-family: var(--font-ui);
+  font-size: 13px;
   vertical-align: middle;
   background-color: var(--surface);
 }
@@ -1775,11 +1788,11 @@ a,
 
 .axiom-table-filter input {
   width: 100%;
-  padding: 5px 28px 5px 28px;
-  font-size: 11px;
-  font-family: var(--font-tech);
+  padding: 6px 28px 6px 28px;
+  font-size: 13px;
+  font-family: var(--font-ui) !important;
   border: 1px solid var(--border-subtle);
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #ffffff;
   color: var(--ink-primary);
 }
@@ -2476,9 +2489,10 @@ button.axiom-btn-secondary {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-family: var(--font-tech);
-  font-size: 9px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   color: var(--ink-muted);
   text-transform: uppercase;
 }
@@ -2564,30 +2578,41 @@ button.axiom-btn-secondary {
 
 .axiom-metric span {
   display: block;
-  font: 9px var(--font-tech);
-  letter-spacing: 0.12em;
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   color: var(--ink-muted);
+  text-transform: uppercase;
 }
 
 .axiom-metric strong {
   display: block;
-  margin-top: 8px;
-  font: 600 39px/1 var(--font-display);
-  letter-spacing: -0.035em;
+  margin-top: 6px;
+  font-family: var(--font-mono) !important;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink-primary);
+  line-height: 1.15;
 }
 
 .axiom-metric strong span {
   display: inline;
   margin-left: 2px;
-  font: 600 18px var(--font-display);
+  font-family: var(--font-mono) !important;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--ink-muted);
 }
 
 .axiom-metric small {
   display: block;
-  margin-top: 8px;
-  color: var(--ink-muted);
-  font: 10px var(--font-tech);
+  margin-top: 6px;
+  color: var(--ink-secondary);
+  font-family: var(--font-ui) !important;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .axiom-metric-alert {
@@ -2626,8 +2651,12 @@ button.axiom-btn-secondary {
 .axiom-control-room-head h2,
 .axiom-section-head h2 {
   margin: 3px 0 0;
-  font: 600 22px/1 var(--font-display);
-  letter-spacing: -0.025em;
+  font-family: var(--font-ui) !important;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--ink-primary);
 }
 
 .axiom-live-state {
@@ -2635,8 +2664,9 @@ button.axiom-btn-secondary {
   align-items: center;
   gap: 6px;
   color: var(--accent-emerald);
-  font: 10px var(--font-tech);
-  letter-spacing: 0.06em;
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  letter-spacing: 0.04em;
   font-weight: 600;
 }
 
@@ -2679,7 +2709,11 @@ button.axiom-btn-secondary {
   display: flex;
   justify-content: space-between;
   color: var(--ink-muted);
-  font: 9px var(--font-tech);
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .axiom-flow-node-top i {
@@ -2695,14 +2729,20 @@ button.axiom-btn-secondary {
 }
 
 .axiom-flow-node h3 {
-  margin: 13px 0 3px;
-  font: 600 24px/1 var(--font-display);
+  margin: 10px 0 3px;
+  font-family: var(--font-ui) !important;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  line-height: 1.3;
 }
 
 .axiom-flow-node p {
   margin: 0;
   color: var(--ink-secondary);
-  font-size: 11px;
+  font-family: var(--font-ui) !important;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .axiom-flow-agent {
@@ -2715,7 +2755,9 @@ button.axiom-btn-secondary {
   border-top: 1px solid #e5e2d9;
 
   color: var(--ink-primary);
-  font: 9px var(--font-tech);
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .axiom-flow-link {

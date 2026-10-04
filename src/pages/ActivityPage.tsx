@@ -176,19 +176,19 @@ export const ActivityPage: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
+          <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-semibold block">
             Real-Time Observability
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
+          <h1 className="text-2xl font-serif font-medium text-[#182536] mt-1">
             Live Fleet Activity Stream
           </h1>
-          <p className="text-xs text-[#334256] mt-0.5">
+          <p className="text-xs font-sans text-[#334256] mt-0.5">
             Streaming trace logs of agent step dispatches, policy evaluations, and state vector mutations
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 text-xs font-mono text-[#08795F] bg-[#F0FAF6] px-3 py-1.5 rounded-[2px] border border-[#C3E6DB]">
+          <span className="flex items-center gap-1.5 text-xs font-sans font-medium text-[#08795F] bg-[#F0FAF6] px-3 py-1.5 rounded-[2px] border border-[#C3E6DB]">
             <span className="w-2 h-2 rounded-full bg-[#08795F] animate-pulse" />
             Live Feed Connected
           </span>
@@ -198,33 +198,33 @@ export const ActivityPage: React.FC = () => {
       {/* Observability Telemetry Ribbon Header (Point 7) */}
       <div className="border border-[#D5D5CE] bg-[#FFFDF8] rounded-[2px] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-wider text-[#5E6975] block font-semibold">
+          <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] block font-semibold">
             TELEMETRY STREAM HEADER
           </span>
-          <div className="text-sm font-serif font-bold text-[#182536] mt-0.5">
+          <div className="text-sm font-sans font-semibold text-[#182536] mt-0.5">
             LIVE FLEET TRACE
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-mono">
+        <div className="flex items-center gap-4 text-xs font-sans">
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-[#08795F]" />
-            <span className="font-bold text-[#182536]">{axiomDemoData.agents.total}</span>
+            <span className="font-mono font-bold text-[#182536]">{axiomDemoData.agents.total}</span>
             <span className="text-[#5E6975]">agents</span>
           </div>
           <span className="text-[#D5D5CE]">|</span>
           <div className="flex items-center gap-1.5">
-            <span className="font-bold text-[#182536]">{axiomDemoData.pipelines.total}</span>
+            <span className="font-mono font-bold text-[#182536]">{axiomDemoData.pipelines.total}</span>
             <span className="text-[#5E6975]">pipelines</span>
           </div>
           <span className="text-[#D5D5CE]">|</span>
           <div className="flex items-center gap-1.5">
-            <span className="font-bold text-[#182536]">{INITIAL_TRACE_EVENTS.length}</span>
+            <span className="font-mono font-bold text-[#182536]">{INITIAL_TRACE_EVENTS.length}</span>
             <span className="text-[#5E6975]">events</span>
           </div>
           <span className="text-[#D5D5CE]">|</span>
           <div className="flex items-center gap-1.5">
-            <span className="font-bold text-[#08795F]">{axiomDemoData.fleet.heartbeatIntervalMs}ms</span>
+            <span className="font-mono font-bold text-[#08795F]">{axiomDemoData.fleet.heartbeatIntervalMs}ms</span>
             <span className="text-[#5E6975]">heartbeat</span>
           </div>
         </div>
@@ -234,7 +234,7 @@ export const ActivityPage: React.FC = () => {
       <div className="axiom-panel overflow-hidden border border-[#D5D5CE] bg-[#FFFDF8]">
         <div className="p-3 bg-[#FAF9F5] border-b border-[#D5D5CE] flex flex-col md:flex-row md:items-center justify-between gap-3">
           {/* Segmented Filter Pills */}
-          <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
+          <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0 font-sans">
             {EVENT_FILTERS.map((f) => (
               <button
                 key={f}
@@ -259,7 +259,7 @@ export const ActivityPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search actions or agents..."
-              className="w-full pl-8 pr-3 py-1 text-xs bg-white border border-[#D5D5CE] rounded-[2px] text-[#182536] focus:outline-none focus:border-[#182536]"
+              className="w-full pl-8 pr-3 py-1 text-xs font-sans bg-white border border-[#D5D5CE] rounded-[2px] text-[#182536] focus:outline-none focus:border-[#182536]"
             />
           </div>
         </div>
@@ -267,7 +267,7 @@ export const ActivityPage: React.FC = () => {
         {/* State Transition Event Rows (Point 7) */}
         <div className="divide-y divide-[#D5D5CE]">
           {filteredEvents.length === 0 ? (
-            <div className="p-8 text-center text-xs font-mono text-[#5E6975]">
+            <div className="p-8 text-center text-xs font-sans text-[#5E6975]">
               No events found matching current filter.
             </div>
           ) : (

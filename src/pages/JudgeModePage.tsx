@@ -200,22 +200,22 @@ export const JudgeModePage: React.FC = () => {
       {/* Evaluation Laboratory Header */}
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
+          <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-semibold block">
             Verification Laboratory
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
+          <h1 className="text-2xl font-serif font-medium text-[#182536] mt-1">
             Formal Evaluation & Benchmark Suite
           </h1>
-          <p className="text-xs text-[#334256] mt-0.5">
+          <p className="text-xs font-sans text-[#334256] mt-0.5">
             Formal evaluation testing the four foundational pillars of autonomous operations under strict programmatic invariants
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-start sm:self-auto font-sans">
           <button
             type="button"
             onClick={() => openModal('governance-certificate')}
-            className="axiom-btn-secondary"
+            className="axiom-btn-secondary font-sans font-medium text-xs"
           >
             <Award size={13} className="text-[#A87405]" />
             <span>Compliance Certificate</span>
@@ -224,7 +224,7 @@ export const JudgeModePage: React.FC = () => {
             type="button"
             disabled={evaluating}
             onClick={handleRunEvaluation}
-            className="axiom-btn-primary"
+            className="axiom-btn-primary font-sans font-medium text-xs"
           >
             <RefreshCw size={13} className={evaluating ? 'animate-spin' : ''} />
             <span>{evaluating ? 'Executing Invariant Provers...' : 'Run Full Evaluation'}</span>
@@ -235,10 +235,10 @@ export const JudgeModePage: React.FC = () => {
       {/* Progress Strip during Evaluation */}
       {evaluating && (
         <div className="axiom-panel p-4 bg-[#FFFDF8] border border-[#182536] space-y-2 animate-pulse">
-          <div className="flex items-center justify-between text-xs font-mono">
-            <span className="font-bold text-[#182536] flex items-center gap-2">
+          <div className="flex items-center justify-between text-xs font-sans">
+            <span className="font-semibold text-[#182536] flex items-center gap-2">
               <RefreshCw size={13} className="animate-spin text-[#08795F]" />
-              Executing Invariant Verification Prover: {testProgress}%
+              Executing Invariant Verification Prover: <span className="font-mono">{testProgress}%</span>
             </span>
             <span className="text-[#5E6975]">Checking DAG topology & human gating bounds</span>
           </div>
@@ -254,24 +254,24 @@ export const JudgeModePage: React.FC = () => {
       {/* Evaluation Results Summary Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[#D5D5CE] bg-[#FFFDF8] rounded-[2px] divide-y md:divide-y-0 md:divide-x divide-[#D5D5CE] shadow-2xs">
         <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Utility Resolution</span>
-          <span className="text-xl font-serif font-bold text-[#182536] mt-0.5 block">96.4%</span>
-          <span className="text-[10px] text-[#138468] font-mono">1,926 tasks pass</span>
+          <span className="text-[11px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Utility Resolution</span>
+          <span className="text-xl font-mono font-bold text-[#182536] mt-0.5 block">96.4%</span>
+          <span className="text-[11px] text-[#00866B] font-sans font-medium">1,926 tasks pass</span>
         </div>
         <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">DAG Invariant Integrity</span>
+          <span className="text-[11px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">DAG Invariant Integrity</span>
           <span className="text-xl font-mono font-bold text-[#08795F] mt-0.5 block">100%</span>
-          <span className="text-[10px] text-[#5E6975] font-mono">0 cycles / 0 deadlocks</span>
+          <span className="text-[11px] text-[#5E6975] font-sans">0 cycles / 0 deadlocks</span>
         </div>
         <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Idempotent Rollbacks</span>
+          <span className="text-[11px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Idempotent Rollbacks</span>
           <span className="text-xl font-mono font-bold text-[#182536] mt-0.5 block">99.8%</span>
-          <span className="text-[10px] text-[#5E6975] font-mono">480 sandboxes tested</span>
+          <span className="text-[11px] text-[#5E6975] font-sans">480 sandboxes tested</span>
         </div>
         <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Human Gate Threshold</span>
+          <span className="text-[11px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Human Gate Threshold</span>
           <span className="text-xl font-mono font-bold text-[#08795F] mt-0.5 block">100%</span>
-          <span className="text-[10px] text-[#5E6975] font-mono">Zero unauthorized writes</span>
+          <span className="text-[11px] text-[#5E6975] font-sans">Zero unauthorized writes</span>
         </div>
       </div>
 
@@ -282,7 +282,7 @@ export const JudgeModePage: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveTab('pillars')}
-              className={`px-3 py-1.5 text-xs font-mono font-semibold rounded-[2px] transition-colors ${
+              className={`px-3 py-1.5 text-xs font-sans font-semibold rounded-[2px] transition-colors ${
                 activeTab === 'pillars'
                   ? 'bg-[#182536] text-[#FFFDF8]'
                   : 'bg-[#FFFDF8] border border-[#D5D5CE] text-[#334256] hover:bg-[#EFEFEB]'
@@ -293,7 +293,7 @@ export const JudgeModePage: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveTab('test-suites')}
-              className={`px-3 py-1.5 text-xs font-mono font-semibold rounded-[2px] transition-colors ${
+              className={`px-3 py-1.5 text-xs font-sans font-semibold rounded-[2px] transition-colors ${
                 activeTab === 'test-suites'
                   ? 'bg-[#182536] text-[#FFFDF8]'
                   : 'bg-[#FFFDF8] border border-[#D5D5CE] text-[#334256] hover:bg-[#EFEFEB]'
@@ -303,7 +303,7 @@ export const JudgeModePage: React.FC = () => {
             </button>
           </div>
 
-          <span className="text-[11px] font-mono text-[#5E6975]">
+          <span className="text-[11px] font-sans text-[#5E6975]">
             Benchmark Engine: Programmatic Test Rig v2.4
           </span>
         </div>
@@ -318,10 +318,10 @@ export const JudgeModePage: React.FC = () => {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#D5D5CE] pb-2">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#5E6975] block">
+                    <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-semibold block">
                       {crit.pillar}
                     </span>
-                    <h3 className="text-sm font-serif font-bold text-[#182536] mt-0.5">
+                    <h3 className="text-sm font-sans font-semibold text-[#182536] mt-0.5">
                       {crit.name}
                     </h3>
                   </div>
@@ -330,20 +330,20 @@ export const JudgeModePage: React.FC = () => {
                     <span className="text-sm font-mono font-bold text-[#182536]">
                       {crit.metric}
                     </span>
-                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-[2px] bg-[#F0FAF6] text-[#138468] border border-[#C3E6DB]">
+                    <span className="text-[10px] font-sans font-semibold px-2 py-0.5 rounded-[2px] bg-[#F0FAF6] text-[#138468] border border-[#C3E6DB]">
                       {crit.testStatus}
                     </span>
                   </div>
                 </div>
 
-                <p className="text-xs text-[#334256] leading-relaxed">{crit.desc}</p>
+                <p className="text-xs font-sans text-[#334256] leading-relaxed">{crit.desc}</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
                   <div className="p-3 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px] space-y-1 shadow-2xs">
-                    <span className="text-[10px] font-mono uppercase text-[#5E6975] block font-semibold">
+                    <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] block font-semibold">
                       Formal Measurement Metric:
                     </span>
-                    <div className="text-[11px] text-[#182536] leading-relaxed">
+                    <div className="text-xs font-sans text-[#182536] leading-relaxed">
                       {crit.measurement}
                     </div>
                   </div>

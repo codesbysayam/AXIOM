@@ -176,10 +176,10 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                   type="text"
                   value={pipelineTitle}
                   onChange={(e) => setPipelineTitle(e.target.value)}
-                  className="font-serif font-bold text-base text-[#182536] bg-transparent border-b border-transparent hover:border-[#D5D5CE] focus:border-[#182536] focus:outline-none"
+                  className="font-sans font-semibold text-base text-[#182536] bg-transparent border-b border-transparent hover:border-[#D5D5CE] focus:border-[#182536] focus:outline-none"
                 />
               </div>
-              <p className="text-[11px] text-[#5E6975] font-mono mt-0.5">
+              <p className="text-[11px] text-[#5E6975] font-sans mt-0.5">
                 Interactive Visual Orchestration Canvas · {nodes.length} Nodes Connected
               </p>
             </div>
@@ -189,7 +189,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
             <button
               type="button"
               onClick={handleAddNode}
-              className="axiom-btn-secondary py-1 px-2.5 text-xs"
+              className="axiom-btn-secondary py-1 px-2.5 text-xs font-sans font-medium"
             >
               <Plus size={12} />
               <span>Add Node</span>
@@ -199,7 +199,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
               type="button"
               disabled={isSimulating}
               onClick={handleSimulateCanvas}
-              className="axiom-btn-secondary py-1 px-2.5 text-xs"
+              className="axiom-btn-secondary py-1 px-2.5 text-xs font-sans font-medium"
             >
               <Play size={12} className={isSimulating ? 'animate-spin text-[#A87405]' : ''} />
               <span>{isSimulating ? `Testing Step ${simStepIndex + 1}...` : 'Simulate Graph'}</span>
@@ -208,7 +208,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
             <button
               type="button"
               onClick={handleSaveToRegistry}
-              className="axiom-btn-primary py-1 px-3 text-xs"
+              className="axiom-btn-primary py-1 px-3 text-xs font-sans font-medium"
             >
               <CheckCircle2 size={12} />
               <span>Register Pipeline</span>
@@ -258,7 +258,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                           : 'border-[#D5D5CE] hover:border-[#B4B4A8]'
                       }`}
                     >
-                      <div className="flex items-center justify-between text-[9px] font-mono text-[#5E6975] mb-1">
+                      <div className="flex items-center justify-between text-[10px] font-sans font-semibold text-[#5E6975] mb-1">
                         <span>STAGE 0{idx + 1}</span>
                         {node.requiresApproval ? (
                           <span className="font-bold text-[#A87405] flex items-center gap-0.5">
@@ -272,16 +272,16 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                         )}
                       </div>
 
-                      <div className="font-serif font-bold text-xs text-[#182536] truncate">
+                      <div className="font-sans font-semibold text-xs text-[#182536] truncate">
                         {node.name}
                       </div>
 
-                      <div className="text-[10px] font-mono text-[#334256] mt-1 truncate flex items-center gap-1">
+                      <div className="text-[11px] font-sans text-[#334256] mt-1 truncate flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#182536]" />
                         <span>{node.agentName}</span>
                       </div>
 
-                      <div className="mt-2.5 pt-2 border-t border-[#EFEFEB] flex items-center justify-between text-[9px] font-mono text-[#5E6975]">
+                      <div className="mt-2.5 pt-2 border-t border-[#EFEFEB] flex items-center justify-between text-[10px] font-sans text-[#5E6975]">
                         <span className="truncate max-w-[120px]">{node.skillName}</span>
                         <button
                           type="button"
@@ -298,7 +298,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                     </div>
 
                     {idx < nodes.length - 1 && (
-                      <div className="text-[#5E6975] font-mono text-sm">→</div>
+                      <div className="text-[#5E6975] font-sans font-semibold text-sm">→</div>
                     )}
                   </React.Fragment>
                 );
@@ -311,16 +311,16 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
             <div className="w-72 bg-[#FFFDF8] border-l border-[#D5D5CE] p-4 flex flex-col justify-between overflow-y-auto">
               <div className="space-y-4">
                 <div className="border-b border-[#EFEFEB] pb-2">
-                  <span className="text-[9px] font-mono uppercase tracking-wider text-[#5E6975] block">
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-semibold block">
                     Node Inspector
                   </span>
-                  <div className="font-serif font-bold text-sm text-[#182536] mt-0.5">
+                  <div className="font-sans font-semibold text-sm text-[#182536] mt-0.5">
                     {activeNode.name}
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-mono uppercase text-[#5E6975] block mb-1">
+                  <label className="text-[11px] font-sans uppercase tracking-wider font-semibold text-[#5E6975] block mb-1">
                     Node Label:
                   </label>
                   <input
@@ -332,12 +332,12 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                       );
                       setNodes(updated);
                     }}
-                    className="w-full px-2 py-1 text-xs border border-[#D5D5CE] rounded-[2px] bg-[#FAF9F5] text-[#182536]"
+                    className="w-full px-2 py-1 text-xs border border-[#D5D5CE] rounded-[2px] bg-[#FAF9F5] text-[#182536] font-sans"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-mono uppercase text-[#5E6975] block mb-1">
+                  <label className="text-[11px] font-sans uppercase tracking-wider font-semibold text-[#5E6975] block mb-1">
                     Assigned Agent:
                   </label>
                   <select
@@ -348,7 +348,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                       );
                       setNodes(updated);
                     }}
-                    className="w-full px-2 py-1 text-xs border border-[#D5D5CE] rounded-[2px] bg-white text-[#182536]"
+                    className="w-full px-2 py-1 text-xs border border-[#D5D5CE] rounded-[2px] bg-white text-[#182536] font-sans"
                   >
                     {AGENT_WORKFORCE.map((ag) => (
                       <option key={ag.id} value={ag.name}>
@@ -359,7 +359,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-mono uppercase text-[#5E6975] block mb-1">
+                  <label className="text-[11px] font-sans uppercase tracking-wider font-semibold text-[#5E6975] block mb-1">
                     Contract Skill:
                   </label>
                   <select
@@ -370,7 +370,7 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                       );
                       setNodes(updated);
                     }}
-                    className="w-full px-2 py-1 text-xs border border-[#D5D5CE] rounded-[2px] bg-white text-[#182536]"
+                    className="w-full px-2 py-1 text-xs border border-[#D5D5CE] rounded-[2px] bg-white text-[#182536] font-sans"
                   >
                     {CUSTOM_SKILLS.map((sk) => (
                       <option key={sk.id} value={sk.name}>
@@ -393,17 +393,17 @@ export const WorkflowCanvasBuilder: React.FC<WorkflowCanvasBuilderProps> = ({
                       }}
                       className="rounded-[2px] border-[#D5D5CE] text-[#182536] focus:ring-0"
                     />
-                    <span className="text-xs text-[#182536] font-medium">
+                    <span className="text-xs text-[#182536] font-sans font-medium">
                       Enforce Mandatory Human Gate
                     </span>
                   </label>
-                  <span className="text-[10px] font-mono text-[#5E6975] block mt-1">
+                  <span className="text-[11px] font-sans text-[#5E6975] block mt-1">
                     Execution automatically suspends pending operator authorization signature.
                   </span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#EFEFEB] text-[10px] font-mono text-[#5E6975]">
+              <div className="pt-4 border-t border-[#EFEFEB] text-[11px] font-mono text-[#5E6975]">
                 Node ID: {activeNode.id}
               </div>
             </div>

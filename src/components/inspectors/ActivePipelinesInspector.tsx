@@ -79,19 +79,19 @@ export const ActivePipelinesInspector: React.FC<ActivePipelinesInspectorProps> =
         {/* Header */}
         <header className="p-4 border-b border-[#D5D5CE] bg-[#FAF9F5] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[2px] bg-[#182536] text-[#FFFDF8] flex items-center justify-center font-serif font-bold text-sm">
+            <div className="w-8 h-8 rounded-[2px] bg-[#182536] text-[#FFFDF8] flex items-center justify-center font-sans font-semibold text-sm">
               <Workflow size={16} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] font-semibold">
+                <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-semibold">
                   PIPELINE TOPOLOGY
                 </span>
-                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-[2px] bg-[#F0FAF6] text-[#08795F] border border-[#C3E6DB]">
+                <span className="text-[10px] font-sans font-semibold px-1.5 py-0.5 rounded-[2px] bg-[#F0FAF6] text-[#08795F] border border-[#C3E6DB]">
                   0{workflows.length} PIPELINES ACTIVE
                 </span>
               </div>
-              <h2 className="text-base font-serif font-bold text-[#182536]">
+              <h2 className="text-base font-sans font-semibold text-[#182536]">
                 Active Orchestration Registry
               </h2>
             </div>
@@ -129,7 +129,7 @@ export const ActivePipelinesInspector: React.FC<ActivePipelinesInspectorProps> =
                       : 'hover:bg-[#EFEFEB] text-[#334256]'
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[10px] font-mono">
+                  <div className="flex items-center justify-between text-[11px] font-sans">
                     <span className="text-[#5E6975]">{wf.category}</span>
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
@@ -137,11 +137,11 @@ export const ActivePipelinesInspector: React.FC<ActivePipelinesInspectorProps> =
                       }`}
                     />
                   </div>
-                  <div className="text-xs font-semibold text-[#182536] mt-0.5 leading-snug line-clamp-2">
+                  <div className="text-xs font-semibold text-[#182536] mt-0.5 leading-snug line-clamp-2 font-sans">
                     {wf.title}
                   </div>
-                  <div className="text-[10px] text-[#5E6975] font-mono mt-1 flex items-center justify-between">
-                    <span>{wf.riskTier.toUpperCase()} RISK</span>
+                  <div className="text-[10px] text-[#5E6975] font-sans mt-1 flex items-center justify-between">
+                    <span className="font-semibold">{wf.riskTier.toUpperCase()} RISK</span>
                     <span>{wf.steps.length} Nodes</span>
                   </div>
                 </button>
@@ -158,15 +158,15 @@ export const ActivePipelinesInspector: React.FC<ActivePipelinesInspectorProps> =
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#5E6975]">
                     Pipeline ID: {currentWf.id}
                   </span>
-                  <h3 className="text-lg font-serif font-bold text-[#182536]">
+                  <h3 className="text-base font-sans font-semibold text-[#182536]">
                     {currentWf.title}
                   </h3>
-                  <p className="text-xs text-[#334256] mt-1 leading-relaxed">
+                  <p className="text-xs font-sans text-[#334256] mt-1 leading-relaxed">
                     {currentWf.description}
                   </p>
                 </div>
                 <span
-                  className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-[2px] border ${
+                  className={`text-[10px] font-sans font-semibold uppercase px-2 py-0.5 rounded-[2px] border ${
                     currentWf.riskTier === 'critical'
                       ? 'bg-rose-50 text-[#B52D3D] border-rose-200'
                       : currentWf.riskTier === 'high'
@@ -181,21 +181,21 @@ export const ActivePipelinesInspector: React.FC<ActivePipelinesInspectorProps> =
               {/* Status Grid */}
               <div className="grid grid-cols-4 gap-2 pt-2 border-t border-[#D5D5CE]/60 text-center">
                 <div className="p-2 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px]">
-                  <span className="text-[9px] font-mono uppercase text-[#5E6975] block">Completed</span>
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Completed</span>
                   <strong className="text-sm font-mono text-[#08795F]">{completedSteps}</strong>
                 </div>
                 <div className="p-2 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px]">
-                  <span className="text-[9px] font-mono uppercase text-[#5E6975] block">Running</span>
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Running</span>
                   <strong className="text-sm font-mono text-[#182536]">{runningSteps}</strong>
                 </div>
                 <div className="p-2 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px]">
-                  <span className="text-[9px] font-mono uppercase text-[#5E6975] block">Human Gates</span>
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Human Gates</span>
                   <strong className={`text-sm font-mono ${waitingGates > 0 ? 'text-[#A66A00]' : 'text-[#5E6975]'}`}>
                     {waitingGates}
                   </strong>
                 </div>
                 <div className="p-2 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px]">
-                  <span className="text-[9px] font-mono uppercase text-[#5E6975] block">Rollback</span>
+                  <span className="text-[10px] font-sans uppercase tracking-wider text-[#5E6975] font-medium block">Rollback</span>
                   <strong className="text-sm font-mono text-[#08795F]">Armed</strong>
                 </div>
               </div>

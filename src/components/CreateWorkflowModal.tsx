@@ -83,17 +83,17 @@ export const CreateWorkflowModal: React.FC<CreateWorkflowModalProps> = ({ isOpen
       >
         <div className="p-4 border-b border-[#dce1e7] flex items-start justify-between bg-[#faf9f5]">
           <div>
-            <h3 className="text-base font-serif font-bold text-[#17263d]">
+            <h3 className="text-base font-sans font-semibold text-[#17263d]">
               Create AXIOM Workflow
             </h3>
-            <p className="text-xs text-[#718096] font-mono mt-0.5">
+            <p className="text-xs text-[#5E6975] font-sans mt-0.5">
               Compose multi-agent pipeline with verifiable policy gates
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-[#718096] hover:text-[#17263d] p-1 rounded-xs"
+            className="text-[#5E6975] hover:text-[#17263d] p-1 rounded-xs"
             aria-label="Close modal"
           >
             <X size={18} />
@@ -182,7 +182,7 @@ export const CreateWorkflowModal: React.FC<CreateWorkflowModalProps> = ({ isOpen
               {steps.map((st, idx) => (
                 <div key={st.id} className="p-3 border border-slate-200 rounded bg-slate-50 space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-mono font-bold text-slate-500">
+                    <span className="text-[11px] font-sans font-semibold text-slate-500 uppercase tracking-wider">
                       Step 0{idx + 1}
                     </span>
                     {steps.length > 1 && (
@@ -211,7 +211,7 @@ export const CreateWorkflowModal: React.FC<CreateWorkflowModalProps> = ({ isOpen
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <span className="text-[10px] font-mono text-slate-400 uppercase block mb-0.5">
+                      <span className="text-[10px] font-sans text-slate-500 font-medium uppercase tracking-wider block mb-0.5">
                         Assigned Agent
                       </span>
                       <select
@@ -232,7 +232,7 @@ export const CreateWorkflowModal: React.FC<CreateWorkflowModalProps> = ({ isOpen
                     </div>
 
                     <div>
-                      <span className="text-[10px] font-mono text-slate-400 uppercase block mb-0.5">
+                      <span className="text-[10px] font-sans text-slate-500 font-medium uppercase tracking-wider block mb-0.5">
                         Required Skill
                       </span>
                       <select

@@ -9,7 +9,7 @@ export const RecentWorkflowsWidget: React.FC = () => {
   return (
     <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 font-mono">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 font-sans">
           Recent Orchestrated Pipelines
         </h3>
         <button
@@ -36,12 +36,12 @@ export const RecentWorkflowsWidget: React.FC = () => {
                 >
                   {wf.title}
                 </button>
-                <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-400 font-mono">
+                <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-500 font-sans">
                   <span>{wf.category}</span>
                   <span>·</span>
                   <span>{wf.steps.length} steps</span>
                   <span>·</span>
-                  <span>{wf.lastRunAt || 'Never run'}</span>
+                  <span className="font-mono text-slate-400">{wf.lastRunAt || 'Never run'}</span>
                 </div>
               </div>
 
