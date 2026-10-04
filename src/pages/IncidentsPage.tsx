@@ -8,20 +8,20 @@ export const IncidentsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D1C7] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+          <span className="eyebrow block">
             Containment & Safety
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#17263A] mt-1 tracking-tight">
             Incidents & Containment Records
           </h1>
-          <p className="text-xs text-[#40516a] mt-0.5">
-            Operational anomalies, automated circuit breaker trips, and operator remedies
+          <p className="text-sm font-sans text-[#52647B] mt-1">
+            Operational anomalies, automated circuit breaker trips, and operator remedies.
           </p>
         </div>
 
-        <div className="text-xs font-mono text-[#0d6b4f] bg-[#f0faf6] px-3 py-1.5 rounded-[2px] border border-[#c7eadf]">
+        <div className="text-xs font-sans font-medium text-[#00866B] bg-[#E8F5F0] px-3 py-1.5 rounded-[4px] border border-[#A8DCCE]">
           Zero Critical Breaches Active
         </div>
       </div>
@@ -30,50 +30,50 @@ export const IncidentsPage: React.FC = () => {
         {incidents.map((inc) => (
           <div
             key={inc.id}
-            className="axiom-panel p-5 space-y-3 bg-white shadow-2xs"
+            className="axiom-panel p-5 space-y-3 bg-[#FFFDF8] border border-[#D5D1C7] rounded-[6px] shadow-2xs"
           >
-            <div className="flex items-start justify-between gap-2 border-b border-[#f0eee6] pb-2.5">
+            <div className="flex items-start justify-between gap-2 border-b border-[#D5D1C7]/60 pb-2.5">
               <div className="flex items-center gap-2">
                 <StatusBadge status={inc.status} size="sm" />
-                <span className="text-[11px] font-mono text-[#718096]">ID: {inc.id}</span>
-                <span className="text-[11px] font-mono text-[#718096]">· {inc.detectedAt}</span>
+                <span className="text-[11px] font-mono text-[#52647B]">ID: {inc.id}</span>
+                <span className="text-[11px] font-mono text-[#52647B]">· {inc.detectedAt}</span>
               </div>
               <span
-                className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-[2px] border ${
+                className={`text-[10px] font-sans font-bold uppercase px-2 py-0.5 rounded-[3px] border ${
                   inc.severity === 'critical'
-                    ? 'bg-rose-50 text-[#c83e4d] border-rose-200'
-                    : 'bg-amber-50 text-[#945f00] border-amber-200'
+                    ? 'bg-rose-50 text-[#C93645] border-rose-200'
+                    : 'bg-amber-50 text-[#B97800] border-amber-200'
                 }`}
               >
                 {inc.severity} Severity
               </span>
             </div>
 
-            <h3 className="text-sm font-serif font-bold text-[#17263d]">{inc.title}</h3>
+            <h3 className="card-title text-base font-sans font-semibold text-[#17263A]">{inc.title}</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 rounded-[2px] bg-[#fbfaf7] border border-[#dce1e7]">
-                <span className="text-[10px] font-mono uppercase text-[#718096] block mb-0.5 font-semibold">
+              <div className="p-3.5 rounded-[4px] bg-[#FAF9F5] border border-[#D5D1C7]">
+                <span className="text-[10px] font-sans uppercase text-[#52647B] block mb-1 font-semibold tracking-wider">
                   Root Cause Analysis:
                 </span>
-                <p className="text-[#40516a] leading-relaxed">{inc.rootCause}</p>
+                <p className="text-[#40516A] leading-relaxed font-sans">{inc.rootCause}</p>
               </div>
 
-              <div className="p-3 rounded-[2px] bg-[#f0faf6] border border-[#c7eadf]">
-                <span className="text-[10px] font-mono uppercase text-[#0d6b4f] block mb-0.5 font-semibold">
+              <div className="p-3.5 rounded-[4px] bg-[#E8F5F0]/60 border border-[#A8DCCE]">
+                <span className="text-[10px] font-sans uppercase text-[#007A61] block mb-1 font-semibold tracking-wider">
                   Remedy & Mitigation Applied:
                 </span>
-                <p className="text-[#0d6b4f] leading-relaxed">{inc.remedyAction}</p>
+                <p className="text-[#007A61] leading-relaxed font-sans">{inc.remedyAction}</p>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-[#f0eee6] flex items-center justify-between text-xs font-mono text-[#718096]">
-              <span>Agent Involved: {inc.agentInvolved}</span>
+            <div className="pt-2.5 border-t border-[#D5D1C7]/50 flex items-center justify-between text-xs font-sans text-[#52647B]">
+              <span>Agent Involved: <strong className="text-[#17263A] font-semibold">{inc.agentInvolved}</strong></span>
               {inc.status !== 'resolved' ? (
                 <button
                   type="button"
                   onClick={() => resolveIncident(inc.id)}
-                  className="axiom-btn-success py-1 px-3 text-xs"
+                  className="axiom-btn-primary py-1 px-3 text-xs h-[32px]"
                 >
                   <CheckCircle2 size={12} />
                   <span>Mark Resolved</span>

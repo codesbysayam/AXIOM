@@ -19,14 +19,14 @@ export const ApprovalsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+          <span className="eyebrow block">
             Human Agency & Authority
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#17263A] mt-1 tracking-tight">
             Human Decision Gateways
           </h1>
-          <p className="text-xs text-[#40516a] mt-0.5">
-            Operational review checkpoint: No high-risk autonomous action executes without explicit operator sign-off
+          <p className="text-sm font-sans text-[#52647B] mt-1 max-w-3xl">
+            Operational review checkpoint: No high-risk autonomous action executes without explicit operator sign-off.
           </p>
         </div>
 

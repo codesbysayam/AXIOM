@@ -111,7 +111,7 @@ function ConsoleApp({ onBackToIndex }: { onBackToIndex: () => void }) {
       </aside>
 
       <main className="axiom-main">
-        <div className="p-4 sm:p-6 max-w-7xl mx-auto w-full">
+        <div className="workspace px-6 sm:px-10 lg:px-12 py-8 sm:py-10 max-w-[1480px] mx-auto w-full">
           {renderActiveView()}
         </div>
       </main>

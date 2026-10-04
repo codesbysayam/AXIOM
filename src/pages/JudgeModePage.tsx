@@ -348,11 +348,11 @@ export const JudgeModePage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[2px] space-y-1 shadow-2xs">
-                    <span className="text-[10px] font-mono uppercase text-[#5E6975] block font-semibold">
+                  <div className="p-3 bg-[#FFFDF8] border border-[#D5D5CE] rounded-[4px] space-y-1 shadow-2xs">
+                    <span className="text-[10px] font-sans uppercase text-[#68758A] block font-semibold tracking-[0.06em]">
                       Verifiable Audit Evidence:
                     </span>
-                    <div className="text-[11px] text-[#334256] font-mono leading-relaxed">
+                    <div className="text-xs text-[#40516A] font-sans leading-relaxed">
                       {crit.evidence}
                     </div>
                   </div>
@@ -418,8 +418,8 @@ export const JudgeModePage: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <div className="text-xs font-mono text-[#5E6975]">
-                  {filteredTests.length} of {TEST_SUITES.length} suites verified
+                <div className="text-xs font-sans text-[#68758A]">
+                  <span className="font-semibold text-[#17263A]">{filteredTests.length}</span> of {TEST_SUITES.length} suites verified
                 </div>
               )}
             </div>
@@ -451,7 +451,7 @@ export const JudgeModePage: React.FC = () => {
                 <tbody>
                   {filteredTests.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="text-center py-8 text-xs text-[#5E6975] font-mono">
+                      <td colSpan={7} className="text-center py-8 text-xs text-[#68758A] font-sans">
                         No matching test suites found for "{searchFilter}".
                       </td>
                     </tr>
@@ -475,18 +475,18 @@ export const JudgeModePage: React.FC = () => {
                               className="rounded-[2px] border-[#D5D5CE] text-[#182536] focus:ring-0 cursor-pointer"
                             />
                           </td>
-                          <td className="font-mono text-xs font-bold text-[#182536]">{ts.id}</td>
-                          <td className="font-mono text-xs text-[#334256]">{ts.pillar}</td>
-                          <td className="text-xs text-[#182536]">{ts.assertion}</td>
-                          <td className="font-mono text-xs text-[#5E6975]">{ts.runtime}</td>
-                          <td className="font-mono text-[10px] text-[#5E6975]">{ts.hash}</td>
+                          <td className="font-mono text-xs font-semibold text-[#17263A]">{ts.id}</td>
+                          <td className="font-sans text-xs text-[#40516A]">{ts.pillar}</td>
+                          <td className="font-sans text-xs text-[#17263A]">{ts.assertion}</td>
+                          <td className="font-mono text-xs text-[#68758A]">{ts.runtime}</td>
+                          <td className="font-mono text-[11px] text-[#68758A]">{ts.hash}</td>
                           <td className="text-right">
                             {isPaused ? (
-                              <span className="text-[10px] font-mono font-bold text-[#9A6900] bg-amber-50 border border-[#F3DFAA] px-2 py-0.5 rounded-[2px]">
+                              <span className="text-[10px] font-sans font-semibold text-[#B97800] bg-[#FFF2CC] border border-[#E1BF70] px-2 py-0.5 rounded-[3px]">
                                 SKIPPED
                               </span>
                             ) : (
-                              <span className="text-[10px] font-mono font-bold text-[#138468] bg-[#F0FAF6] border border-[#C3E6DB] px-2 py-0.5 rounded-[2px]">
+                              <span className="text-[10px] font-sans font-semibold text-[#00866B] bg-[#E5F5EF] border border-[#A8DCCE] px-2 py-0.5 rounded-[3px]">
                                 {ts.status}
                               </span>
                             )}

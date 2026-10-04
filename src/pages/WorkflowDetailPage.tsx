@@ -14,7 +14,7 @@ import { useOperationsStore } from '../orchestrator/store';
 import { StatusBadge } from '../components/StatusBadge';
 
 export const WorkflowDetailPage: React.FC = () => {
-  const { workflows, selectedWorkflowId, navigateTo, runWorkflow } = useOperationsStore();
+  const { workflows, selectedWorkflowId, navigateTo, runWorkflow, simulationClock } = useOperationsStore();
 
   const workflow = workflows.find((w) => w.id === selectedWorkflowId) || workflows[0];
 
@@ -50,24 +50,30 @@ export const WorkflowDetailPage: React.FC = () => {
           </button>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono uppercase text-[#718096]">
-                PIPELINE ID: {workflow.id}
+              <span className="eyebrow">
+                Pipeline <span className="font-mono text-[#17263A]">{workflow.id}</span>
               </span>
-              <span className="text-xs text-[#dce1e7]">|</span>
-              <span className="text-[10px] font-mono text-[#718096]">
-                CATEGORY: {workflow.category}
+              <span className="text-xs text-[#dce1e7]">·</span>
+              <span className="text-xs font-sans text-[#68758A]">
+                Category: {workflow.category}
               </span>
             </div>
-            <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+            <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#17263A] mt-1 tracking-tight">
               {workflow.title}
             </h1>
-            <p className="text-xs text-[#40516a] mt-1 max-w-3xl leading-relaxed">
+            <p className="text-sm font-sans text-[#40516A] mt-1 max-w-3xl leading-relaxed">
               {workflow.description}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto flex-shrink-0">
+          {workflow.status === 'running' && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#EAF1FA] border border-[#3569A8]/40 rounded-[4px] text-xs font-sans text-[#3569A8]">
+              <Clock size={12} className="animate-spin text-[#3569A8]" />
+              <span>SYNCED TICK <span className="font-mono font-medium">#{simulationClock.tick}</span></span>
+            </div>
+          )}
           <StatusBadge status={hasWaiting ? 'waiting_approval' : workflow.status} />
           <button
             type="button"
@@ -81,33 +87,33 @@ export const WorkflowDetailPage: React.FC = () => {
       </div>
 
       {/* Metadata strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white p-3.5 border border-[#dce1e7] rounded-xs font-mono text-xs">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white p-3.5 border border-[#dce1e7] rounded-[4px] font-sans text-xs">
         <div>
-          <span className="text-[10px] uppercase text-[#718096] block">Risk Classification</span>
-          <span className="font-bold text-[#17263d] uppercase">{workflow.riskTier} Risk</span>
+          <span className="text-[11px] uppercase text-[#68758A] block font-medium">Risk Classification</span>
+          <span className="font-semibold text-[#17263A] uppercase">{workflow.riskTier} Risk</span>
         </div>
         <div>
-          <span className="text-[10px] uppercase text-[#718096] block">Total Executions</span>
-          <span className="font-bold text-[#17263d]">{workflow.totalRuns}</span>
+          <span className="text-[11px] uppercase text-[#68758A] block font-medium">Total Executions</span>
+          <span className="font-semibold font-mono text-[#17263A]">{workflow.totalRuns}</span>
         </div>
         <div>
-          <span className="text-[10px] uppercase text-[#718096] block">Last State Update</span>
-          <span className="text-[#40516a]">{workflow.lastRunAt || 'Never'}</span>
+          <span className="text-[11px] uppercase text-[#68758A] block font-medium">Last State Update</span>
+          <span className="text-[#40516A] font-mono">{workflow.lastRunAt || 'Never'}</span>
         </div>
         <div>
-          <span className="text-[10px] uppercase text-[#718096] block">Security Guardrail</span>
-          <span className="text-[#159a72] font-semibold">Active Invariant Pass</span>
+          <span className="text-[11px] uppercase text-[#68758A] block font-medium">Security Guardrail</span>
+          <span className="text-[#00866B] font-semibold">Active Invariant Pass</span>
         </div>
       </div>
 
       {/* EXECUTION TIMELINE THEATER */}
       <div className="axiom-panel">
         <div className="axiom-panel-header bg-[#faf9f5]">
-          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#718096]">
+          <span className="text-xs font-sans font-semibold uppercase tracking-[0.06em] text-[#68758A]">
             Execution Timeline & Decision Trace ({workflow.steps.length} Steps)
           </span>
-          <span className="text-[11px] font-mono text-[#718096]">
-            Trace ID: {workflow.id}-trace-active
+          <span className="text-xs font-sans text-[#68758A]">
+            Trace ID: <span className="font-mono text-[#17263A]">{workflow.id}-trace-active</span>
           </span>
         </div>
 
@@ -157,34 +163,34 @@ export const WorkflowDetailPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-[#40516a] font-mono">
-                      <span>Agent: <strong className="text-[#17263d]">{step.assignedAgent}</strong></span>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-[#52647B] font-sans">
+                      <span>Agent: <strong className="text-[#17263A] font-semibold">{step.assignedAgent}</strong></span>
                       <span>·</span>
-                      <span>Required Skill: <strong className="text-[#17263d]">{step.requiredSkill}</strong></span>
+                      <span>Required Skill: <strong className="text-[#17263A] font-semibold">{step.requiredSkill}</strong></span>
                       {step.executedAt && (
                         <>
                           <span>·</span>
-                          <span>Timestamp: {step.executedAt}</span>
+                          <span>Timestamp: <span className="font-mono">{step.executedAt}</span></span>
                         </>
                       )}
                     </div>
 
                     {/* Input / Output Trace Data */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
-                      <div className="bg-white p-2.5 rounded-xs border border-[#e9ecef]">
-                        <span className="text-[10px] font-mono uppercase text-[#718096] block mb-0.5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1 font-sans">
+                      <div className="bg-white p-2.5 rounded-[4px] border border-[#e9ecef]">
+                        <span className="text-[10px] font-sans uppercase font-semibold text-[#68758A] tracking-[0.06em] block mb-0.5">
                           Input Payload:
                         </span>
-                        <div className="font-mono text-[11px] text-[#17263d] leading-relaxed">
+                        <div className="text-xs text-[#17263A] font-sans leading-relaxed">
                           {step.inputDescription}
                         </div>
                       </div>
 
-                      <div className="bg-white p-2.5 rounded-xs border border-[#e9ecef]">
-                        <span className="text-[10px] font-mono uppercase text-[#718096] block mb-0.5">
+                      <div className="bg-white p-2.5 rounded-[4px] border border-[#e9ecef]">
+                        <span className="text-[10px] font-sans uppercase font-semibold text-[#68758A] tracking-[0.06em] block mb-0.5">
                           Decision Output / Verification:
                         </span>
-                        <div className="font-mono text-[11px] text-[#17263d] leading-relaxed">
+                        <div className="text-xs text-[#17263A] font-sans leading-relaxed">
                           {step.outputDescription || 'Awaiting execution dispatch...'}
                         </div>
                       </div>

@@ -109,14 +109,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ onBackToIndex, activeExecution
         <button
           type="button"
           onClick={onBackToIndex}
-          className="w-full mb-3 px-3 py-1.5 text-xs text-[#334256] hover:text-[#182536] hover:bg-[#EBE7DC] rounded-[2px] border border-[#D5D5CE] flex items-center justify-between transition-colors bg-[#FFFDF8] shadow-2xs font-sans"
+          className="w-full mb-3 px-3 py-2 text-xs text-[#334256] hover:text-[#182536] hover:bg-[#EBE7DC] rounded-[4px] border border-[#D5D5CE] flex items-center justify-between transition-colors bg-[#FFFDF8] shadow-2xs font-sans"
           title="Return to 01 AXIOM editorial index"
         >
-          <span className="flex items-center gap-1.5 font-medium">
-            <ArrowLeft size={12} className="text-[#D72F40]" />
-            <span className="font-mono text-[11px]">01 / Editorial Index</span>
+          <span className="flex items-center gap-1.5 font-sans font-medium text-xs text-[#17263A]">
+            <ArrowLeft size={13} className="text-[#D72F40]" />
+            <span>Editorial Index</span>
           </span>
-          <span className="text-[9px] font-mono text-[#5E6975] bg-[#EFEFEB] px-1 py-0.2 rounded-[2px]">
+          <span className="text-[10px] font-mono text-[#5E6975] bg-[#EFEFEB] px-1.5 py-0.5 rounded-[2px]">
             ESC
           </span>
         </button>

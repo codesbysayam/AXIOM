@@ -96,40 +96,48 @@ export const AgentsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
+          <span className="eyebrow block">
             System Topology
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#182536] mt-1 tracking-tight">
             Agent Workforce Registry
           </h1>
-          <p className="text-xs text-[#334256] mt-0.5">
+          <p className="text-sm font-sans text-[#40516A] mt-1">
             Specialized autonomous agents operating with deterministic domain invariants
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono text-[#08795F] bg-[#F0FAF6] px-3 py-1.5 rounded-[2px] border border-[#C3E6DB]">
+        <div className="flex items-center gap-2 text-xs font-sans font-medium text-[#08795F] bg-[#F0FAF6] px-3 py-1.5 rounded-[4px] border border-[#C3E6DB]">
           <span className="w-2 h-2 rounded-full bg-[#08795F]" />
           <span>8 of 8 Agents Active: 100% Operational</span>
         </div>
       </div>
 
       {/* System Topology Summary Strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[#D5D5CE] bg-[#FFFDF8] rounded-[2px] divide-y md:divide-y-0 md:divide-x divide-[#D5D5CE] shadow-2xs">
-        <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Total Agents</span>
-          <span className="text-xl font-serif font-bold text-[#182536] mt-0.5 block">8 Specialized</span>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[#D5D1C7] bg-[#FFFDF8] rounded-[6px] divide-y md:divide-y-0 md:divide-x divide-[#D5D1C7] shadow-2xs">
+        <div className="p-4">
+          <span className="metric-label block">Total Agents</span>
+          <span className="metric-value block mt-1">8</span>
+          <span className="metric-detail block">Specialized nodes</span>
         </div>
-        <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Median Fleet Latency</span>
-          <span className="text-xl font-mono font-bold text-[#182536] mt-0.5 block">145 ms</span>
+        <div className="p-4">
+          <span className="metric-label block">Median Fleet Latency</span>
+          <span className="metric-value block mt-1">
+            145<span className="metric-technical ml-0.5 text-base font-normal">ms</span>
+          </span>
+          <span className="metric-detail block">P95 SLA: 240ms</span>
         </div>
-        <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Fleet Success Rate</span>
-          <span className="text-xl font-mono font-bold text-[#08795F] mt-0.5 block">99.3%</span>
+        <div className="p-4">
+          <span className="metric-label block">Fleet Success Rate</span>
+          <span className="metric-value text-[#00866B] block mt-1">
+            99.3<span className="metric-technical ml-0.5 text-base font-normal">%</span>
+          </span>
+          <span className="metric-detail block">Continuous verification</span>
         </div>
-        <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Total Tasks Completed</span>
-          <span className="text-xl font-mono font-bold text-[#182536] mt-0.5 block">186,070</span>
+        <div className="p-4">
+          <span className="metric-label block">Total Tasks Completed</span>
+          <span className="metric-value block mt-1">186,070</span>
+          <span className="metric-detail block">Immutable proof root</span>
         </div>
       </div>
 
@@ -188,8 +196,8 @@ export const AgentsPage: React.FC = () => {
               </button>
             </div>
           ) : (
-            <div className="text-xs font-mono text-[#5E6975]">
-              {filtered.length} matching agents
+            <div className="text-xs font-sans text-[#68758A]">
+              <span className="font-semibold text-[#17263A]">{filtered.length}</span> matching agents
             </div>
           )}
         </div>
@@ -225,7 +233,7 @@ export const AgentsPage: React.FC = () => {
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="text-center py-8 text-xs text-[#5E6975] font-mono">
+                  <td colSpan={10} className="text-center py-8 text-xs text-[#68758A] font-sans">
                     No matching agents found for "{searchFilter}".
                   </td>
                 </tr>
@@ -257,7 +265,7 @@ export const AgentsPage: React.FC = () => {
                         </div>
                         <div className="text-[11px] text-[#5E6975] font-mono">{agent.id}</div>
                       </td>
-                      <td className="text-[#334256] font-mono text-xs">{agent.domain}</td>
+                      <td className="text-[#334256] font-sans text-xs font-medium">{agent.domain}</td>
                       <td>
                         <StatusBadge status={isPaused ? 'paused' : agent.status} size="sm" />
                       </td>
@@ -274,7 +282,7 @@ export const AgentsPage: React.FC = () => {
                         {agent.completedTasks.toLocaleString()}
                       </td>
                       <td>
-                        <span className="text-[11px] text-[#334256] truncate max-w-xs block font-mono">
+                        <span className="text-[12px] text-[#40516A] truncate max-w-xs block font-sans">
                           {agent.invariants[0]}
                         </span>
                       </td>

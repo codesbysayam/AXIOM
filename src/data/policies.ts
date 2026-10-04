@@ -1,0 +1,68 @@
+import { PolicyDefinition } from '../types/operations';
+
+export const OPERATIONAL_POLICIES: PolicyDefinition[] = [
+  {
+    id: 'POL-FIN-01',
+    name: 'Autonomous Disbursement Threshold Limit',
+    category: 'financial',
+    status: 'enforced',
+    threshold: 'Transaction Amount <= $10,000.00 USD',
+    actionOnBreach: 'escalate_human',
+    evaluations24h: 1281,
+    passRate: 98.4,
+    lastTriggered: '12:03:18',
+    invariants: [
+      'Disbursements exceeding $10,000 halt immediately pending dual human sign-off',
+      'Idempotency tokens mandatory on all transactional mutations',
+      'Zero wire transmission without verified vendor bank routing checksum',
+    ],
+  },
+  {
+    id: 'POL-SEC-02',
+    name: 'Production Code & Binary Release Gate',
+    category: 'security',
+    status: 'enforced',
+    threshold: '100% Sandbox Pass + Zero Critical CVEs',
+    actionOnBreach: 'escalate_human',
+    evaluations24h: 342,
+    passRate: 99.1,
+    lastTriggered: '12:02:44',
+    invariants: [
+      'Ephemeral test environment must verify 100% regression suite before merge',
+      'Zero container deployment to production without human security authorization',
+      'Signed cryptographic software bill of materials (SBOM) required',
+    ],
+  },
+  {
+    id: 'POL-OPS-03',
+    name: 'Human Authority Boundary Gate',
+    category: 'operational',
+    status: 'enforced',
+    threshold: 'Risk Tier >= HIGH requires operator confirmation',
+    actionOnBreach: 'escalate_human',
+    evaluations24h: 1890,
+    passRate: 97.2,
+    lastTriggered: '12:03:18',
+    invariants: [
+      'All high-risk DAG branches require explicit human signature to commit',
+      'Operator can abort, decline, or roll back in-flight execution at any stage',
+      'State reverts to pre-execution checkpoint upon rejection',
+    ],
+  },
+  {
+    id: 'POL-DATA-04',
+    name: 'Cross-Tenant Memory & Data Isolation',
+    category: 'compliance',
+    status: 'enforced',
+    threshold: 'Zero Cross-Tenant Leakage & Strict Encryption',
+    actionOnBreach: 'block',
+    evaluations24h: 4120,
+    passRate: 100.0,
+    lastTriggered: '11:15:30',
+    invariants: [
+      'Memory vectors must be scoped to verified tenant identity tokens',
+      'Zero plain-text persistence of PII or credentials',
+      'Cryptographic proof required on all vector retrieval operations',
+    ],
+  },
+];

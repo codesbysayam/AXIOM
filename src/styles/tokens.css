@@ -1,0 +1,41 @@
+:root {
+  --axiom-bg: #f4f1e9;
+  --axiom-surface: #fbfaf6;
+  --axiom-card: #fffdf8;
+
+  --axiom-navy: #142238;
+  --axiom-text: #17263a;
+  --axiom-body: #40516a;
+  --axiom-muted: #68758a;
+
+  --axiom-border: #d5d1c7;
+
+  --axiom-green: #00866b;
+  --axiom-green-bg: #e5f5ef;
+
+  --axiom-blue: #3569a8;
+  --axiom-blue-bg: #eaf1fa;
+
+  --axiom-amber: #b97800;
+  --axiom-amber-bg: #fff2cc;
+
+  --axiom-red: #c93645;
+  --axiom-red-bg: #fce8ea;
+
+  --font-display: 'Source Serif 4', 'Cormorant Garamond', Georgia, serif;
+  --font-ui: 'Inter', 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+}

@@ -22,23 +22,23 @@ export const CasesPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#dce1e7] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#718096] block">
+          <span className="eyebrow block">
             Incident Casework
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#17263d] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#17263a] mt-1 tracking-tight">
             Operational Investigation Workspace
           </h1>
-          <p className="text-xs text-[#40516a] mt-0.5">
+          <p className="text-sm font-sans text-[#40516a] mt-1">
             Exception investigations, compliance disputes, and incident casework
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 border border-[#dce1e7] bg-white p-1 rounded-xs">
+        <div className="flex items-center gap-1.5 border border-[#dce1e7] bg-white p-1 rounded-[4px]">
           <button
             type="button"
             onClick={() => setFilter('all')}
-            className={`px-3 py-1 text-xs font-medium rounded-xs transition-colors ${
-              filter === 'all' ? 'bg-[#17263d] text-white' : 'text-[#40516a] hover:bg-[#f6f5f0]'
+            className={`px-3 py-1 text-xs font-sans font-medium rounded-[4px] transition-colors ${
+              filter === 'all' ? 'bg-[#17263a] text-white' : 'text-[#40516a] hover:bg-[#f6f5f0]'
             }`}
           >
             All Dockets ({cases.length})
@@ -46,8 +46,8 @@ export const CasesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setFilter('open')}
-            className={`px-3 py-1 text-xs font-medium rounded-xs transition-colors ${
-              filter === 'open' ? 'bg-[#17263d] text-white' : 'text-[#40516a] hover:bg-[#f6f5f0]'
+            className={`px-3 py-1 text-xs font-sans font-medium rounded-[4px] transition-colors ${
+              filter === 'open' ? 'bg-[#17263a] text-white' : 'text-[#40516a] hover:bg-[#f6f5f0]'
             }`}
           >
             Active In Review
@@ -55,8 +55,8 @@ export const CasesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setFilter('resolved')}
-            className={`px-3 py-1 text-xs font-medium rounded-xs transition-colors ${
-              filter === 'resolved' ? 'bg-[#17263d] text-white' : 'text-[#40516a] hover:bg-[#f6f5f0]'
+            className={`px-3 py-1 text-xs font-sans font-medium rounded-[4px] transition-colors ${
+              filter === 'resolved' ? 'bg-[#17263a] text-white' : 'text-[#40516a] hover:bg-[#f6f5f0]'
             }`}
           >
             Resolved
@@ -69,7 +69,7 @@ export const CasesPage: React.FC = () => {
         {/* Left: Investigation Cases Roster (5 cols) */}
         <div className="lg:col-span-5 axiom-panel overflow-hidden">
           <div className="axiom-panel-header bg-[#faf9f5]">
-            <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#718096]">
+            <span className="text-xs font-sans font-semibold uppercase tracking-[0.06em] text-[#68758A]">
               Case Dockets ({filtered.length})
             </span>
           </div>
@@ -83,29 +83,29 @@ export const CasesPage: React.FC = () => {
                   key={item.id}
                   onClick={() => setSelectedCaseId(item.id)}
                   className={`p-3.5 cursor-pointer transition-colors ${
-                    isSelected ? 'bg-[#f6f5f0] border-l-2 border-l-[#17263d]' : 'hover:bg-[#fbfaf7]'
+                    isSelected ? 'bg-[#f6f5f0] border-l-2 border-l-[#17263a]' : 'hover:bg-[#fbfaf7]'
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-2 text-[10px] font-mono">
-                    <span className="text-[#718096]">CASE ID: {item.id}</span>
+                  <div className="flex items-center justify-between gap-2 text-xs font-sans">
+                    <span className="text-[#68758A]">Case <span className="font-mono text-[#17263A] font-semibold">{item.id}</span></span>
                     <span
-                      className={`font-bold uppercase px-1.5 py-0.2 rounded-xs ${
+                      className={`font-semibold uppercase text-[10px] px-1.5 py-0.5 rounded-[3px] ${
                         item.priority === 'urgent'
-                          ? 'bg-rose-100 text-[#c83e4d]'
+                          ? 'bg-[#FCE8EA] text-[#C93645]'
                           : item.priority === 'high'
-                          ? 'bg-amber-100 text-[#945f00]'
-                          : 'bg-slate-100 text-[#40516a]'
+                          ? 'bg-[#FFF2CC] text-[#B97800]'
+                          : 'bg-slate-100 text-[#40516A]'
                       }`}
                     >
                       {item.priority}
                     </span>
                   </div>
 
-                  <h4 className="text-xs font-semibold text-[#17263d] mt-1 line-clamp-1">
+                  <h4 className="text-xs font-sans font-semibold text-[#17263a] mt-1.5 line-clamp-1">
                     {item.title}
                   </h4>
 
-                  <div className="flex items-center justify-between gap-2 mt-2 text-[11px] text-[#718096] font-mono">
+                  <div className="flex items-center justify-between gap-2 mt-2 text-xs text-[#68758A] font-sans">
                     <span>{item.category}</span>
                     <StatusBadge status={item.status} size="sm" />
                   </div>
@@ -121,14 +121,14 @@ export const CasesPage: React.FC = () => {
             <div className="p-5 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 border-b border-[#dce1e7] pb-3">
                 <div>
-                  <div className="flex items-center gap-2 text-[10px] font-mono text-[#718096]">
-                    <span>DOCKET: {activeCase.id}</span>
+                  <div className="flex items-center gap-2 text-xs font-sans text-[#68758A]">
+                    <span>Docket: <span className="font-mono font-medium text-[#17263A]">{activeCase.id}</span></span>
                     <span>·</span>
-                    <span>FILED: {activeCase.createdAt}</span>
+                    <span>Filed: <span className="font-mono">{activeCase.createdAt}</span></span>
                     <span>·</span>
-                    <span>CATEGORY: {activeCase.category}</span>
+                    <span>Category: {activeCase.category}</span>
                   </div>
-                  <h3 className="text-base font-semibold text-[#17263d] mt-1">
+                  <h3 className="text-base font-sans font-semibold text-[#17263a] mt-1.5">
                     {activeCase.title}
                   </h3>
                 </div>
@@ -138,33 +138,33 @@ export const CasesPage: React.FC = () => {
 
               {/* Investigation Context */}
               <div className="space-y-1.5">
-                <span className="text-[10px] font-mono uppercase text-[#718096] font-semibold block">
+                <span className="text-[10px] font-sans uppercase text-[#68758A] font-semibold tracking-[0.08em] block">
                   Raw Incident Triage Payload:
                 </span>
-                <p className="text-xs text-[#17263d] bg-[#fbfaf7] p-3 rounded-xs border border-[#dce1e7] leading-relaxed">
+                <p className="text-xs font-sans text-[#17263a] bg-[#fbfaf7] p-3 rounded-[4px] border border-[#dce1e7] leading-relaxed">
                   {activeCase.summary}
                 </p>
               </div>
 
               {/* Agent Recommendation */}
               <div className="space-y-1.5">
-                <span className="text-[10px] font-mono uppercase text-[#0d6b4f] font-semibold block">
+                <span className="text-[10px] font-sans uppercase text-[#00866B] font-semibold tracking-[0.08em] block">
                   Agent Proposed Resolution:
                 </span>
-                <div className="text-xs text-[#0d6b4f] bg-[#f0faf6] p-3 rounded-xs border border-[#c7eadf] leading-relaxed">
+                <div className="text-xs font-sans text-[#00866B] bg-[#E5F5EF] p-3 rounded-[4px] border border-[#A8DCCE] leading-relaxed">
                   {activeCase.recommendedResolution || 'Awaiting agent recommendation...'}
                 </div>
               </div>
 
               {/* Assigned Agent & Governance Authority */}
-              <div className="p-3 border border-[#dce1e7] bg-[#fbfaf7] rounded-xs flex items-center justify-between text-xs font-mono text-[#40516a]">
-                <span>Assigned Agent: <strong className="text-[#17263d]">{activeCase.assignedAgent}</strong></span>
-                <span className="uppercase text-[#945f00] font-bold">Severity: {activeCase.priority}</span>
+              <div className="p-3 border border-[#dce1e7] bg-[#fbfaf7] rounded-[4px] flex items-center justify-between text-xs font-sans text-[#40516A]">
+                <span>Assigned Agent: <strong className="text-[#17263a] font-semibold">{activeCase.assignedAgent}</strong></span>
+                <span className="uppercase text-[#B97800] font-semibold">Severity: {activeCase.priority}</span>
               </div>
 
               {/* Action Bar */}
               <div className="pt-3 border-t border-[#dce1e7] flex items-center justify-between">
-                <span className="text-[11px] font-mono text-[#718096]">
+                <span className="text-xs font-sans text-[#68758A]">
                   Investigation State: Certified by Lead Operator
                 </span>
 
@@ -178,14 +178,14 @@ export const CasesPage: React.FC = () => {
                     <span>Authorize Resolution</span>
                   </button>
                 ) : (
-                  <span className="text-xs font-mono text-[#159a72] font-semibold">
+                  <span className="text-xs font-sans text-[#00866B] font-semibold">
                     Case Resolved & Closed
                   </span>
                 )}
               </div>
             </div>
           ) : (
-            <div className="p-10 text-center text-xs text-[#718096]">
+            <div className="p-10 text-center text-xs font-sans text-[#68758A]">
               Select a case docket from the left to inspect.
             </div>
           )}

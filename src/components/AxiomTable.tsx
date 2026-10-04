@@ -163,8 +163,8 @@ export function AxiomTable<T>({
             </button>
           </div>
         ) : (
-          <div className="text-xs font-mono text-[#5E6975]">
-            {filteredData.length} of {data.length} records matching
+          <div className="text-xs font-sans text-[#68758A]">
+            <span className="font-semibold text-[#17263A]">{filteredData.length}</span> of {data.length} records matching
           </div>
         )}
       </div>
@@ -210,7 +210,7 @@ export function AxiomTable<T>({
               <tr>
                 <td
                   colSpan={columns.length + (enableSelection ? 1 : 0)}
-                  className="text-center py-8 text-xs text-[#5E6975] font-mono"
+                  className="text-center py-8 text-xs text-[#68758A] font-sans"
                 >
                   {emptyMessage || `No matching records found for "${searchFilter}".`}
                 </td>

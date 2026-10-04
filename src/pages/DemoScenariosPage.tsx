@@ -21,12 +21,12 @@ import { SimulationExecutionMap } from '../components/simulation/SimulationExecu
 import { EvidenceDrawer, InspectorNode } from '../components/EvidenceDrawer';
 
 export const DemoScenariosPage: React.FC = () => {
-  const { addToast, navigateTo } = useOperationsStore();
+  const { addToast, navigateTo, simulationClock } = useOperationsStore();
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>(DEMO_SCENARIOS[0]?.id || '');
   const [runningId, setRunningId] = useState<string | null>(null);
   const [executionPhaseIndex, setExecutionPhaseIndex] = useState<number>(0);
   const [simLogs, setSimLogs] = useState<string[]>([
-    '[00:00.000] STANDBY: Awaiting trial dispatch. Invariants verified.',
+    `[TICK #${simulationClock.tick} · ${simulationClock.epochTime}] STANDBY: Awaiting trial dispatch. Invariants verified.`,
   ]);
   const [inspectedNode, setInspectedNode] = useState<InspectorNode | null>(null);
 
@@ -37,17 +37,17 @@ export const DemoScenariosPage: React.FC = () => {
     setRunningId(sc.id);
     setExecutionPhaseIndex(0);
     setSimLogs([
-      `[00:00.012] SIMULATION_INIT: Dispatching trial "${sc.title}"`,
-      `[00:00.045] PAYLOAD_INGEST: ${sc.initialInput}`,
+      `[TICK #${simulationClock.tick} · ${simulationClock.epochTime}] SIMULATION_INIT: Dispatching trial "${sc.title}"`,
+      `[TICK #${simulationClock.tick} · ${simulationClock.epochTime}] PAYLOAD_INGEST: ${sc.initialInput}`,
     ]);
-    addToast('Simulation Initialized', `Starting trial: "${sc.title}"`, 'info');
+    addToast('Simulation Initialized', `Starting trial: "${sc.title}" synchronized with central clock.`, 'info');
 
     setTimeout(() => {
       setExecutionPhaseIndex(1);
       setSimLogs((prev) => [
         ...prev,
-        `[00:00.280] CONTEXT_AGENT: Retrieved historical context and vectors`,
-        `[00:00.310] INTENT_ANALYST: Structured parameters parsed with 99.4% confidence`,
+        `[TICK #${simulationClock.tick + 1}] CONTEXT_AGENT: Retrieved historical context and vectors`,
+        `[TICK #${simulationClock.tick + 1}] INTENT_ANALYST: Structured parameters parsed with 99.4% confidence`,
       ]);
     }, 500);
 
@@ -55,8 +55,8 @@ export const DemoScenariosPage: React.FC = () => {
       setExecutionPhaseIndex(2);
       setSimLogs((prev) => [
         ...prev,
-        `[00:00.620] INVARIANT_CHECK: Testing against POL-FIN-01 / POL-SEC-02 boundary rules`,
-        `[00:00.740] THRESHOLD_BREACH: Policy boundary triggered. Fail-closed sandbox activated.`,
+        `[TICK #${simulationClock.tick + 2}] INVARIANT_CHECK: Testing against POL-FIN-01 / POL-SEC-02 boundary rules`,
+        `[TICK #${simulationClock.tick + 2}] THRESHOLD_BREACH: Policy boundary triggered. Fail-closed sandbox activated.`,
       ]);
     }, 1100);
 
@@ -64,8 +64,8 @@ export const DemoScenariosPage: React.FC = () => {
       setExecutionPhaseIndex(3);
       setSimLogs((prev) => [
         ...prev,
-        `[00:01.050] HUMAN_GATE_ROUTER: Created high-priority authorization request for Lead Operator`,
-        `[00:01.120] AUDIT_LEDGER: Serialized state transition with SHA-256 Merkle root`,
+        `[TICK #${simulationClock.tick + 3}] HUMAN_GATE_ROUTER: Created high-priority authorization request for Lead Operator`,
+        `[TICK #${simulationClock.tick + 3}] AUDIT_LEDGER: Serialized state transition with SHA-256 Merkle root`,
       ]);
     }, 1700);
 
@@ -74,7 +74,7 @@ export const DemoScenariosPage: React.FC = () => {
       setExecutionPhaseIndex(4);
       setSimLogs((prev) => [
         ...prev,
-        `[00:01.400] SIMULATION_COMPLETE: Outcome verified -> ${sc.expectedOutcome}`,
+        `[TICK #${simulationClock.tick + 4}] SIMULATION_COMPLETE: Outcome verified -> ${sc.expectedOutcome}`,
       ]);
 
       if (sc.id === 'demo-wire-transfer') {
@@ -124,16 +124,16 @@ export const DemoScenariosPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Scenario Lab Showcase Header */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D1C7] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
+          <span className="eyebrow block">
             Verification Laboratory
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#17263A] mt-1 tracking-tight">
             Scenario Simulation Chamber
           </h1>
-          <p className="text-xs text-[#334256] mt-0.5">
-            Execute stress tests and multi-agent edge cases with live invariant boundary proving
+          <p className="text-sm font-sans text-[#52647B] mt-1">
+            Execute stress tests and multi-agent edge cases with live invariant boundary proving.
           </p>
         </div>
 
@@ -144,35 +144,35 @@ export const DemoScenariosPage: React.FC = () => {
             className="axiom-btn-secondary"
           >
             <span>Judge Evaluation Harness</span>
-            <ArrowRight size={12} />
+            <ArrowRight size={13} />
           </button>
         </div>
       </div>
 
       {/* Main Chamber Card */}
-      <div className="axiom-panel overflow-hidden border border-[#D5D5CE] bg-[#FFFDF8]">
+      <div className="axiom-panel overflow-hidden border border-[#D5D1C7] bg-[#FFFDF8] rounded-[6px]">
         {/* Active Trial Header Strip */}
-        <div className="p-4 bg-[#FAF9F5] border-b border-[#D5D5CE] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="p-4 bg-[#FAF9F5] border-b border-[#D5D1C7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="font-mono text-xs font-bold text-[#B52D3D] px-2 py-0.5 bg-rose-50 rounded-[2px] border border-rose-200">
+            <span className="font-sans text-[10px] font-bold text-[#C93645] px-2 py-0.5 bg-rose-50 rounded-[3px] border border-rose-200 uppercase tracking-wide">
               ACTIVE TRIAL
             </span>
-            <span className="font-serif text-base font-bold text-[#182536]">
+            <span className="font-sans text-base font-semibold text-[#17263A]">
               {activeScenario.title}
             </span>
-            <span className="text-[11px] font-mono text-[#5E6975]">
+            <span className="text-xs font-sans text-[#52647B]">
               ({activeScenario.category})
             </span>
           </div>
 
           <div className="flex items-center gap-2 self-start sm:self-auto">
             <span
-              className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-[2px] border ${
+              className={`text-[10px] font-sans font-bold uppercase px-2 py-0.5 rounded-[3px] border ${
                 activeScenario.difficulty === 'Stress Test'
-                  ? 'bg-rose-50 text-[#B52D3D] border-rose-200'
+                  ? 'bg-rose-50 text-[#C93645] border-rose-200'
                   : activeScenario.difficulty === 'Advanced'
-                  ? 'bg-[#FFF7DF] text-[#A66A00] border-[#E1BF70]'
-                  : 'bg-[#F0FAF6] text-[#08795F] border-[#C3E6DB]'
+                  ? 'bg-[#FFF3D6] text-[#9A6500] border-[#E7C77E]'
+                  : 'bg-[#E8F5F0] text-[#007A61] border-[#A8DCCE]'
               }`}
             >
               {activeScenario.difficulty}
@@ -182,7 +182,7 @@ export const DemoScenariosPage: React.FC = () => {
               type="button"
               disabled={runningId === activeScenario.id}
               onClick={() => handleLaunchScenario(activeScenario)}
-              className="axiom-btn-primary py-1.5 px-4"
+              className="axiom-btn-primary py-1.5 px-4 text-xs h-[34px]"
             >
               <Play
                 size={12}
@@ -199,17 +199,17 @@ export const DemoScenariosPage: React.FC = () => {
         <div className="p-6 space-y-6 bg-[#FAF9F5]/40">
           {/* Mission Briefing */}
           <div>
-            <span className="text-[10px] font-mono uppercase text-[#5E6975] block mb-1 font-semibold">
+            <span className="eyebrow block mb-1">
               Trial Objective & Operational Invariant
             </span>
-            <p className="text-xs text-[#182536] leading-relaxed font-medium">
+            <p className="text-sm font-sans text-[#17263A] leading-relaxed">
               {activeScenario.summary}
             </p>
           </div>
 
           {/* PRIMARY VISUALIZATION: Graphical Execution Map (Point 6) */}
           <div className="space-y-2">
-            <span className="text-[10px] font-mono uppercase text-[#5E6975] block font-semibold">
+            <span className="eyebrow block">
               Execution Trace Topology (Interactive Nodes)
             </span>
             <SimulationExecutionMap
@@ -223,35 +223,35 @@ export const DemoScenariosPage: React.FC = () => {
 
           {/* Side-by-Side: Payload Input vs Expected Outcome */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div className="p-3.5 bg-white border border-[#D5D5CE] rounded-[2px] space-y-1.5 shadow-2xs">
-              <span className="text-[10px] font-mono uppercase text-[#5E6975] block font-semibold flex items-center gap-1.5">
-                <Cpu size={12} className="text-[#182536]" />
+            <div className="p-3.5 bg-white border border-[#D5D5CE] rounded-[4px] space-y-1.5 shadow-2xs">
+              <span className="text-[10px] font-sans uppercase text-[#68758A] block font-semibold tracking-[0.08em] flex items-center gap-1.5">
+                <Cpu size={12} className="text-[#17263A]" />
                 Simulated Event Payload:
               </span>
-              <div className="font-mono text-[11px] text-[#182536] bg-[#FAF9F5] p-2.5 rounded-[2px] border border-[#D5D5CE]/60 leading-relaxed">
+              <div className="font-mono text-[11px] text-[#17263A] bg-[#FAF9F5] p-2.5 rounded-[3px] border border-[#D5D5CE]/60 leading-relaxed">
                 {activeScenario.initialInput}
               </div>
             </div>
 
-            <div className="p-3.5 bg-white border border-[#D5D5CE] rounded-[2px] space-y-1.5 shadow-2xs">
-              <span className="text-[10px] font-mono uppercase text-[#08795F] block font-semibold flex items-center gap-1.5">
-                <Shield size={12} className="text-[#08795F]" />
+            <div className="p-3.5 bg-white border border-[#D5D5CE] rounded-[4px] space-y-1.5 shadow-2xs">
+              <span className="text-[10px] font-sans uppercase text-[#00866B] block font-semibold tracking-[0.08em] flex items-center gap-1.5">
+                <Shield size={12} className="text-[#00866B]" />
                 Guaranteed Invariant Outcome:
               </span>
-              <div className="font-mono text-[11px] text-[#08795F] bg-[#F0FAF6] p-2.5 rounded-[2px] border border-[#C3E6DB] leading-relaxed">
+              <div className="font-mono text-[11px] text-[#00866B] bg-[#E5F5EF] p-2.5 rounded-[3px] border border-[#A8DCCE] leading-relaxed">
                 {activeScenario.expectedOutcome}
               </div>
             </div>
           </div>
 
           {/* SECONDARY: Compact Event Timeline (Point 6) */}
-          <div className="p-3.5 bg-white border border-[#D5D5CE] rounded-[2px] space-y-2">
-            <div className="flex items-center justify-between text-[10px] font-mono text-[#5E6975] border-b border-[#D5D5CE] pb-1.5">
-              <span className="flex items-center gap-1.5 font-semibold text-[#182536]">
-                <Clock size={11} className="text-[#08795F]" />
-                <span>COMPACT STATE TRANSITION TIMELINE</span>
+          <div className="p-3.5 bg-white border border-[#D5D5CE] rounded-[4px] space-y-2">
+            <div className="flex items-center justify-between text-xs font-sans text-[#68758A] border-b border-[#D5D5CE] pb-1.5">
+              <span className="flex items-center gap-1.5 font-semibold text-[#17263A] tracking-[0.04em] uppercase text-[10px]">
+                <Clock size={12} className="text-[#00866B]" />
+                <span>Compact State Transition Timeline</span>
               </span>
-              <span>SHA-256 MERKLE ROOT: VERIFIED</span>
+              <span className="text-[11px] font-mono text-[#00866B]">SHA-256 MERKLE ROOT: VERIFIED</span>
             </div>
             <div className="space-y-1 max-h-36 overflow-y-auto font-mono text-[11px] divide-y divide-[#D5D5CE]/40">
               {simLogs.map((log, i) => (
@@ -266,8 +266,8 @@ export const DemoScenariosPage: React.FC = () => {
 
       {/* BENCHMARK LIBRARY ROSTER */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between text-xs font-mono text-[#5E6975] border-b border-[#D5D5CE] pb-2">
-          <span className="uppercase font-semibold">Simulation Benchmark Library (4 Scenarios)</span>
+        <div className="flex items-center justify-between text-xs font-sans text-[#68758A] border-b border-[#D5D5CE] pb-2">
+          <span className="uppercase font-semibold tracking-[0.06em]">Simulation Benchmark Library (4 Scenarios)</span>
           <span>Click any card to load into the simulation chamber</span>
         </div>
 
@@ -282,41 +282,41 @@ export const DemoScenariosPage: React.FC = () => {
                   setExecutionPhaseIndex(0);
                   setSimLogs([`[00:00.000] LOADED: Trial "${sc.title}" ready for execution.`]);
                 }}
-                className={`p-4 rounded-[2px] border cursor-pointer transition-all shadow-2xs ${
+                className={`p-4 rounded-[4px] border cursor-pointer transition-all shadow-2xs ${
                   isSelected
-                    ? 'border-[#182536] bg-white ring-1 ring-[#182536]'
-                    : 'border-[#D5D5CE] bg-white hover:border-[#182536]/40 hover:bg-[#FAF9F5]'
+                    ? 'border-[#17263A] bg-white ring-1 ring-[#17263A]'
+                    : 'border-[#D5D5CE] bg-white hover:border-[#17263A]/40 hover:bg-[#FAF9F5]'
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] font-bold text-[#B52D3D] px-1.5 py-0.2 bg-rose-50 rounded-[2px] border border-rose-200">
+                    <span className="font-mono text-[10px] font-bold text-[#C93645] px-1.5 py-0.5 bg-[#FCE8EA] rounded-[3px] border border-[#F3C4C9]">
                       LAB 0{idx + 1}
                     </span>
-                    <h4 className="text-xs font-serif font-bold text-[#182536]">
+                    <h4 className="text-sm font-sans font-semibold text-[#17263A]">
                       {sc.title}
                     </h4>
                   </div>
                   <span
-                    className={`text-[9px] font-mono font-bold uppercase px-1.5 py-0.2 rounded-[2px] ${
+                    className={`text-[10px] font-sans font-semibold uppercase px-1.5 py-0.5 rounded-[3px] ${
                       sc.difficulty === 'Stress Test'
-                        ? 'bg-rose-50 text-[#B52D3D]'
+                        ? 'bg-[#FCE8EA] text-[#C93645]'
                         : sc.difficulty === 'Advanced'
-                        ? 'bg-[#FFF7DF] text-[#A66A00]'
-                        : 'bg-[#F0FAF6] text-[#08795F]'
+                        ? 'bg-[#FFF2CC] text-[#B97800]'
+                        : 'bg-[#E5F5EF] text-[#00866B]'
                     }`}
                   >
                     {sc.difficulty}
                   </span>
                 </div>
 
-                <p className="text-[11px] text-[#334256] mt-2 line-clamp-2 leading-relaxed">
+                <p className="text-xs font-sans text-[#40516A] mt-2 line-clamp-2 leading-relaxed">
                   {sc.summary}
                 </p>
 
-                <div className="mt-3 pt-2 border-t border-[#D5D5CE]/60 flex items-center justify-between text-[10px] font-mono text-[#5E6975]">
-                  <span>{sc.stepsCount} Nodes in DAG</span>
-                  <span className="text-[#182536] font-semibold flex items-center gap-1">
+                <div className="mt-3 pt-2 border-t border-[#D5D5CE]/60 flex items-center justify-between text-xs font-sans text-[#68758A]">
+                  <span><span className="font-mono font-medium text-[#17263A]">{sc.stepsCount}</span> Nodes in DAG</span>
+                  <span className="text-[#17263A] font-semibold flex items-center gap-1">
                     {isSelected ? 'Loaded in Chamber' : 'Load Simulation →'}
                   </span>
                 </div>

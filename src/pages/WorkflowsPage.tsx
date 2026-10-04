@@ -351,23 +351,23 @@ export const WorkflowsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D1C7] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
+          <span className="eyebrow block">
             Orchestration Fabric
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#17263A] mt-1 tracking-tight">
             AXIOM CI/CD Control Pipeline
           </h1>
-          <p className="text-xs text-[#334256] mt-0.5">
-            Deterministic software delivery with policy enforcement, automated verification, human release authority, and rollback
+          <p className="text-sm font-sans text-[#52647B] mt-1">
+            Deterministic software delivery with policy enforcement, automated verification, human release authority, and rollback.
           </p>
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
           {executionState === 'waiting_gate' ? (
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-[#9A6900] bg-[#FFF8DF] border border-[#E1BF70] px-3 py-1 rounded-[2px] font-semibold animate-pulse">
+              <span className="text-xs font-sans text-[#9A6500] bg-[#FFF3D6] border border-[#E7C77E] px-3 py-1 rounded-[4px] font-semibold animate-pulse">
                 AWAITING OPERATOR SIGN-OFF
               </span>
               <button
@@ -403,17 +403,17 @@ export const WorkflowsPage: React.FC = () => {
       </div>
 
       {/* CENTERPIECE: AXIOM CI/CD CONTROL PIPELINE VISUALIZATION */}
-      <div className="axiom-panel overflow-hidden border border-[#D5D5CE] bg-[#FFFDF8]">
+      <div className="axiom-panel overflow-hidden border border-[#D5D1C7] bg-[#FFFDF8] rounded-[6px]">
         {/* Pipeline Control Header */}
-        <div className="axiom-panel-header bg-[#FAF9F5] border-b border-[#D5D5CE]">
+        <div className="axiom-panel-header bg-[#FAF9F5] border-b border-[#D5D1C7]">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px] uppercase text-[#5E6975] font-semibold">
+            <span className="font-sans text-[11px] uppercase text-[#68758A] font-semibold tracking-wider">
               PIPELINE TARGET:
             </span>
             <select
               value={activeWorkflowId}
               onChange={(e) => setActiveWorkflowId(e.target.value)}
-              className="font-serif text-sm font-bold text-[#182536] bg-transparent border-0 focus:outline-none cursor-pointer hover:underline"
+              className="font-sans text-sm font-semibold text-[#17263A] bg-transparent border-0 focus:outline-none cursor-pointer hover:underline"
             >
               {workflows.map((w) => (
                 <option key={w.id} value={w.id}>
@@ -423,25 +423,25 @@ export const WorkflowsPage: React.FC = () => {
             </select>
           </div>
 
-          <div className="flex items-center gap-3 text-xs font-mono">
-            <span className="text-[#5E6975]">
+          <div className="flex items-center gap-3 text-xs font-sans text-[#52647B]">
+            <span>
               State:{' '}
-              <strong className={executionState === 'waiting_gate' ? 'text-[#9A6900]' : executionState === 'completed' ? 'text-[#08795F]' : 'text-[#182536]'}>
+              <strong className={executionState === 'waiting_gate' ? 'text-[#9A6500]' : executionState === 'completed' ? 'text-[#00866B]' : 'text-[#17263A]'}>
                 {executionState.toUpperCase()}
               </strong>
             </span>
-            <span className="text-[#D5D5CE]">|</span>
-            <span className="text-[#5E6975]">
-              Nodes: <strong>10 Sequential / Parallel</strong>
+            <span className="text-[#D5D1C7]">|</span>
+            <span>
+              Nodes: <strong className="text-[#17263A]">10 Sequential / Parallel</strong>
             </span>
           </div>
         </div>
 
         {/* Primary CI/CD Path Canvas with Execution Beams */}
         <div className="p-6 bg-[#FFFDF8] relative">
-          <div className="flex items-center justify-between text-xs font-mono text-[#5E6975] mb-4">
-            <span>PRIMARY EXECUTION PATH: DETERMINISTIC ARTIFACT & INVARIANT FLOW</span>
-            <span className="text-[10px] bg-white px-2 py-0.5 border border-[#D5D5CE] rounded-[2px]">
+          <div className="flex items-center justify-between text-xs font-sans text-[#52647B] mb-4">
+            <span className="font-semibold uppercase tracking-wide text-[11px]">PRIMARY EXECUTION PATH: DETERMINISTIC ARTIFACT & INVARIANT FLOW</span>
+            <span className="text-[11px] bg-white px-2 py-0.5 border border-[#D5D1C7] rounded-[4px]">
               Click any node to open the Evidence Drawer
             </span>
           </div>
@@ -570,8 +570,8 @@ export const WorkflowsPage: React.FC = () => {
           ))}
         </div>
 
-        <span className="text-xs font-mono text-[#5E6975]">
-          Showing {filtered.length} of {workflows.length} DAG Pipelines
+        <span className="text-xs font-sans text-[#68758A]">
+          Showing <span className="font-semibold text-[#17263A]">{filtered.length}</span> of {workflows.length} DAG Pipelines
         </span>
       </div>
 
@@ -602,13 +602,13 @@ export const WorkflowsPage: React.FC = () => {
 
           {selectedIds.length > 0 ? (
             <div className="axiom-bulk-bar">
-              <span>
+              <span className="font-sans">
                 <b>{selectedIds.length}</b> selected
               </span>
               <button
                 type="button"
                 onClick={handleBulkRun}
-                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#08795F] hover:bg-[#065b48] text-white text-[10px] font-semibold rounded-[2px] transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#00866B] hover:bg-[#007058] text-white text-[10px] font-sans font-semibold rounded-[4px] transition-colors"
               >
                 <Play size={10} />
                 <span>Run Selected</span>
@@ -616,7 +616,7 @@ export const WorkflowsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleBulkPause}
-                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#9A6900] hover:bg-[#7a5300] text-white text-[10px] font-semibold rounded-[2px] transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#B97800] hover:bg-[#9a6400] text-white text-[10px] font-sans font-semibold rounded-[4px] transition-colors"
               >
                 <Pause size={10} />
                 <span>Pause Selected</span>
@@ -624,14 +624,14 @@ export const WorkflowsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedIds([])}
-                className="text-slate-300 hover:text-white underline text-[10px] ml-1"
+                className="text-slate-300 hover:text-white underline text-[10px] font-sans ml-1"
               >
                 Clear
               </button>
             </div>
           ) : (
-            <div className="text-xs font-mono text-[#5E6975]">
-              {filtered.length} matching pipelines
+            <div className="text-xs font-sans text-[#68758A]">
+              <span className="font-semibold text-[#17263A]">{filtered.length}</span> matching pipelines
             </div>
           )}
         </div>
@@ -667,7 +667,7 @@ export const WorkflowsPage: React.FC = () => {
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="text-center py-8 text-xs text-[#5E6975] font-mono">
+                  <td colSpan={10} className="text-center py-8 text-xs text-[#68758A] font-sans">
                     No matching workflow pipelines found for "{searchFilter}".
                   </td>
                 </tr>
@@ -695,18 +695,18 @@ export const WorkflowsPage: React.FC = () => {
                         />
                       </td>
                       <td>
-                        <div className="font-serif font-bold text-sm text-[#182536]">{wf.title}</div>
-                        <div className="text-[10px] font-mono text-[#5E6975]">{wf.id}</div>
+                        <div className="font-sans font-semibold text-sm text-[#17263A]">{wf.title}</div>
+                        <div className="text-[10px] font-mono text-[#68758A]">{wf.id}</div>
                       </td>
-                      <td className="text-[#334256] text-xs font-mono">{wf.category}</td>
+                      <td className="text-[#40516A] text-xs font-sans">{wf.category}</td>
                       <td>
                         <span
-                          className={`text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded-[2px] border ${
+                          className={`text-[10px] font-sans font-semibold uppercase px-1.5 py-0.5 rounded-[3px] border ${
                             wf.riskTier === 'critical'
-                              ? 'bg-rose-50 text-[#D72F40] border-rose-200'
+                              ? 'bg-[#FCE8EA] text-[#C93645] border-[#F3C4C9]'
                               : wf.riskTier === 'high'
-                              ? 'bg-[#FFF8DF] text-[#9A6900] border-[#F3DFAA]'
-                              : 'bg-slate-50 text-[#334256] border-slate-200'
+                              ? 'bg-[#FFF2CC] text-[#B97800] border-[#E1BF70]'
+                              : 'bg-slate-50 text-[#40516A] border-slate-200'
                           }`}
                         >
                           {wf.riskTier}
@@ -726,12 +726,12 @@ export const WorkflowsPage: React.FC = () => {
                         />
                       </td>
                       <td>
-                        <div className="text-[11px] text-[#334256] truncate max-w-xs font-mono">
+                        <div className="text-xs text-[#40516A] truncate max-w-xs font-sans">
                           {Array.from(new Set(wf.steps.map((s) => s.assignedAgent))).join(', ')}
                         </div>
                       </td>
-                      <td className="font-mono text-xs text-[#182536] font-semibold">{wf.steps.length}</td>
-                      <td className="font-mono text-xs text-[#5E6975]">{wf.totalRuns.toLocaleString()}</td>
+                      <td className="font-mono text-xs text-[#17263A] font-semibold">{wf.steps.length}</td>
+                      <td className="font-mono text-xs text-[#68758A]">{wf.totalRuns.toLocaleString()}</td>
                       <td className="text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-end gap-1.5">
                           <button

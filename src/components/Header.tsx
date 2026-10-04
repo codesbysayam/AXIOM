@@ -53,11 +53,11 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           type="button"
           onClick={onBackToIndex}
-          className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-xs text-[#334256] hover:text-[#182536] hover:bg-[#EFEFEB] rounded-[2px] border border-[#D5D5CE] transition-colors"
+          className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-xs text-[#334256] hover:text-[#182536] hover:bg-[#EFEFEB] rounded-[4px] border border-[#D5D5CE] transition-colors"
           title="Return to the 01 AXIOM editorial index"
         >
-          <ArrowLeft size={12} className="text-[#D72F40]" />
-          <span className="font-mono text-[11px]">01 / Editorial Index</span>
+          <ArrowLeft size={13} className="text-[#D72F40]" />
+          <span className="font-sans font-medium text-xs">Editorial Index</span>
         </button>
 
         <div className="hidden sm:block h-5 w-px bg-[#D5D5CE]" aria-hidden="true" />
@@ -65,10 +65,10 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="axiom-brand flex items-center gap-2.5">
           <AxiomMark size={26} />
           <div>
-            <span className="font-serif font-bold text-base tracking-tight text-[#182536] leading-none block">
+            <span className="font-serif font-semibold text-lg tracking-tight text-[#17263A] leading-none block">
               AXIOM
             </span>
-            <span className="text-[8px] text-[#5E6975] font-mono uppercase tracking-wider block mt-0.5">
+            <span className="text-[9px] text-[#64748B] font-sans font-semibold tracking-[0.14em] uppercase block mt-0.5">
               Autonomous Operations
             </span>
           </div>
@@ -113,7 +113,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onToggleMissionControl}
-            className={`px-2.5 py-1 text-xs font-mono inline-flex items-center gap-1.5 rounded-[2px] border transition-colors ${
+            className={`px-2.5 py-1 text-xs font-sans font-medium inline-flex items-center gap-1.5 rounded-[4px] border transition-colors ${
               missionControl
                 ? 'bg-[#182536] text-[#FFFDF8] border-[#182536]'
                 : 'bg-[#FFFDF8] text-[#334256] border-[#D5D5CE] hover:bg-[#FFF8DF] hover:border-[#B9B39E]'

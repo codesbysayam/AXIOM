@@ -1,35 +1,47 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap');
+@import "./styles/tokens.css";
+
+@theme {
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
 
 :root {
   color-scheme: light;
 
-  --bg-app: #f5f1e6;
+  --bg-app: #f4f1e9;
 
   --surface: #fffdf8;
-  --surface-subtle: #efefeb;
-  --surface-warm: #fff8df;
+  --surface-subtle: #fbfaf6;
+  --surface-warm: #fff2cc;
   --surface-grey: #efefeb;
   --surface-hover: #f3efe4;
 
-  --ink-primary: #182536;
-  --ink-secondary: #334256;
-  --ink-muted: #5e6975;
+  --ink-primary: #17263a;
+  --ink-secondary: #40516a;
+  --ink-muted: #68758a;
 
-  --border-subtle: #d5d5ce;
+  --border-subtle: #d5d1c7;
   --border-strong: #a7a9a6;
 
-  --accent-red: #d72f40;
-  --accent-emerald: #08795f;
-  --accent-amber: #9a6900;
-  --accent-rose: #b23c4b;
+  --accent-red: #c93645;
+  --accent-emerald: #00866b;
+  --accent-amber: #b97800;
+  --accent-rose: #c93645;
 
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --font-body: Inter, "Helvetica Neue", Arial, sans-serif;
-  --font-tech: "IBM Plex Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --font-body: var(--font-ui);
+  --font-tech: var(--font-ui);
+  --font-machine: var(--font-mono);
 
   --serif: var(--font-display);
-  --sans: var(--font-body);
-  --mono: var(--font-tech);
+  --sans: var(--font-ui);
+  --mono: var(--font-mono);
 }
 
 * {
@@ -49,9 +61,12 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f5f2e9;
-  color: var(--ink-primary);
-  font-family: var(--font-body);
-  line-height: 1.5;
+  color: #17263a;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: -0.005em;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -66,27 +81,110 @@ body {
   overflow: visible;
 }
 
+/* =========================================================
+   AXIOM TYPOGRAPHY RESET & HIERARCHY
+   ========================================================= */
+
+/* DISPLAY HEADINGS ONLY (Source Serif 4: H1, Major Conceptual Statements) */
 h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-display);
-  font-weight: 600;
+.page-title,
+.hero-title,
+.display-heading {
+  font-family: var(--font-display) !important;
+  font-size: clamp(30px, 3.2vw, 42px);
+  font-weight: 500 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.15 !important;
+  color: #17263a;
 }
 
+/* MAJOR SECTION HEADINGS (Inter: H2) */
+h2,
+.section-title {
+  font-family: var(--font-ui) !important;
+  font-size: 20px;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.25 !important;
+  color: #17263a;
+}
+
+/* CARD TITLES & SUB-SECTIONS (Inter: H3, H4) */
+h3,
+.card-title,
+.node-title {
+  font-family: var(--font-ui) !important;
+  font-size: 15px;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  color: #17263a;
+}
+
+h4 {
+  font-family: var(--font-ui) !important;
+  font-size: 13px;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  color: #17263a;
+}
+
+/* NORMAL UI LABELS, BUTTONS, CARDS, INPUTS */
+.metric-label,
+.nav-label,
+.description,
+.subtitle,
 button,
 input,
 select,
 textarea {
-  font-family: var(--font-body);
+  font-family: var(--font-ui) !important;
 }
 
+/* NEVER ALLOW NORMAL CONTENT TO INHERIT MONOSPACE */
+p,
+span,
+div,
+li,
+a,
+label {
+  font-family: var(--font-ui);
+}
+
+/* RE-ENABLE TECHNICAL FONT ONLY WHERE EXPLICITLY REQUIRED */
 code,
-.system-id,
+pre,
+.execution-id,
+.node-id,
+.hash,
 .timestamp,
-.metric-label,
-.technical-label {
-  font-family: var(--font-tech);
+.telemetry-value,
+.metric-technical,
+.technical-identifier,
+.policy-id,
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+/* REMOVE TERMINAL-LIKE UI LETTER-SPACING */
+.nav-label,
+.card-title,
+.node-title,
+.description,
+button {
+  letter-spacing: normal;
+}
+
+/* SECTION EYEBROW / KICKER (Inter, 10px-11px, 600, 0.08em, Uppercase, NEVER Monospace) */
+.eyebrow,
+.system-label,
+.section-kicker,
+.axiom-kicker {
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #68758a;
 }
 
 :where(button, a, input, select, textarea):focus-visible {
@@ -112,7 +210,7 @@ a,
   min-height: 100dvh;
 
   display: grid;
-  grid-template-columns: 272px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
 
   overflow: hidden;
@@ -220,19 +318,22 @@ a,
 .axiom-brand strong {
   display: block;
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.03em;
-  color: #182536;
+  letter-spacing: -0.02em;
+  color: #17263a;
 }
 
 .axiom-brand span {
   display: block;
   margin-top: 3px;
-  font-family: var(--font-tech);
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  color: #69716f;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #64748b;
+  text-transform: uppercase;
 }
 
 /* =========================================================
@@ -994,29 +1095,33 @@ a,
 
 .axiom-sidebar-section-label {
   padding: 0 14px 6px;
-  font-family: var(--font-tech);
-  font-size: 9px;
-  letter-spacing: 0.11em;
-  color: #69716f;
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #7a8492;
   text-transform: uppercase;
 }
 
 .axiom-sidebar-link {
-  min-height: 32px;
+  min-height: 36px;
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 8px 14px;
   border-left: 2px solid transparent;
   color: #334256;
-  font-family: var(--font-body);
-  font-size: 12px;
+  font-family: var(--font-ui) !important;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
   background: transparent;
   border-top: 0;
   border-right: 0;
   border-bottom: 0;
-  border-radius: 0;
+  border-radius: 4px;
   cursor: pointer;
   text-align: left;
   transition:
@@ -1031,10 +1136,11 @@ a,
 }
 
 .axiom-sidebar-link.active {
-  background: #182536;
-  color: #fffdf8;
-  border-left-color: #d72f40;
-  font-weight: 500;
+  background: #142238 !important;
+  color: #ffffff !important;
+  border-left: 2px solid #00866b !important;
+  font-weight: 600 !important;
+  border-radius: 4px;
 }
 
 .axiom-sidebar-link .badge {
@@ -1047,8 +1153,9 @@ a,
   border: 1px solid #e1bf70;
   background: #fff8df;
   color: #8d6200;
-  font-family: var(--font-tech);
-  font-size: 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
   border-radius: 2px;
   padding: 0 4px;
 }
@@ -1168,9 +1275,9 @@ a,
 }
 
 .axiom-index__wordmark {
-  font-family: var(--font-tech);
+  font-family: var(--font-ui);
   font-size: 11px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   color: var(--ink-muted);
   font-weight: 600;
   text-transform: uppercase;
@@ -1182,13 +1289,14 @@ a,
   gap: 6px;
   background: var(--surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 2px;
-  padding: 6px 12px;
+  border-radius: 4px;
+  padding: 6px 14px;
   cursor: pointer;
   color: var(--ink-primary);
-  font-family: var(--font-tech);
-  font-size: 11px;
-  letter-spacing: -0.01em;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: normal;
   transition: all 0.15s ease;
 }
 
@@ -1273,9 +1381,10 @@ a,
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   color: var(--ink-muted);
-  font-family: var(--font-tech);
-  font-size: 11px;
-  letter-spacing: 0.02em;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .axiom-index__catalog-meta {
@@ -1339,9 +1448,10 @@ a,
   color: var(--ink-primary);
   text-align: left;
   cursor: pointer;
-  font-family: var(--font-tech);
-  font-size: 14px;
-  letter-spacing: -0.015em;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   transition: color 0.15s ease, padding-left 0.15s ease;
 }
 
@@ -1378,6 +1488,7 @@ a,
   font-size: 14px;
   line-height: 1.62;
   color: var(--ink-secondary);
+  font-family: var(--font-ui);
 }
 
 .axiom-index__detail-links {
@@ -1399,6 +1510,7 @@ a,
   font-size: 12px;
   padding: 0;
   transition: color 0.15s ease;
+  font-family: var(--font-ui);
 }
 
 .axiom-index__detail-links button:hover {
@@ -1410,8 +1522,8 @@ a,
   align-items: center;
   gap: 5px;
   color: var(--ink-muted);
-  font-size: 11px;
-  font-family: var(--font-tech);
+  font-size: 12px;
+  font-family: var(--font-ui);
 }
 
 .axiom-index__agents {
@@ -1420,8 +1532,9 @@ a,
 }
 
 .axiom-index__mini-label {
-  font-family: var(--font-tech);
+  font-family: var(--font-ui);
   font-size: 10px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--ink-muted);
@@ -1433,8 +1546,9 @@ a,
   grid-template-columns: 8px 1fr auto;
   align-items: center;
   gap: 8px;
-  padding: 3px 0;
-  font-size: 12px;
+  padding: 4px 0;
+  font-size: 13px;
+  font-family: var(--font-ui);
 }
 
 .axiom-index__agent-status {
@@ -1445,26 +1559,27 @@ a,
 }
 
 .axiom-index__agent-role {
-  font-family: var(--font-tech);
-  font-size: 10px;
+  font-family: var(--font-ui);
+  font-size: 11px;
   color: var(--ink-muted);
 }
 
 .axiom-index__skills {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 6px;
   margin-top: 8px;
 }
 
 .axiom-index__skills span {
-  padding: 4px 6px;
+  padding: 3px 7px;
   border: 1px solid var(--border-subtle);
   color: var(--ink-secondary);
-  font-family: var(--font-tech);
-  font-size: 9px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
   background: var(--surface);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .axiom-index__footer {
@@ -1474,9 +1589,9 @@ a,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: var(--font-tech);
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.04em;
   color: var(--ink-muted);
 }
 
@@ -1693,43 +1808,323 @@ a,
   color: #ffe9a8;
 }
 
-/* Status Indicators */
+/* Status Indicators (Compact Semantic Badges - Section 20) */
 
 .axiom-tag {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-tech);
-  font-size: 11px;
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   padding: 2px 7px;
-  border-radius: 2px;
+  border-radius: 3px;
   border: 1px solid var(--border-subtle);
   background-color: var(--surface);
   color: var(--ink-secondary);
 }
 
 .axiom-tag-success {
-  border-color: #c3e6db;
-  background-color: #f0faf6;
-  color: #0c7058;
+  background-color: #E8F5F0;
+  color: #007A61;
+  border: 1px solid #A8DCCE;
 }
 
 .axiom-tag-warning {
-  border-color: #f3dfaa;
-  background-color: #fff8df;
-  color: #9a6900;
+  background-color: #FFF3D6;
+  color: #9A6500;
+  border: 1px solid #E7C77E;
 }
 
 .axiom-tag-danger {
-  border-color: #f7c3c8;
-  background-color: #fdf2f3;
-  color: #b23c4b;
+  background-color: #FCE8EA;
+  color: #B72E3D;
+  border: 1px solid #E7B0B7;
 }
 
-.axiom-tag-neutral {
-  border-color: var(--border-subtle);
-  background-color: var(--surface-subtle);
-  color: var(--ink-secondary);
+.axiom-tag-neutral,
+.axiom-tag-running {
+  background-color: #EAF1FA;
+  color: #3569A8;
+  border: 1px solid #B8CCE5;
+}
+
+/* =========================================================
+   METRIC STRIP & CARDS (SECTIONS 11 & 12)
+   ========================================================= */
+
+.axiom-metric-strip,
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(140px, 1fr));
+  background-color: #FFFDF8;
+  border: 1px solid #D5D1C7;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(20, 34, 56, 0.05);
+}
+
+.metric-card {
+  min-width: 0;
+  padding: 20px 22px;
+  background-color: #FFFDF8;
+  border-right: 1px solid #D5D1C7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background-color 0.15s ease;
+}
+
+.metric-card:last-child {
+  border-right: none;
+}
+
+.metric-label {
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #68758a;
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  font-family: var(--font-ui) !important;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #17263A;
+  line-height: 1.15;
+}
+
+.metric-technical {
+  font-family: var(--font-mono) !important;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.metric-detail {
+  font-family: var(--font-ui) !important;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #40516a;
+  margin-top: 4px;
+}
+
+@media (max-width: 1100px) {
+  .axiom-metric-strip,
+  .metric-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .metric-card:nth-child(3n) {
+    border-right: none;
+  }
+  .metric-card:nth-child(-n+3) {
+    border-bottom: 1px solid #D5D1C7;
+  }
+}
+
+@media (max-width: 700px) {
+  .axiom-metric-strip,
+  .metric-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metric-card:nth-child(2n) {
+    border-right: none;
+  }
+  .metric-card:not(:nth-last-child(-n+2)) {
+    border-bottom: 1px solid #D5D1C7;
+  }
+}
+
+@media (max-width: 450px) {
+  .axiom-metric-strip,
+  .metric-strip {
+    grid-template-columns: 1fr;
+  }
+  .metric-card {
+    border-right: none !important;
+    border-bottom: 1px solid #D5D1C7;
+  }
+  .metric-card:last-child {
+    border-bottom: none;
+  }
+}
+
+/* =========================================================
+   FLOWCHART TYPOGRAPHY & SPACING (SECTIONS 17, 18, 19)
+   ========================================================= */
+
+.flow-node {
+  width: min(620px, 100%);
+  min-height: 104px;
+  padding: 20px 22px;
+  border-radius: 6px;
+  background-color: #FFFDF8;
+  border: 1px solid #D5D1C7;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 2px 0 rgba(20, 34, 56, 0.04);
+  transition: all 0.15s ease;
+  position: relative;
+  font-family: var(--font-ui);
+}
+
+.flow-node:hover {
+  border-color: #17263A;
+  box-shadow: 0 4px 12px rgba(20, 34, 56, 0.08);
+}
+
+.flow-node.completed {
+  border-color: #A8DCCE;
+  background-color: #FFFDF8;
+}
+
+.flow-node.running {
+  border-color: #B8CCE5;
+  background-color: #FAFBFD;
+}
+
+.flow-node.human {
+  border-color: #E7C77E;
+  background-color: #FFFDF8;
+}
+
+.flow-node .node-id {
+  font-family: var(--font-mono) !important;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #68758A;
+}
+
+.flow-node .node-label {
+  font-family: var(--font-ui) !important;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #68758A;
+}
+
+.flow-node .node-title {
+  font-family: var(--font-ui) !important;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #17263A;
+  margin: 6px 0 2px;
+  line-height: 1.3;
+}
+
+.flow-node .node-description {
+  font-family: var(--font-ui) !important;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #40516A;
+  margin: 0 0 12px;
+}
+
+.flow-node .node-technical-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #D5D1C7;
+  font-size: 11px;
+}
+
+.flow-node .node-technical-footer .technical-value {
+  font-family: var(--font-mono) !important;
+  font-size: 11px;
+  font-weight: 500;
+  color: #17263A;
+}
+
+.flow-node .node-technical-footer .agent-label {
+  font-family: var(--font-ui) !important;
+  font-size: 11px;
+  font-weight: 500;
+  color: #40516A;
+}
+
+.flow-connector {
+  width: 2px;
+  height: 28px;
+  background-color: #D5D1C7;
+  position: relative;
+  margin: 0 auto;
+}
+
+.flow-connector::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #68758A;
+}
+
+/* =========================================================
+   BUTTON TYPOGRAPHY (SECTION 21)
+   ========================================================= */
+
+.axiom-btn-primary,
+button.axiom-btn-primary {
+  font-family: var(--font-ui) !important;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  border-radius: 6px;
+  height: 38px;
+  padding: 0 15px;
+  background-color: #142238;
+  color: #FFFFFF;
+  border: 1px solid #142238;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.axiom-btn-primary:hover {
+  background-color: #1F3556;
+  border-color: #1F3556;
+}
+
+.axiom-btn-secondary,
+button.axiom-btn-secondary {
+  font-family: var(--font-ui) !important;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  border-radius: 6px;
+  height: 38px;
+  padding: 0 15px;
+  background-color: #FFFDF8;
+  color: #17263A;
+  border: 1px solid #D5D1C7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.axiom-btn-secondary:hover {
+  background-color: #FAF7EE;
+  border-color: #17263A;
 }
 
 /* =========================================================
@@ -1831,24 +2226,28 @@ a,
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-family: var(--font-tech);
+  font-family: var(--font-ui);
   font-size: 10px;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-muted);
 }
 
 .node-title {
-  font-family: var(--font-display);
-  font-size: 15px;
+  font-family: var(--font-ui) !important;
+  font-size: 14px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--ink-primary);
   margin-top: 4px;
 }
 
 .node-desc {
-  font-family: var(--font-tech);
-  font-size: 11px;
+  font-family: var(--font-ui) !important;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
   color: var(--ink-secondary);
   margin-top: 2px;
 }
@@ -1858,8 +2257,8 @@ a,
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-family: var(--font-tech);
-  font-size: 10px;
+  font-family: var(--font-ui);
+  font-size: 11px;
   color: var(--ink-muted);
   border-top: 1px solid rgba(213, 213, 206, 0.5);
   padding-top: 6px;

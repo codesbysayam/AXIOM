@@ -229,13 +229,13 @@ export const AuditPage: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-[#D5D5CE] pb-4">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5E6975] block">
+          <span className="eyebrow block">
             Cryptographic Assurance
           </span>
-          <h1 className="text-2xl font-serif font-bold text-[#182536] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#17263A] mt-1 tracking-tight">
             Audit Ledger & Evidence Chain
           </h1>
-          <p className="text-xs text-[#334256] mt-0.5">
+          <p className="text-sm font-sans text-[#40516A] mt-1">
             Immutable SHA-256 state transitions recording every autonomous action and human sign-off
           </p>
         </div>
@@ -247,40 +247,40 @@ export const AuditPage: React.FC = () => {
             onClick={handleVerifyIntegrity}
             className="axiom-btn-primary"
           >
-            <ShieldCheck size={13} className={verifying ? 'animate-spin' : 'text-[#48d597]'} />
+            <ShieldCheck size={13} className={verifying ? 'animate-spin' : 'text-[#00866B]'} />
             <span>{verifying ? 'Verifying Merkle Tree...' : 'Verify Chain Integrity'}</span>
           </button>
         </div>
       </div>
 
       {/* Top Context Summary Ribbon (Point 8, 18) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 border border-[#D5D5CE] bg-[#FFFDF8] rounded-[2px] divide-y sm:divide-y-0 sm:divide-x divide-[#D5D5CE] shadow-2xs">
-        <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Audit Ledger Size</span>
-          <strong className="text-xl font-mono text-[#182536] block mt-0.5">2,481 Events</strong>
-          <span className="text-[10px] text-[#5E6975] font-mono">Continuous append-only log</span>
+      <div className="grid grid-cols-1 sm:grid-cols-3 border border-[#D5D5CE] bg-[#FFFDF8] rounded-[4px] divide-y sm:divide-y-0 sm:divide-x divide-[#D5D5CE] shadow-2xs">
+        <div className="p-4">
+          <span className="text-[11px] font-sans uppercase text-[#68758A] block font-medium">Audit Ledger Size</span>
+          <strong className="text-2xl font-bold font-sans text-[#17263A] block mt-0.5">2,481 <span className="text-sm font-normal text-[#68758A]">Events</span></strong>
+          <span className="text-xs text-[#68758A] font-sans">Continuous append-only log</span>
         </div>
-        <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Chain Integrity</span>
-          <strong className="text-xl font-mono text-[#08795F] block mt-0.5">100% Verified</strong>
-          <span className="text-[10px] text-[#08795F] font-mono">SHA-256 Merkle root unbroken</span>
+        <div className="p-4">
+          <span className="text-[11px] font-sans uppercase text-[#68758A] block font-medium">Chain Integrity</span>
+          <strong className="text-2xl font-bold font-sans text-[#00866B] block mt-0.5">100% <span className="text-sm font-normal text-[#00866B]">Verified</span></strong>
+          <span className="text-xs text-[#00866B] font-sans">SHA-256 Merkle root unbroken</span>
         </div>
-        <div className="p-3.5">
-          <span className="text-[10px] font-mono uppercase text-[#5E6975] block">Tamper Violations</span>
-          <strong className="text-xl font-mono text-[#182536] block mt-0.5">0 Violations</strong>
-          <span className="text-[10px] text-[#5E6975] font-mono">Zero uncommitted side-effects</span>
+        <div className="p-4">
+          <span className="text-[11px] font-sans uppercase text-[#68758A] block font-medium">Tamper Violations</span>
+          <strong className="text-2xl font-bold font-sans text-[#17263A] block mt-0.5">0 <span className="text-sm font-normal text-[#68758A]">Violations</span></strong>
+          <span className="text-xs text-[#68758A] font-sans">Zero uncommitted side-effects</span>
         </div>
       </div>
 
       {/* EVIDENCE CHAIN VISUALIZATION (Point 8) */}
-      <div className="axiom-panel p-4 border border-[#D5D5CE] bg-[#FAF9F5]">
+      <div className="axiom-panel p-4 border border-[#D5D5CE] bg-[#FAF9F5] rounded-[4px]">
         <div className="flex items-center justify-between border-b border-[#D5D5CE] pb-2 mb-3">
-          <span className="text-xs font-serif font-bold text-[#182536] flex items-center gap-1.5">
-            <Lock size={12} className="text-[#08795F]" />
-            EVIDENCE CHAIN TOPOLOGY
+          <span className="card-title text-sm font-sans font-semibold text-[#17263A] flex items-center gap-1.5">
+            <Lock size={13} className="text-[#00866B]" />
+            Evidence Chain Topology
           </span>
-          <span className="text-[10px] font-mono text-[#08795F]">
-            CHAIN VERIFIED · SHA-256
+          <span className="text-xs font-sans font-semibold text-[#00866B]">
+            CHAIN VERIFIED · <span className="font-mono text-[11px]">SHA-256</span>
           </span>
         </div>
 
