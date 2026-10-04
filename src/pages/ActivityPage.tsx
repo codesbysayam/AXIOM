@@ -15,6 +15,9 @@ import {
 } from 'lucide-react';
 import { useOperationsStore } from '../orchestrator/store';
 import { EventInspector, TraceEventItem } from '../components/inspectors/EventInspector';
+import { AutonomousDecisionStream } from '../components/mission/AutonomousDecisionStream';
+import { EventStreamRadar } from '../components/mission/EventStreamRadar';
+import { AgentCollaborationCanvas } from '../components/mission/AgentCollaborationCanvas';
 import { axiomDemoData } from '../data/axiomDemoData';
 
 const INITIAL_TRACE_EVENTS: TraceEventItem[] = [
@@ -202,7 +205,7 @@ export const ActivityPage: React.FC = () => {
             TELEMETRY STREAM HEADER
           </span>
           <div className="text-sm font-sans font-semibold text-[#182536] mt-0.5">
-            LIVE FLEET TRACE
+            LIVE FLEET TRACE & DECISION LOGS
           </div>
         </div>
 
@@ -229,6 +232,19 @@ export const ActivityPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Real-time Decision Stream & Event Radar Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-7">
+          <AutonomousDecisionStream maxItems={6} />
+        </div>
+        <div className="lg:col-span-5 space-y-6">
+          <EventStreamRadar />
+        </div>
+      </div>
+
+      {/* Inter-Agent Collaboration Canvas */}
+      <AgentCollaborationCanvas />
 
       {/* Filter and Search Bar */}
       <div className="axiom-panel overflow-hidden border border-[#D5D5CE] bg-[#FFFDF8]">

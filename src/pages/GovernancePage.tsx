@@ -20,6 +20,9 @@ import { useOperationsStore } from '../orchestrator/store';
 import { GovernancePolicy } from '../types';
 import { axiomDemoData } from '../data/axiomDemoData';
 import { AGENT_WORKFORCE } from '../data/agentsAndSkills';
+import { AutonomyScoreCard } from '../components/mission/AutonomyScoreCard';
+import { SystemTimeTravel } from '../components/mission/SystemTimeTravel';
+import { WhatIfDecisionSimulator } from '../components/mission/WhatIfDecisionSimulator';
 
 const DETAILED_POLICIES = [
   {
@@ -382,6 +385,12 @@ export const GovernancePage: React.FC = () => {
             </p>
           </div>
         )}
+      </div>
+
+      {/* Autonomy Index & State Time Travel Scrubber */}
+      <div className="space-y-6">
+        <AutonomyScoreCard />
+        <SystemTimeTravel />
       </div>
 
       {/* RULE INSPECTOR DRAWER */}

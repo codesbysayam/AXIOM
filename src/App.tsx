@@ -12,6 +12,7 @@ import { GovernanceCertificateModal } from './components/GovernanceCertificateMo
 import { CreateWorkflowModal } from './components/CreateWorkflowModal';
 import { ExecutionReplayTheaterModal } from './components/ExecutionReplayTheaterModal';
 import { OperatorProfileModal } from './components/OperatorProfileModal';
+import { MissionControlModal } from './components/mission/MissionControlModal';
 import { AgentFleetInspector } from './components/inspectors/AgentFleetInspector';
 import { ActivePipelinesInspector } from './components/inspectors/ActivePipelinesInspector';
 
@@ -159,6 +160,11 @@ function ConsoleApp({ onBackToIndex }: { onBackToIndex: () => void }) {
         isOpen={activeModal === 'operator-profile'}
         onClose={closeModal}
       />
+
+      {/* Fullscreen Mission Control Mode (Feature 6 & 15) */}
+      {missionControl && (
+        <MissionControlModal onClose={() => setMissionControl(false)} />
+      )}
     </div>
   );
 }

@@ -5,17 +5,31 @@ import {
   CheckSquare,
   CircleDot,
   Clock,
+  Compass,
+  Layers,
+  Lock,
   PlayCircle,
+  Radio,
+  RotateCcw,
+  Scale,
   ShieldAlert,
   ShieldCheck,
-  Workflow,
   Users,
-  Lock,
+  Workflow,
+  Zap,
 } from 'lucide-react';
 import { useOperationsStore } from '../orchestrator/store';
 import { MASTER_METRICS } from '../data/metrics';
 import { MetricCard } from '../components/charts/MetricCard';
-import { ExecutionFlowChart, FlowStage } from '../components/flow/ExecutionFlowChart';
+import { LiveMissionMap } from '../components/mission/LiveMissionMap';
+import { ExecutionReplayStudio } from '../components/mission/ExecutionReplayStudio';
+import { AutonomousDecisionStream } from '../components/mission/AutonomousDecisionStream';
+import { AutonomyScoreCard } from '../components/mission/AutonomyScoreCard';
+import { WhatIfDecisionSimulator } from '../components/mission/WhatIfDecisionSimulator';
+import { RiskHeatmap } from '../components/mission/RiskHeatmap';
+import { LiveIncidentOverlay } from '../components/mission/LiveIncidentOverlay';
+import { AgentDigitalTwinModal } from '../components/mission/AgentDigitalTwinModal';
+import { FlowStage } from '../components/flow/ExecutionFlowChart';
 import { SuccessBarChart } from '../components/charts/SuccessBarChart';
 import { RiskDonut } from '../components/charts/RiskDonut';
 import { ThroughputChart } from '../components/charts/ThroughputChart';
@@ -32,6 +46,8 @@ export const DashboardPage: React.FC = () => {
     openInspector,
   } = useOperationsStore();
 
+  const [activeHeroTab, setActiveHeroTab] = useState<'topology' | 'replay' | 'whatif' | 'threats'>('topology');
+  const [inspectedAgentTwinId, setInspectedAgentTwinId] = useState<string | null>(null);
   const [inspectedFlowStage, setInspectedFlowStage] = useState<InspectorNode | null>(null);
 
   const pendingApprovals = useMemo(
@@ -157,8 +173,82 @@ export const DashboardPage: React.FC = () => {
         />
       </section>
 
-      {/* Primary Flowchart: Autonomous Control Loop */}
-      <ExecutionFlowChart onNodeClick={handleFlowStageClick} />
+      {/* Active Incident Operational Overlay */}
+      <LiveIncidentOverlay />
+
+      {/* Hero Operational Console Tabs (Live Mission Map, Replay Studio, What-If, Risk Matrix) */}
+      <section className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D5D5CE] pb-2">
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setActiveHeroTab('topology')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-[3px] transition-colors ${
+                activeHeroTab === 'topology'
+                  ? 'bg-[#182536] text-white shadow-2xs'
+                  : 'text-[#40516A] hover:bg-[#F0EEE6]'
+              }`}
+            >
+              🌐 Live Mission Map & Topology
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveHeroTab('replay')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-[3px] transition-colors ${
+                activeHeroTab === 'replay'
+                  ? 'bg-[#182536] text-white shadow-2xs'
+                  : 'text-[#40516A] hover:bg-[#F0EEE6]'
+              }`}
+            >
+              🎬 Execution Replay Studio
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveHeroTab('whatif')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-[3px] transition-colors ${
+                activeHeroTab === 'whatif'
+                  ? 'bg-[#182536] text-white shadow-2xs'
+                  : 'text-[#40516A] hover:bg-[#F0EEE6]'
+              }`}
+            >
+              🧪 What-If Decision Simulator
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveHeroTab('threats')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-[3px] transition-colors ${
+                activeHeroTab === 'threats'
+                  ? 'bg-[#182536] text-white shadow-2xs'
+                  : 'text-[#40516A] hover:bg-[#F0EEE6]'
+              }`}
+            >
+              🔥 Risk Heatmap Matrix
+            </button>
+          </div>
+
+          <span className="text-[11px] font-mono text-[#5E6975] hidden sm:block">
+            Autonomous Orchestration Engine · Active Run #AX-93821
+          </span>
+        </div>
+
+        {/* Tab Content Display */}
+        {activeHeroTab === 'topology' && (
+          <LiveMissionMap onInspectAgent={(agentId) => setInspectedAgentTwinId(agentId)} />
+        )}
+        {activeHeroTab === 'replay' && <ExecutionReplayStudio />}
+        {activeHeroTab === 'whatif' && <WhatIfDecisionSimulator />}
+        {activeHeroTab === 'threats' && <RiskHeatmap />}
+      </section>
+
+      {/* Primary Operational Row: Real-Time Decision Stream + Autonomy Index Scorecard */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-7">
+          <AutonomousDecisionStream maxItems={6} />
+        </div>
+        <div className="lg:col-span-5 space-y-6">
+          <AutonomyScoreCard />
+        </div>
+      </section>
 
       {/* Secondary Visualizations: Workload Throughput + Outcomes + Risk */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -258,6 +348,14 @@ export const DashboardPage: React.FC = () => {
         node={inspectedFlowStage}
         onClose={() => setInspectedFlowStage(null)}
       />
+
+      {/* Agent Digital Twin Modal (Feature 3) */}
+      {inspectedAgentTwinId && (
+        <AgentDigitalTwinModal
+          agentId={inspectedAgentTwinId}
+          onClose={() => setInspectedAgentTwinId(null)}
+        />
+      )}
     </main>
   );
 };
