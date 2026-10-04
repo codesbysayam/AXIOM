@@ -1,4 +1,11 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   GOVERNANCE_POLICIES,
   INITIAL_APPROVALS,
@@ -41,6 +48,21 @@ export interface ToastMessage {
   type: 'success' | 'info' | 'warning' | 'error';
 }
 
+export type InspectorType = 'agents' | 'pipelines' | 'evidence' | null;
+
+export interface InspectorState {
+  type: InspectorType;
+  payload?: any;
+}
+
+export interface SimulationClock {
+  tick: number;
+  isRunning: boolean;
+  intervalMs: number;
+  epochTime: string;
+  cycleCount: number;
+}
+
 interface OperationsStoreContextType {
   currentView: ConsoleView;
   selectedWorkflowId: string | null;
@@ -53,6 +75,16 @@ interface OperationsStoreContextType {
   toasts: ToastMessage[];
   activeModal: string | null;
   modalPayload: any;
+  inspector: InspectorState | null;
+  simulationClock: SimulationClock;
+  setClockRunning: (running: boolean) => void;
+  setClockSpeed: (intervalMs: number) => void;
+  advanceClockTick: () => void;
+  toggleClock: () => void;
+  openInspector: (type: InspectorType, payload?: any) => void;
+  closeInspector: () => void;
+  mobileNavOpen: boolean;
+  setMobileNavOpen: (open: boolean | ((prev: boolean) => boolean)) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   navigateTo: (view: ConsoleView, workflowId?: string) => void;
@@ -82,7 +114,149 @@ export const OperationsStoreProvider: React.FC<{ children: React.ReactNode }> = 
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [modalPayload, setModalPayload] = useState<any>(null);
+  const [inspector, setInspector] = useState<InspectorState | null>(null);
+  const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const [simulationClock, setSimulationClock] = useState<SimulationClock>({
+    tick: 1,
+    isRunning: true,
+    intervalMs: 1600,
+    epochTime: new Date().toLocaleTimeString('en-GB', { hour12: false }) + '.000',
+    cycleCount: 0,
+  });
+
+  const setClockRunning = useCallback((running: boolean) => {
+    setSimulationClock((prev) => ({ ...prev, isRunning: running }));
+  }, []);
+
+  const toggleClock = useCallback(() => {
+    setSimulationClock((prev) => ({ ...prev, isRunning: !prev.isRunning }));
+  }, []);
+
+  const setClockSpeed = useCallback((intervalMs: number) => {
+    setSimulationClock((prev) => ({ ...prev, intervalMs }));
+  }, []);
+
+  const advanceClockTick = useCallback(() => {
+    const now = new Date();
+    const formattedEpoch = `${now.toLocaleTimeString('en-GB', { hour12: false })}.${String(now.getMilliseconds()).padStart(3, '0')}`;
+
+    setSimulationClock((prev) => ({
+      ...prev,
+      tick: prev.tick + 1,
+      epochTime: formattedEpoch,
+      cycleCount: prev.cycleCount + 1,
+    }));
+
+    // 1. Advance running workflows in synchronized step lockstep
+    setWorkflows((prevWorkflows) => {
+      let changed = false;
+      const updated = prevWorkflows.map((wf) => {
+        const runningStepIndex = wf.steps.findIndex((s) => s.status === 'running');
+        if (runningStepIndex === -1) return wf;
+
+        changed = true;
+        const currentRunningStep = wf.steps[runningStepIndex];
+        const nextStep = wf.steps[runningStepIndex + 1];
+
+        const newSteps = wf.steps.map((st, idx) => {
+          if (idx === runningStepIndex) {
+            return {
+              ...st,
+              status: 'completed' as const,
+              executedAt: formattedEpoch,
+              outputDescription:
+                st.outputDescription || 'Deterministic verification pass: all invariants preserved.',
+            };
+          }
+          if (idx === runningStepIndex + 1) {
+            if (st.requiresApproval) {
+              return {
+                ...st,
+                status: 'waiting_approval' as const,
+              };
+            }
+            return {
+              ...st,
+              status: 'running' as const,
+            };
+          }
+          return st;
+        });
+
+        // If next step requires approval, ensure an approval request exists
+        if (nextStep && nextStep.requiresApproval) {
+          setApprovals((prevApprovals) => {
+            if (
+              prevApprovals.some(
+                (a) => a.workflowId === wf.id && a.stepId === nextStep.id && a.status === 'pending',
+              )
+            ) {
+              return prevApprovals;
+            }
+            const newApproval: ApprovalRequest = {
+              id: `req-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+              workflowId: wf.id,
+              workflowTitle: wf.title,
+              stepId: nextStep.id,
+              stepName: nextStep.name,
+              agentName: nextStep.assignedAgent,
+              riskTier: wf.riskTier,
+              requestedAt: formattedEpoch,
+              status: 'pending',
+              summary: `Synchronized execution gated at step: ${nextStep.name}. Operator authorization required for external state mutation.`,
+              proposedAction: `Authorize live execution of ${nextStep.name} for ${wf.title}.`,
+              policyTriggered: 'POL-OPS-03 (Human Authority Boundary)',
+            };
+            return [newApproval, ...prevApprovals];
+          });
+        }
+
+        const hasWaiting = newSteps.some((s) => s.status === 'waiting_approval');
+        const allCompleted = newSteps.every((s) => s.status === 'completed');
+
+        // Record a synchronized immutable audit log entry for the transition
+        const newAuditEntry: AuditLogEntry = {
+          id: `audit-sync-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+          timestamp: formattedEpoch,
+          workflowId: wf.id,
+          agentName: currentRunningStep.assignedAgent,
+          action: `${currentRunningStep.name.toUpperCase().replace(/\s+/g, '_')}_COMMIT`,
+          outcome: 'success',
+          details: `Synchronized tick: Completed step "${currentRunningStep.name}" for ${wf.title}. Invariants validated.`,
+          hash: `sha256-${Math.random().toString(16).substring(2, 10)}..${Math.random().toString(16).substring(2, 6)}`,
+        };
+        setAuditLogs((prevLogs) => [newAuditEntry, ...prevLogs.slice(0, 49)]);
+
+        return {
+          ...wf,
+          steps: newSteps,
+          lastRunAt: formattedEpoch,
+          status: hasWaiting || allCompleted ? ('active' as const) : ('running' as const),
+        };
+      });
+
+      return changed ? updated : prevWorkflows;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!simulationClock.isRunning) return;
+    const interval = setInterval(() => {
+      advanceClockTick();
+    }, simulationClock.intervalMs);
+
+    return () => clearInterval(interval);
+  }, [simulationClock.isRunning, simulationClock.intervalMs, advanceClockTick]);
+
+  const openInspector = useCallback((type: InspectorType, payload?: any) => {
+    setInspector({ type, payload });
+  }, []);
+
+  const closeInspector = useCallback(() => {
+    setInspector(null);
+  }, []);
 
   const addToast = useCallback(
     (
@@ -241,17 +415,22 @@ export const OperationsStoreProvider: React.FC<{ children: React.ReactNode }> = 
 
   const runWorkflow = useCallback(
     (id: string) => {
+      const now = new Date();
+      const formattedEpoch = `${now.toLocaleTimeString('en-GB', { hour12: false })}.${String(now.getMilliseconds()).padStart(3, '0')}`;
+
       setWorkflows((prev) =>
         prev.map((wf) => {
           if (wf.id === id) {
             const resetSteps = wf.steps.map((st, idx) => ({
               ...st,
               status: idx === 0 ? ('running' as const) : ('pending' as const),
+              executedAt: idx === 0 ? formattedEpoch : undefined,
             }));
             return {
               ...wf,
+              status: 'running' as const,
               totalRuns: wf.totalRuns + 1,
-              lastRunAt: 'Just now',
+              lastRunAt: formattedEpoch,
               steps: resetSteps,
             };
           }
@@ -259,24 +438,14 @@ export const OperationsStoreProvider: React.FC<{ children: React.ReactNode }> = 
         }),
       );
 
-      addToast('Workflow Triggered', `Pipeline execution started for ${id}.`, 'info');
+      // Ensure simulationClock is running to coordinate step transitions
+      setSimulationClock((prev) => ({ ...prev, isRunning: true }));
 
-      // Progressive step simulation
-      setTimeout(() => {
-        setWorkflows((prev) =>
-          prev.map((wf) => {
-            if (wf.id === id) {
-              const advancedSteps = wf.steps.map((st, idx) => {
-                if (idx === 0) return { ...st, status: 'completed' as const, executedAt: 'Just now' };
-                if (idx === 1) return { ...st, status: 'running' as const };
-                return st;
-              });
-              return { ...wf, steps: advancedSteps };
-            }
-            return wf;
-          }),
-        );
-      }, 900);
+      addToast(
+        'Workflow Triggered',
+        `Pipeline execution started for ${id} synchronized with centralized clock.`,
+        'info',
+      );
     },
     [addToast],
   );
@@ -322,6 +491,16 @@ export const OperationsStoreProvider: React.FC<{ children: React.ReactNode }> = 
       toasts,
       activeModal,
       modalPayload,
+      inspector,
+      simulationClock,
+      setClockRunning,
+      setClockSpeed,
+      advanceClockTick,
+      toggleClock,
+      openInspector,
+      closeInspector,
+      mobileNavOpen,
+      setMobileNavOpen,
       searchTerm,
       setSearchTerm,
       navigateTo,
@@ -348,6 +527,16 @@ export const OperationsStoreProvider: React.FC<{ children: React.ReactNode }> = 
       toasts,
       activeModal,
       modalPayload,
+      inspector,
+      simulationClock,
+      setClockRunning,
+      setClockSpeed,
+      advanceClockTick,
+      toggleClock,
+      openInspector,
+      closeInspector,
+      mobileNavOpen,
+      setMobileNavOpen,
       searchTerm,
       navigateTo,
       approveRequest,

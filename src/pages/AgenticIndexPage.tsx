@@ -147,7 +147,7 @@ export const AgenticIndexPage: React.FC<AgenticIndexPageProps> = ({
   workflows,
   onOpenConsole,
 }) => {
-  const [openCategory, setOpenCategory] = useState<number | null>(null);
+  const [openCategories, setOpenCategories] = useState<number[]>([0]);
 
   const activeAgents = useMemo(
     () => AGENT_WORKFORCE.filter((agent) => agent.status === 'active').length,
@@ -155,14 +155,26 @@ export const AgenticIndexPage: React.FC<AgenticIndexPageProps> = ({
   );
 
   const toggle = (index: number) => {
-    setOpenCategory((current) => (current === index ? null : index));
+    setOpenCategories((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+    );
+  };
+
+  const allExpanded = openCategories.length === CATEGORIES.length;
+
+  const toggleAll = () => {
+    if (allExpanded) {
+      setOpenCategories([]);
+    } else {
+      setOpenCategories(CATEGORIES.map((_, i) => i));
+    }
   };
 
   return (
-    <div className="axiom-index selection:bg-[#e63946] selection:text-white">
+    <div className="axiom-index axiom-index-page selection:bg-[#e63946] selection:text-white">
       <div className="axiom-index__grid" aria-hidden="true" />
 
-      <header className="axiom-index__topbar">
+      <header className="axiom-index__topbar editorial-header">
         <div className="axiom-index__wordmark">
           AXIOM <span className="text-[#a0aec0] font-normal">/ AUTONOMOUS OPERATIONS</span>
         </div>
@@ -177,8 +189,8 @@ export const AgenticIndexPage: React.FC<AgenticIndexPageProps> = ({
         </button>
       </header>
 
-      <main className="axiom-index__container">
-        <section className="axiom-index__intro" aria-labelledby="axiom-title">
+      <main className="axiom-index__container axiom-index-content">
+        <section className="axiom-index__intro hero" aria-labelledby="axiom-title">
           <div className="axiom-index__number" aria-hidden="true">
             01
           </div>
@@ -197,7 +209,7 @@ export const AgenticIndexPage: React.FC<AgenticIndexPageProps> = ({
         </section>
 
         <section
-          className="axiom-index__catalog"
+          className="axiom-index__catalog category-index"
           aria-label="AXIOM core operational categories"
         >
           <div className="axiom-index__catalog-head">
@@ -210,23 +222,23 @@ export const AgenticIndexPage: React.FC<AgenticIndexPageProps> = ({
 
               <button
                 type="button"
-                onClick={() =>
-                  setOpenCategory(openCategory === null ? 0 : null)
-                }
+                onClick={toggleAll}
+                className="underline decoration-dotted hover:text-[#182536]"
               >
-                {openCategory === null ? 'Expand first' : 'Collapse'}
+                {allExpanded ? 'Collapse all' : 'Expand all (08)'}
               </button>
             </div>
           </div>
 
-          <div className="axiom-index__rows">
+          <div className="axiom-index__rows category-list">
             {CATEGORIES.map((category, index) => {
-              const isOpen = openCategory === index;
+              const isOpen = openCategories.includes(index);
               const panelId = `axiom-category-${index}`;
 
               return (
                 <article
-                  className={`axiom-index__row ${isOpen ? 'is-open' : ''}`}
+                  className={`axiom-index__row category-section ${isOpen ? 'is-open' : ''}`}
+                  data-expanded={isOpen ? 'true' : 'false'}
                   key={category.title}
                 >
                   <button
@@ -244,7 +256,7 @@ export const AgenticIndexPage: React.FC<AgenticIndexPageProps> = ({
                   </button>
 
                   {isOpen && (
-                    <div className="axiom-index__detail" id={panelId}>
+                    <div className="axiom-index__detail category-section-content" id={panelId}>
                       <div className="axiom-index__detail-copy">
                         <p>{category.description}</p>
 

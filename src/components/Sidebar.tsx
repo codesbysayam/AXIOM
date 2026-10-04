@@ -1,28 +1,17 @@
 import React from 'react';
-import {
-  ArrowLeft,
-  Bot,
-  Briefcase,
-  CheckSquare,
-  FileCheck2,
-  Gavel,
-  HeartPulse,
-  LayoutDashboard,
-  PlayCircle,
-  ScrollText,
-  Settings,
-  Shield,
-  Workflow,
-  Wrench,
-  Activity,
-  AlertTriangle,
-  BarChart2,
-  Radio,
-} from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { ConsoleView, useOperationsStore } from '../orchestrator/store';
+import { AxiomMark } from './AxiomMark';
+import { SidebarExecution } from './SidebarExecution';
 
 export interface SidebarProps {
   onBackToIndex: () => void;
+  activeExecution?: {
+    name: string;
+    current: number;
+    total: number;
+    stage: string;
+  } | null;
 }
 
 interface NavItem {
@@ -38,8 +27,8 @@ interface NavSection {
   items: NavItem[];
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ onBackToIndex }) => {
-  const { currentView, navigateTo, approvals, incidents } = useOperationsStore();
+export const Sidebar: React.FC<SidebarProps> = ({ onBackToIndex, activeExecution }) => {
+  const { currentView, navigateTo, approvals, incidents, setMobileNavOpen } = useOperationsStore();
 
   const pendingApprovalsCount = approvals.filter((a) => a.status === 'pending').length;
   const activeIncidentsCount = incidents.filter((i) => i.status === 'active').length;
@@ -103,20 +92,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ onBackToIndex }) => {
   ];
 
   return (
-    <aside className="w-[272px] border-r border-[#D5D5CE] bg-[#FAF9F5] flex flex-col justify-between flex-shrink-0 min-h-[calc(100vh-3.5rem)] select-none">
-      <div className="py-4 px-3">
+    <div className="flex flex-col justify-between h-full select-none">
+      <div className="overflow-y-auto pr-1">
         {/* Brand identity lockup */}
-        <div className="px-3 pb-3 mb-3 border-b border-[#D5D5CE]">
-          <div className="flex items-center justify-between">
-            <span className="font-serif text-lg font-bold tracking-tight text-[#182536]">
-              AXIOM
-            </span>
-            <span className="text-[9px] font-mono uppercase tracking-widest text-[#5E6975] bg-[#EFEFEB] px-1.5 py-0.5 rounded-[2px] border border-[#D5D5CE]">
-              CONTROL RAIL
-            </span>
-          </div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-[#5E6975] mt-0.5">
-            Autonomous Operations
+        <div className="px-2 pb-3 mb-3 border-b border-[#D5D5CE]">
+          <div className="axiom-brand">
+            <AxiomMark size={28} />
+            <div>
+              <strong>AXIOM</strong>
+              <span>AUTONOMOUS OPERATIONS</span>
+            </div>
           </div>
         </div>
 
@@ -124,7 +109,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onBackToIndex }) => {
         <button
           type="button"
           onClick={onBackToIndex}
-          className="w-full mb-4 px-3 py-1.5 text-xs text-[#334256] hover:text-[#182536] hover:bg-[#EFEFEB] rounded-[2px] border border-[#D5D5CE] flex items-center justify-between transition-colors bg-[#FFFDF8] shadow-2xs"
+          className="w-full mb-3 px-3 py-1.5 text-xs text-[#334256] hover:text-[#182536] hover:bg-[#EBE7DC] rounded-[2px] border border-[#D5D5CE] flex items-center justify-between transition-colors bg-[#FFFDF8] shadow-2xs font-sans"
           title="Return to 01 AXIOM editorial index"
         >
           <span className="flex items-center gap-1.5 font-medium">
@@ -137,44 +122,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ onBackToIndex }) => {
         </button>
 
         {/* Structured Navigation Sections */}
-        <div className="space-y-3.5">
+        <nav className="axiom-sidebar-nav" aria-label="System navigation">
           {SECTIONS.map((sec) => (
-            <div key={sec.title}>
-              <div className="text-[9px] font-mono font-semibold tracking-wider text-[#5E6975] px-3 mb-1 uppercase flex items-center justify-between">
+            <div key={sec.title} className="axiom-sidebar-section">
+              <div className="axiom-sidebar-section-label">
                 <span>{sec.code} {sec.title}</span>
               </div>
-              <div className="space-y-0.5">
+              <div>
                 {sec.items.map((item) => {
                   const isActive = currentView === item.id;
                   return (
                     <button
                       key={item.id}
                       type="button"
-                      onClick={() => navigateTo(item.id)}
-                      className={`w-full flex items-center justify-between px-3 py-1.5 text-xs rounded-[2px] transition-colors text-left relative ${
-                        isActive
-                          ? 'bg-[#182536] text-[#FFFDF8] font-medium shadow-2xs'
-                          : 'text-[#334256] hover:text-[#182536] hover:bg-[#EFEFEB]'
-                      }`}
+                      onClick={() => {
+                        navigateTo(item.id);
+                        setMobileNavOpen(false);
+                      }}
+                      className={`axiom-sidebar-link ${isActive ? 'active' : ''}`}
                     >
-                      {isActive && (
-                        <span
-                          className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#D72F40]"
-                          aria-hidden="true"
-                        />
-                      )}
                       <span className="truncate">{item.label}</span>
 
                       {item.badge !== undefined && (
-                        <span
-                          className={`px-1.5 py-0.2 rounded-[2px] text-[10px] font-mono font-bold ${
-                            isActive
-                              ? 'bg-[#FFFDF8] text-[#182536]'
-                              : item.badgeType === 'rose'
-                              ? 'bg-rose-50 text-[#D72F40] border border-rose-200'
-                              : 'bg-[#FFF8E6] text-[#A87405] border border-[#F7E0B5]'
-                          }`}
-                        >
+                        <span className="badge">
                           {item.badge}
                         </span>
                       )}
@@ -184,23 +154,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ onBackToIndex }) => {
               </div>
             </div>
           ))}
-        </div>
+        </nav>
       </div>
 
-      {/* Footer system status */}
-      <div className="p-3 border-t border-[#D5D5CE] bg-[#F5F1E6]">
-        <div className="flex items-center justify-between text-[11px] font-mono text-[#5E6975]">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#138468] animate-pulse" aria-hidden="true" />
-            <span className="text-[#182536] font-semibold">8 Nodes Armed</span>
-          </span>
-          <span className="text-[#5E6975] text-[10px]">Ping: 12ms</span>
-        </div>
-        <div className="mt-1 flex items-center justify-between text-[10px] font-mono text-[#5E6975]">
-          <span>Cluster 01</span>
-          <span className="text-[#138468]">100% HEALTH</span>
-        </div>
-      </div>
-    </aside>
+      {/* Persistent Bottom Execution Widget */}
+      <SidebarExecution execution={activeExecution} />
+    </div>
   );
 };

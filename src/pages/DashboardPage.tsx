@@ -52,6 +52,7 @@ export const DashboardPage: React.FC = () => {
     incidents,
     auditLogs,
     navigateTo,
+    openInspector,
   } = useOperationsStore();
 
   const pendingApprovals = useMemo(
@@ -113,27 +114,51 @@ export const DashboardPage: React.FC = () => {
         className="axiom-metric-ribbon"
         aria-label="System summary"
       >
-        <div className="axiom-metric">
+        <button
+          type="button"
+          onClick={() => openInspector('pipelines')}
+          className="axiom-metric text-left cursor-pointer hover:bg-[#FAF9F5] transition-colors border-0"
+          title="Inspect Active Pipelines"
+          aria-label="Inspect Active Pipelines"
+        >
           <span>PIPELINES</span>
           <strong>{workflows.length}</strong>
           <small>active orchestration paths</small>
-        </div>
+        </button>
 
-        <div className="axiom-metric axiom-metric-alert">
+        <button
+          type="button"
+          onClick={() => navigateTo('approvals')}
+          className="axiom-metric axiom-metric-alert text-left cursor-pointer hover:bg-[#FFF7DF] transition-colors border-0"
+          title="Review Human Authority Gates"
+          aria-label="Review Human Authority Gates"
+        >
           <span>HUMAN GATES</span>
           <strong>{pendingApprovals.length}</strong>
           <small>decisions awaiting operator authority</small>
-        </div>
+        </button>
 
-        <div className="axiom-metric">
+        <button
+          type="button"
+          onClick={() => openInspector('agents')}
+          className="axiom-metric text-left cursor-pointer hover:bg-[#FAF9F5] transition-colors border-0"
+          title="Inspect Agent Fleet"
+          aria-label="Inspect Agent Fleet"
+        >
           <span>FLEET</span>
           <strong className="is-green">
             08<span>/08</span>
           </strong>
           <small>nodes reporting heartbeat</small>
-        </div>
+        </button>
 
-        <div className="axiom-metric">
+        <button
+          type="button"
+          onClick={() => navigateTo('governance')}
+          className="axiom-metric text-left cursor-pointer hover:bg-[#FAF9F5] transition-colors border-0"
+          title="Inspect Invariant Policies"
+          aria-label="Inspect Invariant Policies"
+        >
           <span>INVARIANTS</span>
           <strong>{activeIncidents.length}</strong>
           <small>
@@ -141,7 +166,7 @@ export const DashboardPage: React.FC = () => {
               ? 'active exceptions'
               : 'no active violations'}
           </small>
-        </div>
+        </button>
       </section>
 
       <section className="axiom-control-room">

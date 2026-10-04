@@ -3,6 +3,7 @@ import { AgenticIndexPage } from './pages/AgenticIndexPage';
 import { OperationsStoreProvider, useOperationsStore } from './orchestrator/store';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
+import { SystemPulseRail } from './components/SystemPulseRail';
 import { ToastContainer } from './components/ToastContainer';
 import { CommandPalette } from './components/CommandPalette';
 import { ArchitectureModal } from './components/ArchitectureModal';
@@ -11,6 +12,8 @@ import { GovernanceCertificateModal } from './components/GovernanceCertificateMo
 import { CreateWorkflowModal } from './components/CreateWorkflowModal';
 import { ExecutionReplayTheaterModal } from './components/ExecutionReplayTheaterModal';
 import { OperatorProfileModal } from './components/OperatorProfileModal';
+import { AgentFleetInspector } from './components/inspectors/AgentFleetInspector';
+import { ActivePipelinesInspector } from './components/inspectors/ActivePipelinesInspector';
 
 // Pages
 import { DashboardPage } from './pages/DashboardPage';
@@ -31,7 +34,16 @@ import { JudgeModePage } from './pages/JudgeModePage';
 import { SettingsPage } from './pages/SettingsPage';
 
 function ConsoleApp({ onBackToIndex }: { onBackToIndex: () => void }) {
-  const { currentView, activeModal, closeModal } = useOperationsStore();
+  const {
+    currentView,
+    activeModal,
+    closeModal,
+    inspector,
+    closeInspector,
+    mobileNavOpen,
+    setMobileNavOpen,
+  } = useOperationsStore();
+  const [missionControl, setMissionControl] = useState(false);
 
   const renderActiveView = () => {
     switch (currentView) {
@@ -73,16 +85,51 @@ function ConsoleApp({ onBackToIndex }: { onBackToIndex: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f5f0] text-[#17263d] flex flex-col font-sans">
-      <Header onBackToIndex={onBackToIndex} />
-      <div className="flex-1 flex overflow-hidden">
-        <Sidebar onBackToIndex={onBackToIndex} />
-        <main className="flex-1 p-5 overflow-y-auto max-w-7xl mx-auto w-full">
+    <div className="axiom-app-shell" data-mission-control={missionControl ? 'true' : 'false'}>
+      <header className="axiom-app-header">
+        <Header
+          onBackToIndex={onBackToIndex}
+          missionControl={missionControl}
+          onToggleMissionControl={() => setMissionControl((curr) => !curr)}
+        />
+        <SystemPulseRail />
+      </header>
+
+      {/* Mobile Drawer Backdrop (Point 14) */}
+      {mobileNavOpen && (
+        <div
+          className="fixed inset-0 bg-[#182536]/40 z-40 lg:hidden backdrop-blur-[1px]"
+          onClick={() => setMobileNavOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside className="axiom-sidebar" data-open={mobileNavOpen ? 'true' : 'false'}>
+        <div className="axiom-sidebar-inner">
+          <Sidebar onBackToIndex={onBackToIndex} />
+        </div>
+      </aside>
+
+      <main className="axiom-main">
+        <div className="p-4 sm:p-6 max-w-7xl mx-auto w-full">
           {renderActiveView()}
-        </main>
-      </div>
+        </div>
+      </main>
 
       <ToastContainer />
+
+      {/* Global Context Inspectors (Point 3) */}
+      <AgentFleetInspector
+        isOpen={inspector?.type === 'agents'}
+        onClose={closeInspector}
+        selectedAgentId={inspector?.payload}
+      />
+      <ActivePipelinesInspector
+        isOpen={inspector?.type === 'pipelines'}
+        onClose={closeInspector}
+        selectedPipelineId={inspector?.payload}
+      />
+
       <CommandPalette
         isOpen={activeModal === 'command-palette'}
         onClose={closeModal}
