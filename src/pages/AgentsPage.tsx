@@ -7,6 +7,7 @@ import { TableHealthSparkline } from '../components/TableHealthSparkline';
 import { TableQuickActionsMenu } from '../components/TableQuickActionsMenu';
 import { AgentDetailModal } from '../components/AgentDetailModal';
 import { AgentDiagnosticsDrawer } from '../components/AgentDiagnosticsDrawer';
+import { AgentPerformanceHeatmap } from '../components/charts/AgentPerformanceHeatmap';
 import { useOperationsStore } from '../orchestrator/store';
 
 export const AgentsPage: React.FC = () => {
@@ -140,6 +141,9 @@ export const AgentsPage: React.FC = () => {
           <span className="metric-detail block">Immutable proof root</span>
         </div>
       </div>
+
+      {/* D3-Powered Agent Performance & Activity Density Heatmap */}
+      <AgentPerformanceHeatmap onSelectAgent={(agent) => setActiveDrawerAgent(agent)} />
 
       {/* System Registry Table Panel with Top Filter Bar & Multi-Select */}
       <div className="axiom-panel overflow-hidden">
